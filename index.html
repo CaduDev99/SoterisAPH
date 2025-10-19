@@ -17,13 +17,10 @@
       min-height: 100vh;
       display: flex;
       flex-direction: column;
-      justify-content: center;
-      align-items: center;
       font-family: Arial, sans-serif;
       transition: background-color 0.3s, color 0.3s;
       background-color: #ffffff;
       color: #222;
-      min-height: 100vh;
     }
 
     /* Tema escuro */
@@ -36,37 +33,38 @@
     }
 
     main {
-        flex-grow: 1; /* Faz o conteúdo principal ocupar todo o espaço vertical restante */
-        width: 100%; /* Para garantir que o conteúdo use a largura total */
-        padding: 20px; /* Adicione o espaçamento do body aqui, se quiser manter */
-        display: flex; /* Mantenha as propriedades de layout que o body tinha para o conteúdo interno */
-        flex-direction: column;
-        align-items: center;
+      flex-grow: 1;
+      width: 100%;
+      padding: 1rem; /* Reduzido para minimizar altura extra */
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 0; /* Evita que o main cause overflow */
     }
 
     img {
-      width: 500px;
-      margin-bottom: 20px;
+      max-width: 100%;
+      width: min(500px, 90vw);
+      margin-bottom: 1rem; /* Reduzido para economizar espaço */
       transition: 0.3s;
     }
 
     h1 {
       color: gold;
-      font-size: 2em;
-      margin-bottom: 5px;
+      font-size: clamp(1.5rem, 5vw, 2rem);
+      margin-bottom: 0.5rem;
     }
 
     body.dark-mode h1 {
       color: gold;
-      font-size: 2em;
-      margin-bottom: 5px;
       text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.344);
     }
 
     h2 {
       font-weight: normal;
       color: rgb(214, 182, 0);
-      margin-bottom: 20px;
+      font-size: clamp(1rem, 3vw, 1.2rem);
+      margin-bottom: 1rem; /* Reduzido para economizar espaço */
     }
 
     body.dark-mode h2 {
@@ -76,11 +74,13 @@
     nav ul {
       list-style: none;
       padding: 0;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
     }
 
     nav ul li {
-      display: inline-block;
-      margin: 0 15px;
+      margin: 0 1rem;
     }
 
     nav ul li a {
@@ -88,6 +88,7 @@
       color: inherit;
       font-weight: bold;
       transition: color 0.3s;
+      font-size: clamp(0.9rem, 2.5vw, 1rem);
     }
 
     nav ul li a:hover {
@@ -96,16 +97,17 @@
 
     /* Botão de alternância */
     .theme-toggle {
-      position: absolute;
-      top: 20px;
-      right: 20px;
-      padding: 8px 14px;
+      position: fixed;
+      top: 1rem;
+      right: 1rem;
+      padding: 0.5rem 1rem;
       background-color: #2d2d2d;
       color: #fff;
       border: none;
       border-radius: 8px;
       cursor: pointer;
       transition: background-color 0.3s;
+      z-index: 1000;
     }
 
     .theme-toggle:hover {
@@ -113,37 +115,73 @@
     }
 
     /* Footer */
-        footer {
-    margin-top: auto ;
-    width: 100%;
-    text-align: center;
-    font-size: 0.9em;
-    padding: 15px;
-    color: #000000;
-    transition: color 0.3s;
-    background-image: linear-gradient(to bottom, gold, white);
+    footer {
+      margin-top: auto;
+      width: 100%;
+      text-align: center;
+      font-size: clamp(0.8rem, 2vw, 0.9rem);
+      padding: 0.8rem; /* Reduzido para economizar espaço */
+      color: #000000;
+      transition: color 0.3s;
+      background-image: linear-gradient(to bottom, gold, white);
     }
-
 
     body.dark-mode footer {
       color: #ffffff;
       background-image: linear-gradient(to bottom, gold, rgb(0, 0, 0));
+    }
+
+    /* Media Queries para telas menores */
+    @media (max-width: 768px) {
+      main {
+        padding: 0.5rem; /* Ainda mais reduzido */
+      }
+
+      img {
+        width: min(300px, 80vw);
+      }
+
+      nav ul {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      nav ul li {
+        margin: 0.5rem 0;
+      }
+
+      .theme-toggle {
+        padding: 0.4rem 0.8rem;
+        font-size: 0.9rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      h1 {
+        font-size: clamp(1.2rem, 4vw, 1.5rem);
+      }
+
+      h2 {
+        font-size: clamp(0.9rem, 3vw, 1rem);
+      }
+
+      nav ul li a {
+        font-size: clamp(0.8rem, 2vw, 0.9rem);
+      }
+
+      footer {
+        padding: 0.5rem; /* Ainda mais reduzido */
+      }
     }
   </style>
 </head>
 <body>
   <button class="theme-toggle" id="theme-toggle">🌞 Modo Escuro</button>
 
-  <div>
+  <main>
     <img id="logo" src="assets/logo claro.png" alt="Logo Soteris APH">
-  </div>
-
-  <div>
     <h1>Soteris APH</h1>
     <h2>Seja Bem-vindo!</h2>
-  </div>
-
-  <div>
     <nav>
       <ul>
         <li><a href="#">Agenda</a></li>
@@ -151,7 +189,7 @@
         <li><a href="#">Contato</a></li>
       </ul>
     </nav>
-  </div>
+  </main>
 
   <footer>
     Soteris APH &reg;
@@ -162,11 +200,9 @@
     const body = document.body;
     const logo = document.getElementById('logo');
 
-    // Caminhos das logos
-    const logoClara = "assets/logo claro.png";  // logo para o tema claro
-    const logoEscura = "assets/favicon.png";    // logo para o tema escuro
+    const logoClara = "assets/logo claro.png";
+    const logoEscura = "assets/favicon.png";
 
-    // Verifica tema salvo
     if (localStorage.getItem('theme') === 'dark') {
       body.classList.add('dark-mode');
       toggleButton.textContent = '🌙 Modo Claro';
@@ -176,7 +212,6 @@
     toggleButton.addEventListener('click', () => {
       body.classList.toggle('dark-mode');
       const darkMode = body.classList.contains('dark-mode');
-
       toggleButton.textContent = darkMode ? '🌙 Modo Claro' : '🌞 Modo Escuro';
       logo.src = darkMode ? logoEscura : logoClara;
       localStorage.setItem('theme', darkMode ? 'dark' : 'light');
