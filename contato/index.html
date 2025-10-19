@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="shortcut icon" href="assets/favicon.png" type="image/x-icon">
-  <title>Soteris APH</title>
+  <link rel="shortcut icon" href="../assets/favicon.png" type="image/x-icon">
+  <title>Contato - Soteris APH</title>
   <style>
     * {
       margin: 0;
@@ -35,17 +35,18 @@
     main {
       flex-grow: 1;
       width: 100%;
-      padding: 1rem; /* Reduzido para minimizar altura extra */
+      padding: 1rem;
       display: flex;
       flex-direction: column;
       align-items: center;
-      min-height: 0; /* Evita que o main cause overflow */
+      min-height: 0;
     }
 
-    img {
+    img.logo {
       max-width: 100%;
       width: min(500px, 90vw);
-      margin-bottom: 1rem; /* Reduzido para economizar espaço */
+      height: auto;
+      margin-bottom: 1rem;
       transition: 0.3s;
     }
 
@@ -60,39 +61,41 @@
       text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.344);
     }
 
-    h2 {
-      font-weight: normal;
-      color: rgb(214, 182, 0);
-      font-size: clamp(1rem, 3vw, 1.2rem);
-      margin-bottom: 1rem; /* Reduzido para economizar espaço */
-    }
-
-    body.dark-mode h2 {
-      color: rgb(214, 182, 0);
-    }
-
-    nav ul {
-      list-style: none;
-      padding: 0;
+    .contact-info {
       display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1rem;
     }
 
-    nav ul li {
-      margin: 0 1rem;
+    .contact-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: clamp(0.9rem, 2.5vw, 1rem);
     }
 
-    nav ul li a {
+    .contact-item a {
       text-decoration: none;
       color: inherit;
       font-weight: bold;
       transition: color 0.3s;
-      font-size: clamp(0.9rem, 2.5vw, 1rem);
     }
 
-    nav ul li a:hover {
+    .contact-item a:hover {
       color: #e6c939;
+    }
+
+    .contact-item img {
+      width: 24px;
+      height: 24px;
+      margin: 0;
+    }
+
+    /* Ajuste para ícones no modo escuro */
+    body.dark-mode .contact-item img {
+      filter: brightness(2); /* Clareia os ícones no modo escuro */
     }
 
     /* Botão de alternância */
@@ -120,7 +123,7 @@
       width: 100%;
       text-align: center;
       font-size: clamp(0.8rem, 2vw, 0.9rem);
-      padding: 0.8rem; /* Reduzido para economizar espaço */
+      padding: 0.8rem;
       color: #000000;
       transition: color 0.3s;
       background-image: linear-gradient(to bottom, gold, white);
@@ -134,20 +137,20 @@
     /* Media Queries para telas menores */
     @media (max-width: 768px) {
       main {
-        padding: 0.5rem; /* Ainda mais reduzido */
+        padding: 0.5rem;
       }
 
-      img {
+      img.logo {
         width: min(300px, 80vw);
       }
 
-      nav ul {
-        flex-direction: column;
-        align-items: center;
+      .contact-item {
+        font-size: clamp(0.8rem, 2vw, 0.9rem);
       }
 
-      nav ul li {
-        margin: 0.5rem 0;
+      .contact-item img {
+        width: 20px;
+        height: 20px;
       }
 
       .theme-toggle {
@@ -161,16 +164,12 @@
         font-size: clamp(1.2rem, 4vw, 1.5rem);
       }
 
-      h2 {
-        font-size: clamp(0.9rem, 3vw, 1rem);
-      }
-
-      nav ul li a {
-        font-size: clamp(0.8rem, 2vw, 0.9rem);
+      .contact-item {
+        font-size: clamp(0.7rem, 2vw, 0.8rem);
       }
 
       footer {
-        padding: 0.5rem; /* Ainda mais reduzido */
+        padding: 0.5rem;
       }
     }
   </style>
@@ -179,16 +178,22 @@
   <button class="theme-toggle" id="theme-toggle">🌞 Modo Escuro</button>
 
   <main>
-    <img id="logo" src="assets/logo claro.png" alt="Logo Soteris APH">
-    <h1>Soteris APH</h1>
-    <h2>Seja Bem-vindo!</h2>
-    <nav>
-      <ul>
-        <li><a href="#">Agenda</a></li>
-        <li><a href="#">Curso</a></li>
-        <li><a href="contato/index.html">Contato</a></li>
-      </ul>
-    </nav>
+    <img class="logo" id="logo" src="../assets/logo claro.png" alt="Logo Soteris APH">
+    <h1>Contato</h1>
+    <div class="contact-info">
+      <div class="contact-item">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp Icon">
+        <a href="https://wa.me/5535999849074" target="_blank">+55 35 99984-9074</a>
+      </div>
+      <div class="contact-item">
+        <img src="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/svgs/solid/envelope.svg" alt="Email Icon">
+        <a href="mailto:soterisaph@gmail.com">soterisaph@gmail.com</a>
+      </div>
+      <div class="contact-item">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" alt="Instagram Icon">
+        <a href="https://www.instagram.com/soteris.aph/" target="_blank">@soteris.aph</a>
+      </div>
+    </div>
   </main>
 
   <footer>
@@ -200,8 +205,8 @@
     const body = document.body;
     const logo = document.getElementById('logo');
 
-    const logoClara = "assets/logo claro.png";
-    const logoEscura = "assets/favicon.png";
+    const logoClara = "../assets/logo claro.png";
+    const logoEscura = "../assets/favicon.png";
 
     if (localStorage.getItem('theme') === 'dark') {
       body.classList.add('dark-mode');
