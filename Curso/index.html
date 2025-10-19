@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="../assets/favicon.png" type="image/x-icon">
+    <title>Conteúdo - Soteris APH</title>
+    <style>
+        /* Estilos base (herdados e adaptados da página anterior) */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            width: 100%;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            font-family: Arial, sans-serif;
+            transition: background-color 0.3s, color 0.3s;
+            background-color: #ffffff;
+            color: #222;
+        }
+
+        /* Tema escuro */
+        body.dark-mode {
+            background: linear-gradient(to top, #000000, #202020);
+            color: #f5f5f5;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+
+        /* Header */
+        header {
+            width: 100%;
+            background-color: #000000;
+            color: #ffffff;
+            padding: 0.8rem 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .header-logo-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .header-logo-group img {
+            height: 30px; /* Ajuste o tamanho da logo no header */
+            width: 30px;
+        }
+
+        .header-logo-group span {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: gold; /* Cor em destaque para o nome Soteris */
+        }
+        
+        /* NOVO: Contêiner para os botões do lado direito */
+        .header-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px; /* Espaço entre o toggle e o botão de voltar */
+        }
+
+
+        /* Botão de voltar */
+        .back-button {
+            padding: 0.5rem 1rem;
+            background-color: gold;
+            color: #000000;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            text-decoration: none; /* Para ser usado como link (a) ou botão (button) */
+            font-weight: bold;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .back-button:hover {
+            background-color: #e6c939;
+        }
+
+        /* Botão de alternância (AGORA DENTRO DO HEADER) */
+        .theme-toggle {
+            /* REMOVIDO: position: fixed, top, right, z-index alto */
+            padding: 0.5rem 1rem;
+            background-color: #2d2d2d;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .theme-toggle:hover {
+            background-color: #545454;
+        }
+
+        /* Main e Grid de Cards */
+        main {
+            flex-grow: 1;
+            width: 100%;
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 1rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        /* Card de Conteúdo */
+        .content-card {
+            background-color: #f9f9f9;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s, background-color 0.3s;
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-bottom: 15px;
+        }
+
+        body.dark-mode .content-card {
+            background-color: #333;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .content-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        body.dark-mode .content-card:hover {
+            box-shadow: 0 8px 15px rgba(255, 255, 255, 0.1);
+        }
+
+        .card-image-container {
+            width: 100%;
+            aspect-ratio: 1 / 1; /* Imagem 1:1 */
+            overflow: hidden;
+        }
+
+        .card-image-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s;
+        }
+
+        .content-card:hover .card-image-container img {
+            transform: scale(1.05);
+        }
+
+        .card-body {
+            padding: 1rem;
+            text-align: center;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            width: 100%;
+        }
+
+        .card-description {
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            color: #666;
+            transition: color 0.3s;
+        }
+
+        body.dark-mode .card-description {
+            color: #ccc;
+        }
+
+        .card-title {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: gold; /* Nome em destaque */
+            margin-top: auto; /* Garante que fique na parte inferior */
+            padding-top: 10px; /* Espaçamento da descrição */
+            border-top: 1px solid #eee;
+        }
+
+        body.dark-mode .card-title {
+            border-top: 1px solid #444;
+        }
+
+        /* Footer */
+        footer {
+            margin-top: auto;
+            width: 100%;
+            text-align: center;
+            font-size: clamp(0.8rem, 2vw, 0.9rem);
+            padding: 0.8rem;
+            color: #000000;
+            transition: color 0.3s;
+            background-image: linear-gradient(to bottom, gold, white);
+        }
+
+        body.dark-mode footer {
+            color: #ffffff;
+            background-image: linear-gradient(to bottom, gold, rgb(0, 0, 0));
+        }
+
+        /* Media Queries para ajuste do layout */
+        @media (max-width: 768px) {
+            header {
+                padding: 0.6rem 1rem;
+            }
+
+            .header-logo-group span {
+                font-size: 1.2rem;
+            }
+
+            .header-controls {
+                gap: 5px; /* Reduz o espaço entre os botões em telas menores */
+            }
+
+            .back-button, .theme-toggle {
+                padding: 0.4rem 0.8rem;
+                font-size: 0.8rem;
+            }
+
+            main {
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+                gap: 1.5rem;
+                padding: 0.5rem;
+            }
+
+            .card-title {
+                font-size: 1.1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    
+    <header>
+        <div class="header-logo-group">
+            <img src="../assets/favicon.png" alt="Logo Soteris APH">
+            <span>Soteris</span>
+        </div>
+        
+        <div class="header-controls">
+            <button class="theme-toggle" id="theme-toggle">🌞 Modo Escuro</button>
+            
+            <a href="index.html" class="back-button">Página Inicial</a>
+        </div>
+    </header>
+
+    <main>
+        <a href="clinicos.html" class="content-card">
+            <div class="card-image-container">
+                <img src="../assets/placeholder_clinicos.jpg" alt="Imagem relacionada a Casos Clínicos">
+            </div>
+            <div class="card-body">
+                <p class="card-description">Aborda doenças, emergências médicas e o manejo clínico no APH.</p>
+                <h2 class="card-title">Clínicos</h2>
+            </div>
+        </a>
+
+        <a href="trauma.html" class="content-card">
+            <div class="card-image-container">
+                <img src="../assets/placeholder_trauma.jpg" alt="Imagem relacionada a Trauma">
+            </div>
+            <div class="card-body">
+                <p class="card-description">Focado em lesões, cinemática do trauma e protocolos de atendimento.</p>
+                <h2 class="card-title">Trauma</h2>
+            </div>
+        </a>
+
+        <a href="termos.html" class="content-card">
+            <div class="card-image-container">
+                <img src="../assets/placeholder_termos.jpg" alt="Imagem relacionada a Termos Técnicos">
+            </div>
+            <div class="card-body">
+                <p class="card-description">Um glossário de terminologias e siglas essenciais para o APH.</p>
+                <h2 class="card-title">Termos Técnicos</h2>
+            </div>
+        </a>
+
+        <a href="exercicios.html" class="content-card">
+            <div class="card-image-container">
+                <img src="../assets/placeholder_exercicios.jpg" alt="Imagem relacionada a Exercícios">
+            </div>
+            <div class="card-body">
+                <p class="card-description">Questões práticas e simulados para fixação do conhecimento.</p>
+                <h2 class="card-title">Exercícios</h2>
+            </div>
+        </a>
+
+        <a href="prova.html" class="content-card">
+            <div class="card-image-container">
+                <img src="../assets/placeholder_prova.jpg" alt="Imagem relacionada a Prova">
+            </div>
+            <div class="card-body">
+                <p class="card-description">Simulados completos de prova para testar seus conhecimentos finais.</p>
+                <h2 class="card-title">Prova</h2>
+            </div>
+        </a>
+    </main>
+
+    <footer>
+        Soteris APH &reg;
+    </footer>
+
+    <script>
+        const toggleButton = document.getElementById('theme-toggle');
+        const body = document.body;
+        
+        // Define as classes para o modo claro e escuro (apenas no cabeçalho e logo, se necessário)
+        const applyTheme = (theme) => {
+            const isDark = theme === 'dark';
+            body.classList.toggle('dark-mode', isDark);
+            toggleButton.textContent = isDark ? '🌙 Modo Claro' : '🌞 Modo Escuro';
+            localStorage.setItem('theme', theme);
+        };
+
+        // Verifica o tema armazenado ao carregar a página
+        const storedTheme = localStorage.getItem('theme') || 'light';
+        applyTheme(storedTheme);
+
+        // Adiciona o evento de clique ao botão
+        toggleButton.addEventListener('click', () => {
+            const currentTheme = body.classList.contains('dark-mode') ? 'dark' : 'light';
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            applyTheme(newTheme);
+        });
+    </script>
+</body>
+</html>
