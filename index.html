@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="shortcut icon" href="assets/favicon.png" type="image/x-icon">
+  <title>Soteris APH</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      width: 100%;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      font-family: Arial, sans-serif;
+      transition: background-color 0.3s, color 0.3s;
+      background-color: #ffffff;
+      color: #222;
+      min-height: 100vh;
+    }
+
+    /* Tema escuro */
+    body.dark-mode {
+      background: linear-gradient(to top, #000000, #202020);
+      color: #f5f5f5;
+      background-attachment: fixed;
+      background-repeat: no-repeat;
+      background-size: cover;
+    }
+
+    main {
+        flex-grow: 1; /* Faz o conteúdo principal ocupar todo o espaço vertical restante */
+        width: 100%; /* Para garantir que o conteúdo use a largura total */
+        padding: 20px; /* Adicione o espaçamento do body aqui, se quiser manter */
+        display: flex; /* Mantenha as propriedades de layout que o body tinha para o conteúdo interno */
+        flex-direction: column;
+        align-items: center;
+    }
+
+    img {
+      width: 500px;
+      margin-bottom: 20px;
+      transition: 0.3s;
+    }
+
+    h1 {
+      color: gold;
+      font-size: 2em;
+      margin-bottom: 5px;
+    }
+
+    body.dark-mode h1 {
+      color: gold;
+      font-size: 2em;
+      margin-bottom: 5px;
+      text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.344);
+    }
+
+    h2 {
+      font-weight: normal;
+      color: rgb(214, 182, 0);
+      margin-bottom: 20px;
+    }
+
+    body.dark-mode h2 {
+      color: rgb(214, 182, 0);
+    }
+
+    nav ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    nav ul li {
+      display: inline-block;
+      margin: 0 15px;
+    }
+
+    nav ul li a {
+      text-decoration: none;
+      color: inherit;
+      font-weight: bold;
+      transition: color 0.3s;
+    }
+
+    nav ul li a:hover {
+      color: #e6c939;
+    }
+
+    /* Botão de alternância */
+    .theme-toggle {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      padding: 8px 14px;
+      background-color: #2d2d2d;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .theme-toggle:hover {
+      background-color: #545454;
+    }
+
+    /* Footer */
+        footer {
+    margin-top: auto ;
+    width: 100%;
+    text-align: center;
+    font-size: 0.9em;
+    padding: 15px;
+    color: #000000;
+    transition: color 0.3s;
+    background-image: linear-gradient(to bottom, gold, white);
+    }
+
+
+    body.dark-mode footer {
+      color: #ffffff;
+      background-image: linear-gradient(to bottom, gold, rgb(0, 0, 0));
+    }
+  </style>
+</head>
+<body>
+  <button class="theme-toggle" id="theme-toggle">🌞 Modo Escuro</button>
+
+  <div>
+    <img id="logo" src="assets/logo claro.png" alt="Logo Soteris APH">
+  </div>
+
+  <div>
+    <h1>Soteris APH</h1>
+    <h2>Seja Bem-vindo!</h2>
+  </div>
+
+  <div>
+    <nav>
+      <ul>
+        <li><a href="#">Agenda</a></li>
+        <li><a href="#">Curso</a></li>
+        <li><a href="#">Contato</a></li>
+      </ul>
+    </nav>
+  </div>
+
+  <footer>
+    Soteris APH &reg;
+  </footer>
+
+  <script>
+    const toggleButton = document.getElementById('theme-toggle');
+    const body = document.body;
+    const logo = document.getElementById('logo');
+
+    // Caminhos das logos
+    const logoClara = "assets/logo claro.png";  // logo para o tema claro
+    const logoEscura = "assets/favicon.png";    // logo para o tema escuro
+
+    // Verifica tema salvo
+    if (localStorage.getItem('theme') === 'dark') {
+      body.classList.add('dark-mode');
+      toggleButton.textContent = '🌙 Modo Claro';
+      logo.src = logoEscura;
+    }
+
+    toggleButton.addEventListener('click', () => {
+      body.classList.toggle('dark-mode');
+      const darkMode = body.classList.contains('dark-mode');
+
+      toggleButton.textContent = darkMode ? '🌙 Modo Claro' : '🌞 Modo Escuro';
+      logo.src = darkMode ? logoEscura : logoClara;
+      localStorage.setItem('theme', darkMode ? 'dark' : 'light');
+    });
+  </script>
+</body>
+</html>
