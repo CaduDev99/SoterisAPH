@@ -33,11 +33,12 @@
             background-size: cover;
         }
 
-        /* Header */
+        /* Header - CONFIGURAÇÃO PARA MODO CLARO (PADRÃO) */
         header {
             width: 100%;
-            background-color: #000000;
-            color: #ffffff;
+            /* Fundo GOLD no modo claro, conforme solicitado */
+            background-image: linear-gradient(to top, gold, rgb(251, 228, 134));
+            color: #000000; /* Texto preto no modo claro */
             padding: 0.8rem 1.5rem;
             display: flex;
             justify-content: space-between;
@@ -46,8 +47,19 @@
             position: sticky;
             top: 0;
             z-index: 10;
+            transition: background-color 0.3s, color 0.3s, box-shadow 0.3s;
         }
 
+        /* Tema escuro: Header (Sobrescreve o anterior) */
+        body.dark-mode header {
+            /* Fundo PRETO no modo escuro, conforme solicitado */
+            background-image: none;
+            background-color: #000000; 
+            color: #ffffff; /* Texto branco no modo escuro */
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
+        }
+        
+        /* Grupo logo + nome Soteris */
         .header-logo-group {
             display: flex;
             align-items: center;
@@ -55,69 +67,135 @@
         }
 
         .header-logo-group img {
-            height: 30px; /* Ajuste o tamanho da logo no header */
-            width: 30px;
+            height: 80px; 
+            width: 80px;
         }
 
+        /* Nome Soteris */
         .header-logo-group span {
-            font-size: 1.5rem;
+            font-size: 2rem;
             font-weight: bold;
-            color: gold; /* Cor em destaque para o nome Soteris */
+            /* Cor preta no modo claro (fundo header gold) */
+            color: #000000; 
+            transition: color 0.3s;
+        }
+
+        /* Nome Soteris no modo escuro */
+        body.dark-mode .header-logo-group span {
+            color: gold; 
+        }
+
+        /* Título h1 */
+        header h1 {
+            font-size: 1.8rem;
+            font-weight: bold;
+            /* Cor preta no modo claro, conforme solicitado */
+            color: #000000; 
+            margin-right: auto; /* Empurra para o centro/esquerda */
+            margin-left: 20px;
+            transition: color 0.3s;
+        }
+
+        /* Título h1 no modo escuro */
+        body.dark-mode header h1 {
+            color: #ffffff;
         }
         
-        /* NOVO: Contêiner para os botões do lado direito */
+        /* Contêiner para os botões do lado direito */
         .header-controls {
             display: flex;
             align-items: center;
-            gap: 10px; /* Espaço entre o toggle e o botão de voltar */
+            gap: 10px; 
         }
-
 
         /* Botão de voltar */
         .back-button {
             padding: 0.5rem 1rem;
-            background-color: gold;
-            color: #000000;
+            background-color: #000000; /* Botão preto no fundo gold */
+            color: gold;
             border: none;
             border-radius: 6px;
             cursor: pointer;
-            text-decoration: none; /* Para ser usado como link (a) ou botão (button) */
+            text-decoration: none;
             font-weight: bold;
             transition: background-color 0.3s, color 0.3s;
         }
 
-        .back-button:hover {
-            background-color: #e6c939;
+        body.dark-mode .back-button {
+            background-color: gold;
+            color: #000000;
         }
 
-        /* Botão de alternância (AGORA DENTRO DO HEADER) */
+        .back-button:hover {
+            background-color: #333;
+            color: white;
+        }
+
+        body.dark-mode .back-button:hover {
+            background-color: #e6c939;
+            color: #000000;
+        }
+
+        /* Botão de alternância */
         .theme-toggle {
-            /* REMOVIDO: position: fixed, top, right, z-index alto */
             padding: 0.5rem 1rem;
-            background-color: #2d2d2d;
+            background-color: #000000; /* Botão preto no fundo gold */
             color: #fff;
             border: none;
             border-radius: 8px;
             cursor: pointer;
             transition: background-color 0.3s;
         }
+        
+        /* Ajuste a cor do toggle no modo escuro para contraste */
+        body.dark-mode .theme-toggle {
+            background-color: #4a4a4a;
+        }
 
         .theme-toggle:hover {
             background-color: #545454;
         }
 
-        /* Main e Grid de Cards */
+        /* NOVO ESTILO: Separador */
+        .gold-separator {
+            width: 100%;
+            height: 2px;
+            /* Cor preta no modo claro */
+            background-color: black; 
+            border: none;
+            margin: 0;
+            padding: 0;
+            transition: background-color 0.3s;
+        }
+
+        /* Separador no modo escuro */
+        body.dark-mode .gold-separator {
+            background-color: gold;
+        }
+
+        /* Main e Cards */
         main {
             flex-grow: 1;
             width: 100%;
-            max-width: 1200px;
-            margin: 2rem auto;
-            padding: 1rem;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 2rem;
+            margin: 2rem 0; 
+            padding: 1rem 0; 
+            display: flex; 
+            justify-content: center; 
+            align-items: flex-start; 
+            overflow-x: auto; 
+            overflow-y: hidden; 
+            -webkit-overflow-scrolling: touch; 
+            scroll-snap-type: x mandatory; 
         }
 
+        /* Contêiner para os Cards (o que rola) */
+        .cards-container {
+            display: flex;
+            flex-wrap: nowrap; 
+            gap: 2rem;
+            padding: 0 1rem; 
+        }
+        
         /* Card de Conteúdo */
         .content-card {
             background-color: #f9f9f9;
@@ -132,6 +210,9 @@
             flex-direction: column;
             align-items: center;
             padding-bottom: 15px;
+            flex-shrink: 0; 
+            width: 250px; 
+            scroll-snap-align: start; 
         }
 
         body.dark-mode .content-card {
@@ -150,7 +231,7 @@
 
         .card-image-container {
             width: 100%;
-            aspect-ratio: 1 / 1; /* Imagem 1:1 */
+            aspect-ratio: 1 / 1; 
             overflow: hidden;
         }
 
@@ -189,9 +270,9 @@
         .card-title {
             font-size: 1.3rem;
             font-weight: bold;
-            color: gold; /* Nome em destaque */
-            margin-top: auto; /* Garante que fique na parte inferior */
-            padding-top: 10px; /* Espaçamento da descrição */
+            color: gold; 
+            margin-top: auto; 
+            padding-top: 10px; 
             border-top: 1px solid #eee;
         }
 
@@ -226,23 +307,18 @@
                 font-size: 1.2rem;
             }
 
+            header h1 {
+                font-size: 1.4rem;
+                margin-left: 10px;
+            }
+
             .header-controls {
-                gap: 5px; /* Reduz o espaço entre os botões em telas menores */
+                gap: 5px; 
             }
 
             .back-button, .theme-toggle {
                 padding: 0.4rem 0.8rem;
                 font-size: 0.8rem;
-            }
-
-            main {
-                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-                gap: 1.5rem;
-                padding: 0.5rem;
-            }
-
-            .card-title {
-                font-size: 1.1rem;
             }
         }
     </style>
@@ -251,7 +327,7 @@
     
     <header>
         <div class="header-logo-group">
-            <img src="../assets/favicon.png" alt="Logo Soteris APH">
+            <img src="assets/sem fundo.png" alt="Logo Soteris APH" id="header-logo">
             <span>Soteris</span>
         </div>
         
@@ -262,56 +338,60 @@
         </div>
     </header>
 
+    <hr class="gold-separator">
+
     <main>
-        <a href="clinicos.html" class="content-card">
-            <div class="card-image-container">
-                <img src="../assets/placeholder_clinicos.jpg" alt="Imagem relacionada a Casos Clínicos">
-            </div>
-            <div class="card-body">
-                <p class="card-description">Aborda doenças, emergências médicas e o manejo clínico no APH.</p>
-                <h2 class="card-title">Clínicos</h2>
-            </div>
-        </a>
+        <div class="cards-container">
+            <a href="clinicos.html" class="content-card">
+                <div class="card-image-container">
+                    <img src="assets/clinico.png" alt="Imagem relacionada a Casos Clínicos">
+                </div>
+                <div class="card-body">
+                    <p class="card-description">Aborda doenças, emergências médicas e o manejo clínico no APH.</p>
+                    <h2 class="card-title">Clínicos</h2>
+                </div>
+            </a>
 
-        <a href="trauma.html" class="content-card">
-            <div class="card-image-container">
-                <img src="../assets/placeholder_trauma.jpg" alt="Imagem relacionada a Trauma">
-            </div>
-            <div class="card-body">
-                <p class="card-description">Focado em lesões, cinemática do trauma e protocolos de atendimento.</p>
-                <h2 class="card-title">Trauma</h2>
-            </div>
-        </a>
+            <a href="trauma.html" class="content-card">
+                <div class="card-image-container">
+                    <img src="assets/trauma.png" alt="Imagem relacionada a Trauma">
+                </div>
+                <div class="card-body">
+                    <p class="card-description">Focado em lesões, cinemática do trauma e protocolos de atendimento.</p>
+                    <h2 class="card-title">Trauma</h2>
+                </div>
+            </a>
 
-        <a href="termos.html" class="content-card">
-            <div class="card-image-container">
-                <img src="../assets/placeholder_termos.jpg" alt="Imagem relacionada a Termos Técnicos">
-            </div>
-            <div class="card-body">
-                <p class="card-description">Um glossário de terminologias e siglas essenciais para o APH.</p>
-                <h2 class="card-title">Termos Técnicos</h2>
-            </div>
-        </a>
+            <a href="termos.html" class="content-card">
+                <div class="card-image-container">
+                    <img src="assets/termos.png" alt="Imagem relacionada a Termos Técnicos">
+                </div>
+                <div class="card-body">
+                    <p class="card-description">Um glossário de terminologias e siglas essenciais para o APH.</p>
+                    <h2 class="card-title">Termos Técnicos</h2>
+                </div>
+            </a>
 
-        <a href="exercicios.html" class="content-card">
-            <div class="card-image-container">
-                <img src="../assets/placeholder_exercicios.jpg" alt="Imagem relacionada a Exercícios">
-            </div>
-            <div class="card-body">
-                <p class="card-description">Questões práticas e simulados para fixação do conhecimento.</p>
-                <h2 class="card-title">Exercícios</h2>
-            </div>
-        </a>
+            <a href="exercicios.html" class="content-card">
+                <div class="card-image-container">
+                    <img src="assets/exercicios.png" alt="Imagem relacionada a Exercícios">
+                </div>
+                <div class="card-body">
+                    <p class="card-description">Questões práticas e simulados para fixação do conhecimento.</p>
+                    <h2 class="card-title">Exercícios</h2>
+                </div>
+            </a>
 
-        <a href="prova.html" class="content-card">
-            <div class="card-image-container">
-                <img src="../assets/placeholder_prova.jpg" alt="Imagem relacionada a Prova">
-            </div>
-            <div class="card-body">
-                <p class="card-description">Simulados completos de prova para testar seus conhecimentos finais.</p>
-                <h2 class="card-title">Prova</h2>
-            </div>
-        </a>
+            <a href="prova.html" class="content-card">
+                <div class="card-image-container">
+                    <img src="assets/provas.png" alt="Imagem relacionada a Prova">
+                </div>
+                <div class="card-body">
+                    <p class="card-description">Aqui veremos se aprendeu mesmo sobre o conteudo do curso, Boa Sorte!.</p>
+                    <h2 class="card-title">Prova</h2>
+                </div>
+            </a>
+        </div>
     </main>
 
     <footer>
@@ -321,20 +401,32 @@
     <script>
         const toggleButton = document.getElementById('theme-toggle');
         const body = document.body;
-        
-        // Define as classes para o modo claro e escuro (apenas no cabeçalho e logo, se necessário)
+        const headerLogo = document.getElementById('header-logo');
+        const headerTitle = document.querySelector('header h1');
+        const goldSeparator = document.querySelector('.gold-separator');
+
+        // Defina os caminhos das logos
+        // ATENÇÃO: Verifique se esses caminhos estão corretos em sua estrutura de pastas.
+        const LOGO_LIGHT = 'assets/sem fundo.png'; 
+        const LOGO_DARK = 'assets/favicon.png'; 
+
         const applyTheme = (theme) => {
             const isDark = theme === 'dark';
             body.classList.toggle('dark-mode', isDark);
             toggleButton.textContent = isDark ? '🌙 Modo Claro' : '🌞 Modo Escuro';
+            
+            // Lógica para alternar a logo
+            if (headerLogo) {
+                headerLogo.src = isDark ? LOGO_DARK : LOGO_LIGHT;
+                headerLogo.alt = isDark ? 'Logo Soteris APH (Modo Escuro)' : 'Logo Soteris APH';
+            }
+
             localStorage.setItem('theme', theme);
         };
 
-        // Verifica o tema armazenado ao carregar a página
         const storedTheme = localStorage.getItem('theme') || 'light';
         applyTheme(storedTheme);
 
-        // Adiciona o evento de clique ao botão
         toggleButton.addEventListener('click', () => {
             const currentTheme = body.classList.contains('dark-mode') ? 'dark' : 'light';
             const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
