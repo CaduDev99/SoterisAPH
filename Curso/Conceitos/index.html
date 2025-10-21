@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="shortcut icon" href="../assets/favicon.png" type="image/x-icon">
+  <title>Soteris APH - Conceitos Essenciais</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #ffffff;
+      color: #222;
+      transition: background-color 0.3s, color 0.3s;
+      line-height: 1.6;
+    }
+
+    body.dark-mode {
+      background: linear-gradient(to top, #000000, #202020);
+      color: #f5f5f5;
+    }
+
+    header {
+      width: 100%;
+      background-image: linear-gradient(to top, gold, rgb(251, 228, 134));
+      color: #000;
+      padding: 0.8rem 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    body.dark-mode header {
+      background-color: #000;
+      background-image: none;
+      color: #fff;
+    }
+
+    .header-logo-group {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .header-logo-group img {
+      height: 70px;
+      width: 70px;
+    }
+
+    .header-logo-group span {
+      font-size: 1.8rem;
+      font-weight: bold;
+      color: #000;
+      transition: color 0.3s;
+    }
+
+    body.dark-mode .header-logo-group span {
+      color: gold;
+    }
+
+    .header-controls {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .back-button, .theme-toggle {
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    .back-button {
+      background-color: #000;
+      color: gold;
+      text-decoration: none;
+    }
+
+    body.dark-mode .back-button {
+      background-color: gold;
+      color: #000;
+    }
+
+    .theme-toggle {
+      background-color: #000;
+      color: #fff;
+    }
+
+    body.dark-mode .theme-toggle {
+      background-color: #4a4a4a;
+    }
+
+    hr.gold-separator {
+      border: none;
+      height: 2px;
+      background-color: #000;
+      margin: 0;
+      transition: background-color 0.3s;
+    }
+
+    body.dark-mode hr.gold-separator {
+      background-color: gold;
+    }
+
+    main {
+      max-width: 900px;
+      margin: 2rem auto;
+      padding: 1.5rem;
+    }
+
+    h1, h2 {
+      /* Cor mais escura no modo claro para melhor contraste */
+      color: #ccae00; 
+      margin-bottom: 1rem;
+      border-bottom: 2px solid #ccc;
+      padding-bottom: 0.5rem;
+      transition: border-bottom-color 0.3s, color 0.3s;
+    }
+
+    body.dark-mode h1, body.dark-mode h2 {
+        color: gold; /* Volta a ser gold no modo escuro */
+        border-bottom-color: gold;
+    }
+    
+    h3 {
+        /* Cor dourada escura no modo claro */
+        color: #b8860b; 
+        margin: 1rem 0 0.5rem 0;
+        font-size: 1.3rem;
+        transition: color 0.3s;
+    }
+    
+    body.dark-mode h3 {
+        color: gold; /* Volta a ser gold no modo escuro */
+    }
+
+    p {
+      margin-bottom: 1rem;
+      text-align: justify;
+    }
+
+    ul {
+      margin: 1rem 0 1.5rem 2rem;
+      list-style-type: disc;
+    }
+    
+    ol {
+      margin: 1rem 0 1.5rem 2rem;
+      list-style-type: decimal;
+    }
+
+    li {
+      margin-bottom: 0.5rem;
+    }
+    
+    strong {
+        font-weight: bold;
+        /* Cor dourada escura no modo claro */
+        color: #b8860b; 
+        transition: color 0.3s;
+    }
+    
+    body.dark-mode strong {
+        color: gold; /* Volta a ser gold no modo escuro */
+    }
+
+    footer {
+      margin-top: 3rem;
+      text-align: center;
+      font-size: 0.9rem;
+      color: #000;
+      background-image: linear-gradient(to bottom, gold, white);
+      padding: 1rem;
+      transition: color 0.3s;
+    }
+
+    body.dark-mode footer {
+      color: #fff;
+      background-image: linear-gradient(to bottom, gold, #000);
+    }
+
+    @media (max-width: 768px) {
+      header {
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .header-logo-group span {
+        font-size: 1.4rem;
+      }
+
+      .back-button, .theme-toggle {
+        font-size: 0.85rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="header-logo-group">
+      <img src="assets/sem fundo.png" alt="Logo Soteris APH" id="header-logo">
+      <span>Soteris</span>
+    </div>
+
+    <div class="header-controls">
+      <button class="theme-toggle" id="theme-toggle">🌞 Modo Escuro</button>
+      <a href="../index.html" class="back-button">Voltar</a>
+    </div>
+  </header>
+
+  <hr class="gold-separator">
+
+  <main>
+    <h1>Conceitos Essenciais do Atendimento Pré-Hospitalar (APH)</h1>
+
+    <section>
+      <h2>O que é o APH?</h2>
+      <p>
+        O <strong>Atendimento Pré-Hospitalar (APH)</strong> é o conjunto de ações realizadas fora do ambiente hospitalar, com o objetivo de preservar a vida, evitar complicações e garantir que o paciente chegue ao hospital nas melhores condições possíveis. 
+      </p>
+      <p>
+        Ele envolve o atendimento inicial prestado a vítimas de acidentes, traumas, mal súbito ou qualquer situação de emergência, realizado por socorristas, bombeiros, técnicos de enfermagem, enfermeiros e médicos, conforme o nível de formação e suporte disponível.
+      </p>
+    </section>
+
+    <section>
+      <h2>Diferença entre APH e Primeiros Socorros</h2>
+      <p>
+        Embora muitas vezes usados como sinônimos, os termos <strong>APH</strong> e <strong>Primeiros Socorros</strong> têm significados distintos:
+      </p>
+      <ul>
+        <li><strong>Primeiros Socorros:</strong> São medidas imediatas prestadas por qualquer pessoa no local da emergência, antes da chegada de um socorro especializado. O objetivo é manter a vida e evitar o agravamento da lesão até a chegada de ajuda profissional.</li>
+        <li><strong>APH:</strong> É o atendimento técnico realizado por profissionais ou equipes treinadas, utilizando equipamentos, protocolos e técnicas padronizadas, podendo incluir suporte básico (BLS) ou avançado de vida (ALS).</li>
+      </ul>
+      <p>
+        Em resumo: os primeiros socorros são o início do cuidado, e o APH dá continuidade a esse atendimento de forma mais estruturada e técnica.
+      </p>
+    </section>
+
+    <section>
+      <h2>Segurança da Cena</h2>
+      <p>
+        Antes de qualquer atendimento, o socorrista deve garantir sua própria <strong>segurança</strong>, a da equipe e a da vítima. Nenhum resgate justifica colocar-se em risco.
+      </p>
+      <ul>
+        <li>Avaliar o local: há risco de fogo, eletricidade, desabamento, trânsito ou violência?</li>
+        <li>Usar equipamentos de proteção individual (EPI): luvas, máscara, óculos, colete refletivo, entre outros.</li>
+        <li>Manter controle da cena: sinalizar o local, afastar curiosos e, se necessário, acionar órgãos de apoio.</li>
+        <li>Somente iniciar o atendimento quando o ambiente for considerado seguro.</li>
+      </ul>
+      <p>
+        A segurança da cena é o primeiro passo do atendimento eficaz — um socorrista ferido se torna mais uma vítima.
+      </p>
+    </section>
+
+    <section>
+      <h2>Números de Emergência e O Acionamento Correto</h2>
+      <p>
+        Acionar o serviço de emergência correto economiza tempo vital. No Brasil, os principais números são padronizados, mas a natureza da ocorrência define quem deve ser chamado primeiro:
+      </p>
+
+      <h3>192 – SAMU (Serviço de Atendimento Móvel de Urgência)</h3>
+      <p>
+        O SAMU deve ser acionado para emergências de natureza <strong>clínica ou traumática sem risco de ambiente</strong>, focando no suporte médico:
+      </p>
+      <ul>
+        <li><strong>Mal Súbito:</strong> Desmaios, convulsões, crises hipertensivas.</li>
+        <li><strong>Problemas Cardiovasculares:</strong> Dor no peito, infarto, parada cardiorrespiratória (PCR).</li>
+        <li><strong>Problemas Neurológicos:</strong> Acidente Vascular Cerebral (AVC), tonturas súbitas.</li>
+        <li><strong>Traumas Sem Encarceramento:</strong> Quedas de altura (menos de 2 metros), ferimentos graves, atropelamentos com vítima não presa.</li>
+        <li><strong>Emergências Pediátricas e Obstétricas:</strong> Complicações na gravidez, trabalho de parto em curso.</li>
+      </ul>
+
+      <h3>193 – Bombeiros (Corpo de Bombeiros Militar)</h3>
+      <p>
+        Os Bombeiros são acionados para situações que envolvem <strong>risco estrutural, ambiental ou necessidade de resgate técnico</strong> (salvamento), além do suporte médico:
+      </p>
+      <ul>
+        <li><strong>Acidentes de Trânsito com Vítimas Presas (Encarceramento):</strong> Necessidade de corte de ferragens para retirada da vítima.</li>
+        <li><strong>Incêndios:</strong> Em residências, veículos, florestas.</li>
+        <li><strong>Resgates em Altura ou em Água:</strong> Afogamentos, pessoas presas em telhados, poços.</li>
+        <li><strong>Vazamento de Gás ou Produtos Perigosos:</strong> Situações que exigem controle do ambiente e descontaminação.</li>
+        <li><strong>Desabamentos ou Soterramentos.</strong></li>
+      </ul>
+
+      <h3>Resgate Rodoviário (Concessionárias de Rodovias)</h3>
+      <p>
+        Em rodovias pedagiadas ou concedidas, o serviço de resgate da concessionária deve ser o **primeiro a ser acionado**. Eles possuem equipes treinadas para a via, ambulâncias (Suporte Básico ou Avançado) e guinchos.
+      </p>
+      <ul>
+        <li>O número de acionamento geralmente está visível nas placas da rodovia (ex: <strong>0800 XXXXXX</strong>).</li>
+        <li>Essas equipes atuam como o APH local e coordenam com o SAMU/Bombeiros se houver necessidade de recursos adicionais.</li>
+      </ul>
+      
+      <p>
+        Ao ligar para qualquer um desses números, mantenha a calma, informe o local exato (ponto de referência, endereço completo), o tipo de ocorrência, o número de vítimas e o estado delas. Cada segundo faz diferença em uma emergência.
+      </p>
+    </section>
+
+    <section>
+      <h2>Conclusão</h2>
+      <p>
+        Conhecer os <strong>conceitos essenciais do APH</strong>, desde a segurança da cena até o correto acionamento dos serviços de emergência, é o primeiro passo para um atendimento eficaz e seguro. A diferença entre um socorro improvisado e uma resposta técnica pode salvar vidas — e começa com a segurança, o conhecimento e a ação responsável.
+      </p>
+    </section>
+  </main>
+
+  <footer>
+    Soteris APH &reg; | Formação e Atendimento Pré-Hospitalar
+  </footer>
+
+  <script>
+    const toggleButton = document.getElementById('theme-toggle');
+    const body = document.body;
+    const headerLogo = document.getElementById('header-logo');
+
+    // Assumindo que a imagem da logo escura tem o caminho correto
+    const LOGO_LIGHT = '../assets/sem fundo.png'; // Caminho ajustado para o contexto atual
+    const LOGO_DARK = '../assets/favicon.png'; 
+
+    function applyTheme(theme) {
+      const isDark = theme === 'dark';
+      body.classList.toggle('dark-mode', isDark);
+      toggleButton.textContent = isDark ? '🌙 Modo Claro' : '🌞 Modo Escuro';
+      // Ajuste para garantir que a imagem exista no caminho relativo. Se não existir, manterá a original.
+      // O caminho 'assets/sem fundo.png' foi corrigido no script para consistência
+      headerLogo.src = isDark ? LOGO_DARK : LOGO_LIGHT; 
+      localStorage.setItem('theme', theme);
+    }
+
+    const storedTheme = localStorage.getItem('theme') || 'light';
+    applyTheme(storedTheme);
+
+    toggleButton.addEventListener('click', () => {
+      const newTheme = body.classList.contains('dark-mode') ? 'light' : 'dark';
+      applyTheme(newTheme);
+    });
+  </script>
+</body>
+</html>

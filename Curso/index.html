@@ -54,7 +54,7 @@
         body.dark-mode header {
             /* Fundo PRETO no modo escuro, conforme solicitado */
             background-image: none;
-            background-color: #000000; 
+            background-color: #000000;  
             color: #ffffff; /* Texto branco no modo escuro */
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
         }
@@ -67,7 +67,7 @@
         }
 
         .header-logo-group img {
-            height: 80px; 
+            height: 80px;  
             width: 80px;
         }
 
@@ -76,13 +76,13 @@
             font-size: 2rem;
             font-weight: bold;
             /* Cor preta no modo claro (fundo header gold) */
-            color: #000000; 
+            color: #000000;  
             transition: color 0.3s;
         }
 
         /* Nome Soteris no modo escuro */
         body.dark-mode .header-logo-group span {
-            color: gold; 
+            color: gold;  
         }
 
         /* Título h1 */
@@ -90,7 +90,7 @@
             font-size: 1.8rem;
             font-weight: bold;
             /* Cor preta no modo claro, conforme solicitado */
-            color: #000000; 
+            color: #000000;  
             margin-right: auto; /* Empurra para o centro/esquerda */
             margin-left: 20px;
             transition: color 0.3s;
@@ -105,7 +105,7 @@
         .header-controls {
             display: flex;
             align-items: center;
-            gap: 10px; 
+            gap: 10px;  
         }
 
         /* Botão de voltar */
@@ -161,7 +161,7 @@
             width: 100%;
             height: 2px;
             /* Cor preta no modo claro */
-            background-color: black; 
+            background-color: black;  
             border: none;
             margin: 0;
             padding: 0;
@@ -173,27 +173,30 @@
             background-color: gold;
         }
 
-        /* Main e Cards */
+        /* --- INÍCIO DOS ESTILOS DE GRID/RESPONSIVOS PARA OS CARDS --- */
+        
+        /* Main - Ajustado para rolagem vertical fluida */
         main {
             flex-grow: 1;
             width: 100%;
-            margin: 2rem 0; 
-            padding: 1rem 0; 
-            display: flex; 
-            justify-content: center; 
-            align-items: flex-start; 
-            overflow-x: auto; 
-            overflow-y: hidden; 
-            -webkit-overflow-scrolling: touch; 
-            scroll-snap-type: x mandatory; 
+            margin: 2rem 0;  
+            padding: 1rem; /* Padding horizontal para margem lateral em mobile */
+            display: flex;  
+            justify-content: center; /* Centraliza o cards-container */
+            align-items: flex-start;  
+            overflow-x: hidden; /* Garante que não haja rolagem horizontal indesejada */
+            /* Rolagem vertical é controlada pelo body, não pelo main */
         }
 
-        /* Contêiner para os Cards (o que rola) */
+        /* Contêiner para os Cards (Permite quebra de linha) */
         .cards-container {
             display: flex;
-            flex-wrap: nowrap; 
-            gap: 2rem;
-            padding: 0 1rem; 
+            flex-wrap: wrap; /* PERMITE QUEBRA DE LINHA para múltiplos cards por linha */
+            gap: 2rem; /* Espaçamento entre os cards */
+            padding: 0;  
+            max-width: 1200px; /* Limite de largura para desktop */
+            width: 100%;
+            justify-content: center; /* Centraliza os cards */
         }
         
         /* Card de Conteúdo */
@@ -210,9 +213,10 @@
             flex-direction: column;
             align-items: center;
             padding-bottom: 15px;
-            flex-shrink: 0; 
-            width: 250px; 
-            scroll-snap-align: start; 
+            flex-shrink: 0;  
+            width: 100%;  
+            max-width: 300px; /* Limite o tamanho do card em mobile */
+            border: #e6c939 2px solid;
         }
 
         body.dark-mode .content-card {
@@ -229,9 +233,30 @@
             box-shadow: 0 8px 15px rgba(255, 255, 255, 0.1);
         }
 
+        /* Layout de 2 COLUNAS (Telas de tablet) */
+        @media (min-width: 600px) and (max-width: 991px) {
+            .content-card {
+                /* (50% - metade do gap) para 2 cards por linha */
+                width: calc(50% - 1rem);  
+                max-width: none;
+            }
+        }
+
+        /* Layout de 3 COLUNAS (Telas maiores) */
+        @media (min-width: 992px) {
+            .content-card {
+                /* (33.333% - o espaço para os 2 gaps) para 3 cards por linha */
+                width: calc(33.333% - 1.34rem);
+                max-width: none;
+            }
+        }
+        
+        /* --- FIM DOS ESTILOS DE GRID/RESPONSIVOS PARA OS CARDS --- */
+
+
         .card-image-container {
             width: 100%;
-            aspect-ratio: 1 / 1; 
+            aspect-ratio: 1 / 1;  
             overflow: hidden;
         }
 
@@ -270,9 +295,9 @@
         .card-title {
             font-size: 1.3rem;
             font-weight: bold;
-            color: gold; 
-            margin-top: auto; 
-            padding-top: 10px; 
+            color: gold;  
+            margin-top: auto;  
+            padding-top: 10px;  
             border-top: 1px solid #eee;
         }
 
@@ -313,7 +338,7 @@
             }
 
             .header-controls {
-                gap: 5px; 
+                gap: 5px;  
             }
 
             .back-button, .theme-toggle {
@@ -342,9 +367,19 @@
 
     <main>
         <div class="cards-container">
-            <a href="clinicos.html" class="content-card">
+            <a href="Conceitos/index.html" class="content-card">
                 <div class="card-image-container">
-                    <img src="assets/clinico.png" alt="Imagem relacionada a Casos Clínicos">
+                    <img src="assets/conceitos.png" alt="Imagem relacionada a Conceitos Essenciais" id="img-conceitos">
+                </div>
+                <div class="card-body">
+                    <p class="card-description">Definições, diferenças entre APH e Primeiros Socorros, segurança de cena e números de emergência.</p>
+                    <h2 class="card-title">Conceitos Essenciais</h2>
+                </div>
+            </a>
+
+            <a href="Clinicos/index.html" class="content-card">
+                <div class="card-image-container">
+                    <img src="assets/clinico.png" alt="Imagem relacionada a Casos Clínicos" id="img-clinicos">
                 </div>
                 <div class="card-body">
                     <p class="card-description">Aborda doenças, emergências médicas e o manejo clínico no APH.</p>
@@ -354,7 +389,7 @@
 
             <a href="trauma.html" class="content-card">
                 <div class="card-image-container">
-                    <img src="assets/trauma.png" alt="Imagem relacionada a Trauma">
+                    <img src="assets/trauma.png" alt="Imagem relacionada a Trauma" id="img-trauma">
                 </div>
                 <div class="card-body">
                     <p class="card-description">Focado em lesões, cinemática do trauma e protocolos de atendimento.</p>
@@ -364,7 +399,7 @@
 
             <a href="termos.html" class="content-card">
                 <div class="card-image-container">
-                    <img src="assets/termos.png" alt="Imagem relacionada a Termos Técnicos">
+                    <img src="assets/termos.png" alt="Imagem relacionada a Termos Técnicos" id="img-termos">
                 </div>
                 <div class="card-body">
                     <p class="card-description">Um glossário de terminologias e siglas essenciais para o APH.</p>
@@ -374,7 +409,7 @@
 
             <a href="exercicios.html" class="content-card">
                 <div class="card-image-container">
-                    <img src="assets/exercicios.png" alt="Imagem relacionada a Exercícios">
+                    <img src="assets/exercicios.png" alt="Imagem relacionada a Exercícios" id="img-exercicios">
                 </div>
                 <div class="card-body">
                     <p class="card-description">Questões práticas e simulados para fixação do conhecimento.</p>
@@ -384,7 +419,7 @@
 
             <a href="prova.html" class="content-card">
                 <div class="card-image-container">
-                    <img src="assets/provas.png" alt="Imagem relacionada a Prova">
+                    <img src="assets/provas.png" alt="Imagem relacionada a Prova" id="img-prova">
                 </div>
                 <div class="card-body">
                     <p class="card-description">Aqui veremos se aprendeu mesmo sobre o conteudo do curso, Boa Sorte!.</p>
@@ -402,24 +437,44 @@
         const toggleButton = document.getElementById('theme-toggle');
         const body = document.body;
         const headerLogo = document.getElementById('header-logo');
-        const headerTitle = document.querySelector('header h1');
-        const goldSeparator = document.querySelector('.gold-separator');
+        
+        // Mapeamento dos Cards e suas Imagens
+        const cardImages = [
+            { id: 'img-conceitos', light: 'assets/img light/conceitos light.png', dark: 'assets/conceitos.png' },
+            { id: 'img-clinicos', light: 'assets/img light/clinico light.png', dark: 'assets/clinico.png' },
+            { id: 'img-trauma', light: 'assets/img light/Trauma light.png', dark: 'assets/trauma.png' },
+            { id: 'img-termos', light: 'assets/img light/termos light.png', dark: 'assets/termos.png' },
+            { id: 'img-exercicios', light: 'assets/img light/Exercicios light.png', dark: 'assets/exercicios.png' },
+            { id: 'img-prova', light: 'assets/img light/provas light.png', dark: 'assets/provas.png' }
+        ];
 
         // Defina os caminhos das logos
-        // ATENÇÃO: Verifique se esses caminhos estão corretos em sua estrutura de pastas.
-        const LOGO_LIGHT = 'assets/sem fundo.png'; 
-        const LOGO_DARK = 'assets/favicon.png'; 
+        const LOGO_LIGHT = 'assets/sem fundo.png';
+        
+        // CORREÇÃO DE CAMINHO: Se o HTML está em uma pasta (ex: /curso/) e assets em outra,
+        // é preciso voltar um nível (../) para acessar o assets/favicon.png
+        const LOGO_DARK = '../assets/favicon.png'; 
 
         const applyTheme = (theme) => {
             const isDark = theme === 'dark';
             body.classList.toggle('dark-mode', isDark);
             toggleButton.textContent = isDark ? '🌙 Modo Claro' : '🌞 Modo Escuro';
             
-            // Lógica para alternar a logo
+            // Lógica para alternar a logo do Header
             if (headerLogo) {
                 headerLogo.src = isDark ? LOGO_DARK : LOGO_LIGHT;
                 headerLogo.alt = isDark ? 'Logo Soteris APH (Modo Escuro)' : 'Logo Soteris APH';
             }
+
+            // Lógica para alternar as imagens dos Cards
+            cardImages.forEach(item => {
+                const cardImg = document.getElementById(item.id);
+                if (cardImg) {
+                    // O caminho das imagens dos cards permanece como 'assets/...'
+                    // porque elas estão no mesmo nível do HTML
+                    cardImg.src = isDark ? item.dark : item.light;
+                }
+            });
 
             localStorage.setItem('theme', theme);
         };
