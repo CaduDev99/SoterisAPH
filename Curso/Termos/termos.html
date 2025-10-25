@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="../assets/favicon.png" type="image/x-icon">
+    <title>Soteris APH - Termos Técnicos</title>
+    <style>
+        /* Estilos base */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            width: 100%;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            font-family: Arial, sans-serif;
+            transition: background-color 0.3s, color 0.3s;
+            background-color: #ffffff;
+            color: #222;
+        }
+
+        /* Tema escuro */
+        body.dark-mode {
+            background: linear-gradient(to top, #000000, #202020);
+            color: #f5f5f5;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+
+        /* Header - CONFIGURAÇÃO PARA MODO CLARO (PADRÃO) */
+        header {
+            width: 100%;
+            background-image: linear-gradient(to top, gold, rgb(251, 228, 134));
+            color: #000000;
+            padding: 0.8rem 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            transition: background-color 0.3s, color 0.3s, box-shadow 0.3s;
+        }
+
+        /* Tema escuro: Header */
+        body.dark-mode header {
+            background-image: none;
+            background-color: #000000;  
+            color: #ffffff;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
+        }
+        
+        /* Grupo logo + nome Soteris */
+        .header-logo-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* Logo está um nível acima no projeto original, então o caminho é ../assets/... */
+        .header-logo-group img {
+            height: 50px; /* Reduzido o tamanho da logo para a subpágina */
+            width: 50px;
+        }
+
+        /* Nome Soteris */
+        .header-logo-group span {
+            font-size: 1.5rem; /* Reduzido o tamanho da fonte */
+            font-weight: bold;
+            color: #000000;
+            transition: color 0.3s;
+        }
+
+        /* Nome Soteris no modo escuro */
+        body.dark-mode .header-logo-group span {
+            color: gold;  
+        }
+
+        /* Título h1 */
+        header h1 {
+            font-size: 1.6rem;
+            font-weight: bold;
+            color: #000000; 
+            margin-right: auto;
+            margin-left: 20px;
+            transition: color 0.3s;
+        }
+
+        /* Título h1 no modo escuro */
+        body.dark-mode header h1 {
+            color: #ffffff;
+        }
+        
+        /* Contêiner para os botões do lado direito */
+        .header-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;  
+        }
+
+        /* Botão de voltar */
+        .back-button {
+            padding: 0.5rem 1rem;
+            background-color: #000000;
+            color: gold;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        body.dark-mode .back-button {
+            background-color: gold;
+            color: #000000;
+        }
+
+        .back-button:hover {
+            background-color: #333;
+            color: white;
+        }
+
+        body.dark-mode .back-button:hover {
+            background-color: #e6c939;
+            color: #000000;
+        }
+
+        /* Botão de alternância de tema */
+        .theme-toggle {
+            padding: 0.5rem 1rem;
+            background-color: #000000;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        body.dark-mode .theme-toggle {
+            background-color: #4a4a4a;
+        }
+
+        .theme-toggle:hover {
+            background-color: #545454;
+        }
+
+        /* Separador */
+        .gold-separator {
+            width: 100%;
+            height: 2px;
+            background-color: black;
+            border: none;
+            margin: 0;
+            padding: 0;
+            transition: background-color 0.3s;
+        }
+
+        /* Separador no modo escuro */
+        body.dark-mode .gold-separator {
+            background-color: gold;
+        }
+
+        /* --- ESTILOS ESPECÍFICOS DA PÁGINA TERMOS --- */
+
+        main {
+            flex-grow: 1;
+            width: 100%;
+            max-width: 1000px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        /* Contêiner dos botões de abas */
+        .tab-buttons {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 1.5rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        /* Estilo dos botões de abas */
+        .tab-button {
+            padding: 10px 20px;
+            background-color: #ccc;
+            color: #000;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            font-weight: bold;
+            transition: background-color 0.3s, color 0.3s, transform 0.2s;
+            flex-grow: 1;
+            max-width: 300px;
+        }
+
+        /* Tema claro - Estilos dos botões */
+        .tab-button.active {
+            background-color: gold;
+            color: #000;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .tab-button:not(.active):hover {
+            background-color: #e0e0e0;
+        }
+
+        /* Tema escuro - Estilos dos botões */
+        body.dark-mode .tab-button {
+            background-color: #4a4a4a;
+            color: #fff;
+        }
+
+        body.dark-mode .tab-button.active {
+            background-color: gold;
+            color: #000;
+            box-shadow: 0 2px 5px rgba(255, 255, 255, 0.1);
+        }
+
+        body.dark-mode .tab-button:not(.active):hover {
+            background-color: #616161;
+        }
+
+        /* Contêiner de Conteúdo (Abas) */
+        .tab-content-container {
+            background-color: #f9f9f9;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            /* MUITO IMPORTANTE: Esconde o conteúdo que está fora da vista */
+            overflow: hidden; 
+            /* Transição de altura para evitar saltos visuais ao mudar o tamanho do container */
+            transition: background-color 0.3s, box-shadow 0.3s, height 0.5s ease-in-out; 
+            position: relative; /* Necessário para posicionar as abas filhas */
+        }
+
+        body.dark-mode .tab-content-container {
+            background-color: #333;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        /* --- ANIMAÇÃO DE ROLAGEM LATERAL --- */
+
+        .content-section {
+            position: absolute; /* Permite que os conteúdos fiquem lado a lado */
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 2rem; /* Mantém o padding do container para o conteúdo */
+            opacity: 0;
+            /* Transição para suavizar a rolagem e o fade */
+            transition: transform 0.5s ease-in-out, opacity 0.4s ease-in-out; 
+            /* Para garantir que o conteúdo que está sumindo não possa ser clicado */
+            pointer-events: none;
+            /* Esconde a aba por padrão, antes de ser ativada */
+            display: none; 
+        }
+
+        .content-section.active {
+            opacity: 1;
+            transform: translateX(0); /* Posição final: totalmente visível */
+            pointer-events: auto;
+            display: block; /* Volta a exibir o bloco */
+            z-index: 2;
+        }
+        
+        /* Classes controladas pelo JS para a animação de entrada */
+        .content-section.slide-in-right {
+            transform: translateX(100%); /* Começa fora da tela, à direita */
+            opacity: 0;
+        }
+        
+        .content-section.slide-in-left {
+            transform: translateX(-100%); /* Começa fora da tela, à esquerda */
+            opacity: 0;
+        }
+
+        /* Classes controladas pelo JS para a animação de saída */
+        .content-section.slide-out-left {
+            transform: translateX(-100%); /* Sai para a esquerda */
+            opacity: 0;
+            z-index: 1;
+        }
+
+        .content-section.slide-out-right {
+            transform: translateX(100%); /* Sai para a direita */
+            opacity: 0;
+            z-index: 1;
+        }
+        
+        /* Ajuste de espaçamento interno para o conteúdo, já que o padding foi movido para .content-section */
+        .content-section h2 {
+            margin-top: 0;
+        }
+        
+        /* Estilos de conteúdo */
+        .content-section h2 {
+            color: gold;
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid gold;
+        }
+
+        .content-section h3 {
+            font-size: 1.3rem;
+            margin-top: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: #000000;
+        }
+
+        body.dark-mode .content-section h3 {
+            color: #f5f5f5;
+        }
+
+        .content-section p {
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .content-section ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .content-section li {
+            background-color: #fff;
+            padding: 10px 15px;
+            margin-bottom: 8px;
+            border-left: 5px solid gold;
+            border-radius: 4px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+            font-size: 1rem;
+            transition: background-color 0.3s;
+        }
+
+        body.dark-mode .content-section li {
+            background-color: #444;
+            color: #eee;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+        }
+
+        .content-section li strong {
+            color: gold;
+            margin-right: 5px;
+        }
+
+
+        /* Footer */
+        footer {
+            margin-top: auto;
+            width: 100%;
+            text-align: center;
+            font-size: clamp(0.8rem, 2vw, 0.9rem);
+            padding: 0.8rem;
+            color: #000000;
+            transition: color 0.3s;
+            background-image: linear-gradient(to bottom, gold, white);
+        }
+
+        body.dark-mode footer {
+            color: #ffffff;
+            background-image: linear-gradient(to bottom, gold, rgb(0, 0, 0));
+        }
+
+        /* Media Queries */
+        @media (max-width: 768px) {
+            /* ... (Mantenha as media queries anteriores, omitidas aqui para brevidade) ... */
+            header { padding: 0.6rem 1rem; }
+            .header-logo-group span { font-size: 1.2rem; }
+            header h1 { font-size: 1.4rem; margin-left: 10px; }
+            .header-controls { gap: 5px; }
+            .back-button, .theme-toggle { padding: 0.4rem 0.8rem; font-size: 0.8rem; }
+            .tab-button { font-size: 1rem; padding: 8px 15px; flex-grow: 1; max-width: 100%; }
+            .tab-buttons { flex-direction: column; gap: 10px; }
+            /* O padding do container foi para o .content-section */
+            .tab-content-container { padding: 0; } 
+            .content-section { padding: 1.5rem; }
+            .content-section h2 { font-size: 1.5rem; }
+            .content-section h3 { font-size: 1.2rem; }
+        }
+
+    </style>
+</head>
+<body>
+    
+    <header>
+        <div class="header-logo-group">
+            <img src="../assets/sem fundo.png" alt="Logo Soteris APH" id="header-logo">
+            <span>Soteris</span>
+        </div>
+        
+        <h1>Termos Técnicos e Siglas</h1>
+
+        <div class="header-controls">
+            <button class="theme-toggle" id="theme-toggle">🌞 Modo Escuro</button>
+            
+            <a href="../index.html" class="back-button">Voltar</a>
+        </div>
+    </header>
+
+    <hr class="gold-separator">
+
+    <main>
+        <div class="tab-buttons">
+            <button class="tab-button active" data-tab="termos-tecnicos" data-index="0">Termos Técnicos</button>
+            <button class="tab-button" data-tab="siglas" data-index="1">Siglas</button>
+        </div>
+
+        <div class="tab-content-container" id="tab-container">
+            <div id="termos-tecnicos" class="content-section active">
+                <h2>Conceitos Chave</h2>
+                <p><strong>Trauma:</strong> É uma lesão caracterizada por alteração estrutural ou fisiológica, resultante da ação de um agente externo que ocasionou a exposição a um tipo de energia (mecânica, térmica, elétrica). Essa energia pode ter origens biológicas, fisiológicas ou químicas.</p>
+                <p><strong>Clínico:</strong> São problemas de saúde de natureza não traumática, mas sim relacionados a doenças ou condições médicas, como infecções, problemas cardíacos, diabetes, entre outros.</p>
+
+                <hr class="gold-separator" style="margin: 1.5rem 0; height: 1px; background-color: #ddd;">
+
+                <h2>Prefixos Essenciais</h2>
+                <p>Os termos técnicos <strong>"hipo"</strong> e <strong>"hiper"</strong> são prefixos que indicam diminuição e aumento, respectivamente.</p>
+                
+                <h3>Hipo (Diminuição, Escassez, Abaixo)</h3>
+                <ul>
+                    <li><strong>Hipotensão:</strong> Pressão arterial baixa.</li>
+                    <li><strong>Hipoglicemia:</strong> Baixo nível de glicose no sangue.</li>
+                    <li><strong>Hipóxia:</strong> Diminuição da concentração de oxigénio nas células.</li>
+                    <li><strong>Hipovolemia:</strong> Baixo volume de líquidos no corpo (Sangue, água, etc.).</li>
+                    <li><strong>Hipotiroidismo:</strong> Diminuição do funcionamento da glândula tireoide.</li>
+                    <li><strong>Hipocalcemia:</strong> Baixo nível de cálcio no sangue.</li>
+                    <li><strong>Hipocloridria:</strong> Redução do ácido clorídrico no estômago.</li>
+                </ul>
+
+                <h3>Hiper (Aumento, Excesso, Acima)</h3>
+                <ul>
+                    <li><strong>Hipertensão:</strong> Pressão arterial alta.</li>
+                    <li><strong>Hiperglicemia:</strong> Alto nível de glicose no sangue.</li>
+                    <li><strong>Hipertermia:</strong> Temperatura corporal acima do normal.</li>
+                    <li><strong>Hipervolemia:</strong> Sobrecarga de fluidos (volume excessivo de líquidos no corpo).</li>
+                    <li><strong>Hipertrofia:</strong> Aumento do tamanho das células ou órgãos.</li>
+                    <li><strong>Hipercalcemia:</strong> Alto nível de cálcio no sangue.</li>
+                    <li><strong>Hipertensão intracraniana:</strong> Aumento da pressão dentro do crânio.</li>
+                </ul>
+
+                <hr class="gold-separator" style="margin: 1.5rem 0; height: 1px; background-color: #ddd;">
+
+                <h2>Termos Mais Comuns no Dia a Dia do APH</h2>
+                <ul>
+                    <li><strong>Afagia:</strong> Dificuldade para engolir.</li>
+                    <li><strong>Cefaleia:</strong> Dor de cabeça.</li>
+                    <li><strong>Cianose:</strong> Coloração **azulada** ou **arroxeada** da pele e mucosas devido à baixa concentração de oxigênio no sangue.</li>
+                    <li><strong>Diurese:</strong> Produção e excreção de urina.</li>
+                    <li><strong>Edema:</strong> Inchaço causado pelo acúmulo de líquido nos tecidos.</li>
+                    <li><strong>Hematoma:</strong> Acúmulo de sangue sob a pele.</li>
+                    <li><strong>Intravenoso:</strong> Administração de medicamentos ou fluidos diretamente na corrente sanguínea.</li>
+                    <li><strong>Necrose:</strong> Morte de tecido.</li>
+                    <li><strong>Palidez:</strong> Coloração anormalmente clara ou branca da pele, frequentemente associada à anemia, choque ou vasoconstrição.</li>
+                    <li><strong>Parestesia:</strong> Formigamento.</li>
+                    <li><strong>Prurido:</strong> Coceira.</li>
+                    <li><strong>Sutura:</strong> Costura de uma ferida.</li>
+                    <li><strong>Taquipneia:</strong> Aumento da frequência respiratória.</li>
+                    <li><strong>Bradipneia:</strong> Diminuição da frequência respiratória.</li>
+                    <li><strong>Taquicardia:</strong> Aumento da Frequência Cardíaca.</li>
+                    <li><strong>Bradicardia:</strong> Diminuição da frequência Cardíaca.</li>
+                    <li><strong>Algia:</strong> Dor.</li>
+                    <li><strong>Náusea:</strong> Enjoo ou Vomito.</li>
+                    <li><strong>Sudorese:</strong> Suor.</li>
+                    <li><strong>Vertigem:</strong> Tontura.</li>
+                    <li><strong>Letargia:</strong> Sonolência ou estado de cansaço extremo.</li>
+                    <li><strong>Pneumotórax:</strong> Presença de ar na cavidade torácica.</li>
+                    <li><strong>Hemotórax:</strong> Presença de sangue na cavidade torácica.</li>
+                    <li><strong>Escoriações:</strong> Ferimentos leves (arranhões).</li>
+                    <li><strong>FCC:</strong> Ferimento Corto-Contuso (Corte profundo).</li>
+                </ul>
+            </div>
+
+            <div id="siglas" class="content-section">
+                <h2>Siglas Comumente Utilizadas no APH</h2>
+                <ul>
+                    <li><strong>APH:</strong> Atendimento Pré-Hospitalar</li>
+                    <li><strong>SAMU:</strong> Serviço de Atendimento Móvel de Urgência</li>
+                    <li><strong>SIATE:</strong> Serviço Integrado de Atendimento ao Trauma em Emergência</li>
+                    <li><strong>RCP:</strong> Reanimação Cardiopulmonar</li>
+                    <li><strong>PCR:</strong> Parada Cardiorrespiratória</li>
+                    <li><strong>DEA:</strong> Desfibrilador Externo Automático</li>
+                    <li><strong>ECG:</strong> Escala de Coma de Glasgow</li>
+                    <li><strong>AVP:</strong> Acesso Venoso Periférico</li>
+                    <li><strong>IAM:</strong> Infarto Agudo do Miocárdio</li>
+                    <li><strong>DRC:</strong> Doença Renal Crônica</li>
+                </ul>
+
+                <h3>Parâmetros Vitais e Vias de Administração</h3>
+                <ul>
+                    <li><strong>PA:</strong> Pressão Arterial</li>
+                    <li><strong>FC:</strong> Frequência Cardíaca</li>
+                    <li><strong>FR:</strong> Frequência Respiratória</li>
+                    <li><strong>SpO₂:</strong> Saturação Periférica de Oxigênio</li>
+                    <li><strong>PAM:</strong> Pressão Arterial Média</li>
+                    <li><strong>VO:</strong> Via Oral</li>
+                    <li><strong>IM:</strong> Intramuscular</li>
+                    <li><strong>IV:</strong> Intravenosa</li>
+                    <li><strong>SC:</strong> Subcutânea</li>
+                </ul>
+
+                <h3>Condições e Suporte</h3>
+                <ul>
+                    <li><strong>TEV:</strong> Tromboembolismo Venoso</li>
+                    <li><strong>DPOC:</strong> Doença Pulmonar Obstrutiva Crônica</li>
+                    <li><strong>AVE:</strong> Acidente Vascular Encefálico</li>
+                    <li><strong>TCE:</strong> Traumatismo Cranioencefálico</li>
+                    <li><strong>VAS:</strong> Vias Aéreas Superiores</li>
+                    <li><strong>VAi:</strong> Vias Aéreas Inferiores</li>
+                    <li><strong>SVA:</strong> Suporte de Vida Avançado</li>
+                    <li><strong>SBV:</strong> Suporte Básico de Vida</li>
+                </ul>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        Soteris APH &reg;
+    </footer>
+
+    <script>
+        const toggleButton = document.getElementById('theme-toggle');
+        const body = document.body;
+        const headerLogo = document.getElementById('header-logo');
+        const tabButtons = document.querySelectorAll('.tab-button');
+        const contentSections = document.querySelectorAll('.content-section');
+        const tabContainer = document.getElementById('tab-container');
+        
+        // CORREÇÃO DE CAMINHO: A logo precisa voltar um nível (../) para o assets/
+        const LOGO_LIGHT = '../assets/sem fundo.png'; 
+        const LOGO_DARK = '../assets/favicon.png'; 
+
+        // Armazena o índice da aba ativa
+        let activeTabIndex = 0; 
+        let isTransitioning = false;
+
+        // --- Funções de Tema ---
+
+        const applyTheme = (theme) => {
+            const isDark = theme === 'dark';
+            body.classList.toggle('dark-mode', isDark);
+            toggleButton.textContent = isDark ? '🌙 Modo Claro' : '🌞 Modo Escuro';
+            
+            if (headerLogo) {
+                headerLogo.src = isDark ? LOGO_DARK : LOGO_LIGHT;
+                headerLogo.alt = isDark ? 'Logo Soteris APH (Modo Escuro)' : 'Logo Soteris APH';
+            }
+            
+            localStorage.setItem('theme', theme);
+        };
+
+        const storedTheme = localStorage.getItem('theme') || 'light';
+        applyTheme(storedTheme);
+
+        toggleButton.addEventListener('click', () => {
+            const currentTheme = body.classList.contains('dark-mode') ? 'dark' : 'light';
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            applyTheme(newTheme);
+        });
+
+        // --- Funções de Abas (Tabs) com Animação de Rolagem Lateral ---
+
+        // Função para ajustar a altura do container dinamicamente
+        const setContainerHeight = (targetSection) => {
+            // Define a altura do container baseada na altura do conteúdo da seção ativa
+            tabContainer.style.height = `${targetSection.offsetHeight}px`;
+        };
+        
+        const showTab = (newTabId, newTabIndex) => {
+            const currentActiveSection = document.querySelector('.content-section.active');
+            const newActiveSection = document.getElementById(newTabId);
+
+            if (isTransitioning || newActiveSection.classList.contains('active')) {
+                return;
+            }
+
+            isTransitioning = true;
+            const direction = newTabIndex > activeTabIndex ? 'left' : 'right'; // Left: novo conteúdo vem da direita. Right: novo conteúdo vem da esquerda.
+
+            // 1. Prepara a seção antiga para sair
+            if (currentActiveSection) {
+                // Adiciona a classe de saída na direção oposta (ex: se o novo conteúdo vem da esquerda, o antigo sai para a direita)
+                const exitClass = direction === 'left' ? 'slide-out-left' : 'slide-out-right';
+                currentActiveSection.classList.remove('active');
+                currentActiveSection.classList.add(exitClass);
+            }
+
+            // 2. Prepara a nova seção para entrar (posiciona-a fora da tela)
+            const entryClass = direction === 'left' ? 'slide-in-right' : 'slide-in-left';
+            newActiveSection.classList.add(entryClass);
+            newActiveSection.style.display = 'block'; // Torna visível para iniciar a transição
+            
+            // 3. Inicia a transição após um micro-atraso (para garantir que o browser registrou a posição inicial)
+            // O setTimeout de 50ms é um truque para forçar a renderização da classe inicial.
+            setTimeout(() => {
+                // Remove a classe de entrada para que a transição comece e o conteúdo entre
+                newActiveSection.classList.remove(entryClass);
+                // Adiciona 'active' para mover para a posição final (translateX(0))
+                newActiveSection.classList.add('active'); 
+                
+                // Ajusta a altura do container ANTES que a transição termine
+                setContainerHeight(newActiveSection); 
+            }, 50); 
+            
+            // 4. Limpa as classes de transição após o tempo da animação (500ms)
+            setTimeout(() => {
+                if (currentActiveSection) {
+                    // Remove todas as classes de transição do elemento que saiu
+                    currentActiveSection.classList.remove('slide-out-left', 'slide-out-right');
+                    currentActiveSection.style.display = 'none'; // Esconde totalmente
+                }
+                
+                // Libera o clique e atualiza o índice
+                activeTabIndex = newTabIndex;
+                isTransitioning = false;
+            }, 550); // Deve ser ligeiramente maior que o tempo de transição (0.5s)
+
+            // Atualiza os botões
+            tabButtons.forEach(button => button.classList.remove('active'));
+            document.querySelector(`.tab-button[data-tab="${newTabId}"]`).classList.add('active');
+        };
+
+        // Adiciona o listener de clique para os botões de abas
+        tabButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const tabId = button.getAttribute('data-tab');
+                const tabIndex = parseInt(button.getAttribute('data-index'));
+                showTab(tabId, tabIndex);
+            });
+        });
+
+        // Inicializa a primeira aba ao carregar a página
+        document.addEventListener('DOMContentLoaded', () => {
+            const initialTab = document.getElementById('termos-tecnicos');
+            if (initialTab) {
+                initialTab.style.display = 'block';
+                initialTab.classList.add('active');
+                
+                // Define a altura inicial
+                setContainerHeight(initialTab); 
+            }
+        });
+        
+        // Recalcula a altura do container quando a janela é redimensionada para evitar problemas de layout
+        window.addEventListener('resize', () => {
+            const activeSection = document.querySelector('.content-section.active');
+            if (activeSection) {
+                setContainerHeight(activeSection);
+            }
+        });
+    </script>
+</body>
+</html>
