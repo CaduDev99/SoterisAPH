@@ -104,7 +104,7 @@
             gap: 10px;  
         }
 
-        /* Botão de voltar */
+        /* Botão de voltar e iniciar */
         .action-button {
             padding: 0.5rem 1rem;
             background-color: #000000;
@@ -177,20 +177,64 @@
             max-width: 900px;
             margin: 2rem auto;
             padding: 0 1rem;
+            display: flex; /* Adicionado para centralizar a tela de start */
+            flex-direction: column;
+            align-items: center;
         }
 
-        .quiz-container, .result-container {
+        .quiz-container, .result-container, #start-screen {
+            width: 100%;
             background-color: #f9f9f9;
             padding: 2rem;
             border-radius: 10px;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
             transition: background-color 0.3s, box-shadow 0.3s;
         }
-
-        body.dark-mode .quiz-container, body.dark-mode .result-container {
+        
+        body.dark-mode .quiz-container, body.dark-mode .result-container, body.dark-mode #start-screen {
             background-color: #333;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
         }
+        
+        /* Estilos da Tela de Início */
+        #start-screen {
+            text-align: center;
+            padding: 4rem 2rem;
+        }
+
+        #start-screen h2 {
+            font-size: 2rem;
+            color: gold;
+            margin-bottom: 1rem;
+        }
+        
+        #start-screen p {
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+        }
+
+        #start-button {
+            font-size: 1.5rem;
+            padding: 1rem 2.5rem;
+            background-color: gold;
+            color: #000000;
+            font-weight: bold;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.1s;
+        }
+
+        #start-button:hover {
+            background-color: #e6c939;
+            transform: scale(1.05);
+        }
+        
+        body.dark-mode #start-button {
+            background-color: gold;
+            color: #000000;
+        }
+
 
         /* Questão Atual */
         #question-text {
@@ -260,7 +304,6 @@
 
         /* Resultado Final */
         .result-container {
-            display: none;
             text-align: center;
         }
 
@@ -350,14 +393,16 @@
         
         /* Media Queries */
         @media (max-width: 768px) {
-            /* ... (Mantenha as media queries anteriores, omitidas aqui para brevidade) ... */
             header { padding: 0.6rem 1rem; }
             .header-logo-group span { font-size: 1.2rem; }
             header h1 { font-size: 1.4rem; margin-left: 10px; }
             .header-controls { gap: 5px; }
             .action-button, .theme-toggle { padding: 0.4rem 0.8rem; font-size: 0.8rem; }
             
-            .quiz-container, .result-container { padding: 1.5rem; }
+            .quiz-container, .result-container, #start-screen { padding: 1.5rem; }
+
+            #start-screen h2 { font-size: 1.6rem; }
+            #start-button { font-size: 1.2rem; padding: 0.8rem 2rem; }
 
             #question-text { font-size: 1.2rem; }
             .option-button { font-size: 1rem; padding: 12px; }
@@ -367,6 +412,7 @@
             #error-list h3 { font-size: 1.3rem; }
             
             #result-actions { flex-direction: column; gap: 10px; }
+            .result-action-button { max-width: 100%; }
         }
 
     </style>
@@ -391,7 +437,14 @@
     <hr class="gold-separator">
 
     <main>
-        <div id="quiz-container" class="quiz-container">
+        <div id="start-screen">
+            <h2>Bem-vindo(a) à Rodada de Exercícios!</h2>
+            <p>Você responderá a **10 questões** de múltipla escolha selecionadas aleatoriamente do nosso banco de dados. Este é um excelente treino para fixar o conteúdo de APH.</p>
+            <p>Ao finalizar, mostraremos sua pontuação, as questões que errou e a justificativa para a resposta correta.</p>
+            <button id="start-button">🚀 Estou pronto(a) para Começar!</button>
+        </div>
+
+        <div id="quiz-container" class="quiz-container" style="display: none;">
             <div id="quiz-content">
                 <p id="question-text"></p>
                 <div id="answer-options">
@@ -908,7 +961,7 @@
             // Q38
             {
                 id: 38,
-                q: `Qual a principal diferença no manejo da hipotermia acidental leve (temperatura corporal entre $32\\circ C$ e $35\\circ C$) e grave (abaixo de $28\\circ C$) no APH?`,
+                q: "Qual a principal diferença no manejo da hipotermia acidental leve (temperatura corporal entre 32°C e 35°C) e grave (abaixo de 28°C) no APH?",
                 options: [
                     "O paciente com hipotermia grave deve ser aquecido rapidamente com banho quente.",
                     "A hipotermia grave pode causar ritmos cardíacos instáveis, exigindo manipulação mínima e aquecimento lento.",
@@ -1252,6 +1305,8 @@
         const NUM_QUESTIONS = 10;
         
         // ELEMENTOS DO DOM
+        const startScreen = document.getElementById('start-screen'); // Novo elemento
+        const startButton = document.getElementById('start-button'); // Novo elemento
         const quizContainer = document.getElementById('quiz-container');
         const resultContainer = document.getElementById('result-container');
         const questionTextElement = document.getElementById('question-text');
@@ -1383,7 +1438,7 @@
                     const errorItem = document.createElement('div');
                     errorItem.classList.add('error-item');
                     errorItem.innerHTML = `
-                        <p><strong>Questão ${index + 1}:</strong> ${question.q}</p>
+                        <p><strong>Questão ${question.id}:</strong> ${question.q}</p>
                         <p>Sua Resposta: ${optionLetters[result.userAnswerIndex]}) ${userAnswerText}</p>
                         <p class="correct-answer">Resposta Correta: ${optionLetters[question.a]}) ${correctAnswerText}</p>
                         <p><strong>Justificativa:</strong> ${question.justificativa}</p>
@@ -1409,7 +1464,8 @@
             // Seleciona 10 novas perguntas aleatórias
             selectQuestions();
 
-            // Alterna a exibição
+            // Oculta a tela de início e o resultado, e mostra o quiz
+            startScreen.style.display = 'none';
             resultContainer.style.display = 'none';
             quizContainer.style.display = 'block';
             
@@ -1450,11 +1506,13 @@
                 applyTheme(newTheme);
             });
             
-            // Listener para iniciar nova rodada
+            // Listener para iniciar a primeira rodada
+            startButton.addEventListener('click', initQuiz);
+
+            // Listener para iniciar nova rodada após o resultado
             startNewQuizButton.addEventListener('click', initQuiz);
             
-            // Inicia o quiz ao carregar a página
-            initQuiz();
+            // A tela de start é a única visível inicialmente, o quiz só começa no clique.
         });
     </script>
 </body>
