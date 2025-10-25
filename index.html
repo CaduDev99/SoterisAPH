@@ -1,223 +1,246 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta property="og:url" content="https://seuusuario.github.io/soteris-aph/index.html">
-<meta property="og:image" content="https://seuusuario.github.io/soteris-aph/assets/favicon.png">
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="shortcut icon" href="assets/favicon.png" type="image/x-icon">
-  <title>Soteris APH</title>
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="assets/favicon.png" type="image/x-icon">
+    <title>Soteris APH</title>
 
-    body {
-      width: 100%;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      font-family: Arial, sans-serif;
-      transition: background-color 0.3s, color 0.3s;
-      background-color: #ffffff;
-      color: #222;
-    }
+    <meta property="og:title" content="Soteris APH | Treinamento de Atendimento Pré-Hospitalar">
+    
+    <meta property="og:description" content="Venha a aprender a Salvar Vidas conosco!!!">
+    
+    <meta property="og:url" content="https://cadudev99.github.io/SoterisAPH/index.html">
+    
+    <meta property="og:image" content="https://cadudev99.github.io/SoterisAPH/assets/favicon.png">
+    
+    <meta property="og:type" content="website">
+    
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Soteris APH | Treinamento de Atendimento Pré-Hospitalar">
+    <meta name="twitter:description" content="Especialistas em cursos e palestras de APH. Transforme sua capacidade de salvar vidas.">
+    <meta name="twitter:image" content="https://seuusuario.github.io/soteris-aph/assets/favicon.png">
 
-    /* Tema escuro */
-    body.dark-mode {
-      background: linear-gradient(to top, #000000, #202020);
-      color: #f5f5f5;
-      background-attachment: fixed;
-      background-repeat: no-repeat;
-      background-size: cover;
-    }
 
-    main {
-      flex-grow: 1;
-      width: 100%;
-      padding: 1rem; /* Reduzido para minimizar altura extra */
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      min-height: 0; /* Evita que o main cause overflow */
-    }
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-    img {
-      max-width: 100%;
-      width: min(500px, 90vw);
-      margin-bottom: 1rem; /* Reduzido para economizar espaço */
-      transition: 0.3s;
-    }
+        body {
+            width: 100%;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            font-family: Arial, sans-serif;
+            transition: background-color 0.3s, color 0.3s;
+            background-color: #ffffff;
+            color: #222;
+        }
 
-    h1 {
-      color: gold;
-      font-size: clamp(1.5rem, 5vw, 2rem);
-      margin-bottom: 0.5rem;
-    }
+        /* Tema escuro */
+        body.dark-mode {
+            background: linear-gradient(to top, #000000, #202020);
+            color: #f5f5f5;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
 
-    body.dark-mode h1 {
-      color: gold;
-      text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.344);
-    }
+        main {
+            flex-grow: 1;
+            width: 100%;
+            padding: 1rem; /* Reduzido para minimizar altura extra */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 0; /* Evita que o main cause overflow */
+        }
 
-    h2 {
-      font-weight: normal;
-      color: rgb(214, 182, 0);
-      font-size: clamp(1rem, 3vw, 1.2rem);
-      margin-bottom: 1rem; /* Reduzido para economizar espaço */
-    }
+        img {
+            max-width: 100%;
+            width: min(500px, 90vw);
+            margin-bottom: 1rem; /* Reduzido para economizar espaço */
+            transition: 0.3s;
+        }
 
-    body.dark-mode h2 {
-      color: rgb(214, 182, 0);
-    }
+        h1 {
+            color: gold;
+            font-size: clamp(1.5rem, 5vw, 2rem);
+            margin-bottom: 0.5rem;
+        }
 
-    nav ul {
-      list-style: none;
-      padding: 0;
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-    }
+        body.dark-mode h1 {
+            color: gold;
+            text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.344);
+        }
 
-    nav ul li {
-      margin: 0 1rem;
-    }
+        h2 {
+            font-weight: normal;
+            color: rgb(214, 182, 0);
+            font-size: clamp(1rem, 3vw, 1.2rem);
+            margin-bottom: 1rem; /* Reduzido para economizar espaço */
+        }
 
-    nav ul li a {
-      text-decoration: none;
-      color: inherit;
-      font-weight: bold;
-      transition: color 0.3s;
-      font-size: clamp(0.9rem, 2.5vw, 1rem);
-    }
+        body.dark-mode h2 {
+            color: rgb(214, 182, 0);
+        }
 
-    nav ul li a:hover {
-      color: #e6c939;
-    }
+        nav ul {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
 
-    /* Botão de alternância */
-    .theme-toggle {
-      position: fixed;
-      top: 1rem;
-      right: 1rem;
-      padding: 0.5rem 1rem;
-      background-color: #2d2d2d;
-      color: #fff;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: background-color 0.3s;
-      z-index: 1000;
-    }
+        nav ul li {
+            margin: 0 1rem;
+        }
 
-    .theme-toggle:hover {
-      background-color: #545454;
-    }
+        nav ul li a {
+            text-decoration: none;
+            color: inherit;
+            font-weight: bold;
+            transition: color 0.3s;
+            font-size: clamp(0.9rem, 2.5vw, 1rem);
+        }
 
-    /* Footer */
-    footer {
-      margin-top: auto;
-      width: 100%;
-      text-align: center;
-      font-size: clamp(0.8rem, 2vw, 0.9rem);
-      padding: 0.8rem; /* Reduzido para economizar espaço */
-      color: #000000;
-      transition: color 0.3s;
-      background-image: linear-gradient(to bottom, gold, white);
-    }
+        nav ul li a:hover {
+            color: #e6c939;
+        }
 
-    body.dark-mode footer {
-      color: #ffffff;
-      background-image: linear-gradient(to bottom, gold, rgb(0, 0, 0));
-    }
+        /* Botão de alternância */
+        .theme-toggle {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            padding: 0.5rem 1rem;
+            background-color: #2d2d2d;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            z-index: 1000;
+        }
 
-    /* Media Queries para telas menores */
-    @media (max-width: 768px) {
-      main {
-        padding: 0.5rem; /* Ainda mais reduzido */
-      }
+        .theme-toggle:hover {
+            background-color: #545454;
+        }
 
-      img {
-        width: min(300px, 80vw);
-      }
+        /* Footer */
+        footer {
+            margin-top: auto;
+            width: 100%;
+            text-align: center;
+            font-size: clamp(0.8rem, 2vw, 0.9rem);
+            padding: 0.8rem; /* Reduzido para economizar espaço */
+            color: #000000;
+            transition: color 0.3s;
+            background-image: linear-gradient(to bottom, gold, white);
+        }
 
-      nav ul {
-        flex-direction: column;
-        align-items: center;
-      }
+        body.dark-mode footer {
+            color: #ffffff;
+            background-image: linear-gradient(to bottom, gold, rgb(0, 0, 0));
+        }
 
-      nav ul li {
-        margin: 0.5rem 0;
-      }
+        /* Media Queries para telas menores */
+        @media (max-width: 768px) {
+            main {
+                padding: 0.5rem; /* Ainda mais reduzido */
+            }
 
-      .theme-toggle {
-        padding: 0.4rem 0.8rem;
-        font-size: 0.9rem;
-      }
-    }
+            img {
+                width: min(300px, 80vw);
+            }
 
-    @media (max-width: 480px) {
-      h1 {
-        font-size: clamp(1.2rem, 4vw, 1.5rem);
-      }
+            nav ul {
+                flex-direction: column;
+                align-items: center;
+            }
 
-      h2 {
-        font-size: clamp(0.9rem, 3vw, 1rem);
-      }
+            nav ul li {
+                margin: 0.5rem 0;
+            }
 
-      nav ul li a {
-        font-size: clamp(0.8rem, 2vw, 0.9rem);
-      }
+            .theme-toggle {
+                padding: 0.4rem 0.8rem;
+                font-size: 0.9rem;
+            }
+        }
 
-      footer {
-        padding: 0.5rem; /* Ainda mais reduzido */
-      }
-    }
-  </style>
+        @media (max-width: 480px) {
+            h1 {
+                font-size: clamp(1.2rem, 4vw, 1.5rem);
+            }
+
+            h2 {
+                font-size: clamp(0.9rem, 3vw, 1rem);
+            }
+
+            nav ul li a {
+                font-size: clamp(0.8rem, 2vw, 0.9rem);
+            }
+
+            footer {
+                padding: 0.5rem; /* Ainda mais reduzido */
+            }
+        }
+    </style>
 </head>
 <body>
-  <button class="theme-toggle" id="theme-toggle">🌞 Modo Escuro</button>
+    <button class="theme-toggle" id="theme-toggle">🌞 Modo Escuro</button>
 
-  <main>
-    <img id="logo" src="assets/logo claro.png" alt="Logo Soteris APH">
-    <h1>Soteris APH</h1>
-    <h2>Seja Bem-vindo!</h2>
-    <nav>
-      <ul>
-        <li><a href="agenda/agenda.html">Agenda</a></li>
-        <li><a href="Curso/index.html">Curso</a></li>
-        <li><a href="contato/index.html">Contato</a></li>
-      </ul>
-    </nav>
-  </main>
+    <main>
+        <img id="logo" src="assets/logo claro.png" alt="Logo Soteris APH">
+        <h1>Soteris APH</h1>
+        <h2>Seja Bem-vindo!</h2>
+        <nav>
+            <ul>
+                <li><a href="agenda/agenda.html">Agenda</a></li>
+                <li><a href="Curso/index.html">Curso</a></li>
+                <li><a href="contato/index.html">Contato</a></li>
+            </ul>
+        </nav>
+    </main>
 
-  <footer>
-    Soteris APH &reg;
-  </footer>
+    <footer>
+        Soteris APH &reg;
+    </footer>
 
-  <script>
-    const toggleButton = document.getElementById('theme-toggle');
-    const body = document.body;
-    const logo = document.getElementById('logo');
+    <script>
+        const toggleButton = document.getElementById('theme-toggle');
+        const body = document.body;
+        const logo = document.getElementById('logo');
 
-    const logoClara = "assets/logo claro.png";
-    const logoEscura = "assets/favicon.png";
+        const logoClara = "assets/logo claro.png";
+        const logoEscura = "assets/favicon.png";
 
-    if (localStorage.getItem('theme') === 'dark') {
-      body.classList.add('dark-mode');
-      toggleButton.textContent = '🌙 Modo Claro';
-      logo.src = logoEscura;
-    }
+        // Função para aplicar o tema no carregamento
+        const applyTheme = (theme) => {
+            const isDark = theme === 'dark';
+            body.classList.toggle('dark-mode', isDark);
+            toggleButton.textContent = isDark ? '🌙 Modo Claro' : '🌞 Modo Escuro';
+            logo.src = isDark ? logoEscura : logoClara;
+            logo.alt = isDark ? 'Logo Soteris APH (Modo Escuro)' : 'Logo Soteris APH';
+        };
 
-    toggleButton.addEventListener('click', () => {
-      body.classList.toggle('dark-mode');
-      const darkMode = body.classList.contains('dark-mode');
-      toggleButton.textContent = darkMode ? '🌙 Modo Claro' : '🌞 Modo Escuro';
-      logo.src = darkMode ? logoEscura : logoClara;
-      localStorage.setItem('theme', darkMode ? 'dark' : 'light');
-    });
-  </script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const storedTheme = localStorage.getItem('theme') || 'light';
+            applyTheme(storedTheme);
+            
+            // Listener para alternar o tema
+            toggleButton.addEventListener('click', () => {
+                const currentTheme = body.classList.contains('dark-mode') ? 'dark' : 'light';
+                const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+                applyTheme(newTheme);
+                localStorage.setItem('theme', newTheme);
+            });
+        });
+    </script>
 </body>
 </html>
