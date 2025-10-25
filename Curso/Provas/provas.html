@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="../assets/favicon.png" type="image/x-icon">
+    <title>Soteris APH - Provas</title>
+    <style>
+        /* Estilos base reutilizados */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            width: 100%;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            font-family: Arial, sans-serif;
+            transition: background-color 0.3s, color 0.3s;
+            background-color: #ffffff;
+            color: #222;
+        }
+
+        /* Tema escuro */
+        body.dark-mode {
+            background: linear-gradient(to top, #000000, #202020);
+            color: #f5f5f5;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+
+        /* Header - CONFIGURAÇÃO PARA MODO CLARO (PADRÃO) */
+        header {
+            width: 100%;
+            background-image: linear-gradient(to top, gold, rgb(251, 228, 134));
+            color: #000000;
+            padding: 0.8rem 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            transition: background-color 0.3s, color 0.3s, box-shadow 0.3s;
+        }
+
+        /* Tema escuro: Header */
+        body.dark-mode header {
+            background-image: none;
+            background-color: #000000;  
+            color: #ffffff;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
+        }
+        
+        /* Grupo logo + nome Soteris */
+        .header-logo-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .header-logo-group img {
+            height: 50px; 
+            width: 50px;
+        }
+
+        /* Nome Soteris */
+        .header-logo-group span {
+            font-size: 1.5rem; 
+            font-weight: bold;
+            color: #000000;
+            transition: color 0.3s;
+        }
+
+        /* Nome Soteris no modo escuro */
+        body.dark-mode .header-logo-group span {
+            color: gold;  
+        }
+
+        /* Título h1 */
+        header h1 {
+            font-size: 1.6rem;
+            font-weight: bold;
+            color: #000000; 
+            margin-right: auto;
+            margin-left: 20px;
+            transition: color 0.3s;
+        }
+
+        /* Título h1 no modo escuro */
+        body.dark-mode header h1 {
+            color: #ffffff;
+        }
+        
+        /* Contêiner para os botões do lado direito */
+        .header-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;  
+        }
+
+        /* Botão de voltar e iniciar */
+        .action-button {
+            padding: 0.5rem 1rem;
+            background-color: #000000;
+            color: gold;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background-color 0.3s, color 0.3s;
+            display: inline-block;
+            text-align: center;
+        }
+
+        body.dark-mode .action-button {
+            background-color: gold;
+            color: #000000;
+        }
+
+        .action-button:hover {
+            background-color: #333;
+            color: white;
+        }
+
+        body.dark-mode .action-button:hover {
+            background-color: #e6c939;
+            color: #000000;
+        }
+
+        /* Botão de alternância de tema */
+        .theme-toggle {
+            padding: 0.5rem 1rem;
+            background-color: #000000;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        body.dark-mode .theme-toggle {
+            background-color: #4a4a4a;
+        }
+
+        .theme-toggle:hover {
+            background-color: #545454;
+        }
+
+        /* Separador */
+        .gold-separator {
+            width: 100%;
+            height: 2px;
+            background-color: black;
+            border: none;
+            margin: 0;
+            padding: 0;
+            transition: background-color 0.3s;
+        }
+
+        /* Separador no modo escuro */
+        body.dark-mode .gold-separator {
+            background-color: gold;
+        }
+
+        /* --- ESTILOS ESPECÍFICOS DA PÁGINA DE PROVAS VAZIA --- */
+
+        main {
+            flex-grow: 1;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center; /* Centraliza verticalmente o conteúdo */
+            align-items: center;     /* Centraliza horizontalmente o conteúdo */
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .empty-state {
+            max-width: 600px;
+            padding: 3rem 2rem;
+            border-radius: 10px;
+            background-color: #f9f9f9;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s, box-shadow 0.3s;
+        }
+        
+        body.dark-mode .empty-state {
+            background-color: #333;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .sad-face {
+            font-size: 8rem; /* Carinha triste bem grande */
+            line-height: 1;
+            color: gold; /* Destaque em ouro */
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .empty-state h2 {
+            font-size: 2.2rem;
+            color: #000000;
+            margin-bottom: 0.8rem;
+        }
+        
+        body.dark-mode .empty-state h2 {
+            color: #f5f5f5;
+        }
+
+        .empty-state p {
+            font-size: 1.1rem;
+            color: #555;
+            margin-bottom: 2rem;
+        }
+        
+        body.dark-mode .empty-state p {
+            color: #ccc;
+        }
+
+        @media (max-width: 768px) {
+            header { padding: 0.6rem 1rem; }
+            .header-logo-group span { font-size: 1.2rem; }
+            header h1 { font-size: 1.4rem; margin-left: 10px; }
+            .action-button, .theme-toggle { padding: 0.4rem 0.8rem; font-size: 0.8rem; }
+            
+            .empty-state { padding: 2rem 1rem; }
+            .sad-face { font-size: 6rem; }
+            .empty-state h2 { font-size: 1.8rem; }
+            .empty-state p { font-size: 1rem; }
+        }
+
+    </style>
+</head>
+<body>
+    
+    <header>
+        <div class="header-logo-group">
+            <img src="../assets/sem fundo.png" alt="Logo Soteris APH" id="header-logo">
+            <span>Soteris</span>
+        </div>
+        
+        <h1>Provas de Certificação</h1>
+
+        <div class="header-controls">
+            <button class="theme-toggle" id="theme-toggle">🌞 Modo Escuro</button>
+            
+            <a href="../index.html" class="action-button">Voltar</a>
+        </div>
+    </header>
+
+    <hr class="gold-separator">
+
+    <main>
+        <div class="empty-state">
+            <span class="sad-face">🙁</span>
+            <h2>Nenhuma Prova Disponível no Momento</h2>
+            <p>Parece que não há nenhuma prova de certificação ou avaliação agendada no momento.</p>
+            <p>Continue estudando e praticando nos exercícios de fixação. Avisaremos quando as provas forem liberadas!</p>
+            
+            <a href="../Exercicios/exercicios.html" class="action-button">Ir para Exercícios de Fixação</a>
+        </div>
+    </main>
+
+    <footer>
+        Soteris APH &reg;
+    </footer>
+
+    <script>
+        // --- LÓGICA DE TEMA (REUTILIZADA) ---
+        const toggleButton = document.getElementById('theme-toggle');
+        const body = document.body;
+        const headerLogo = document.getElementById('header-logo');
+        const LOGO_LIGHT = '../assets/sem fundo.png'; 
+        const LOGO_DARK = '../assets/favicon.png'; 
+
+        const applyTheme = (theme) => {
+            const isDark = theme === 'dark';
+            body.classList.toggle('dark-mode', isDark);
+            toggleButton.textContent = isDark ? '🌙 Modo Claro' : '🌞 Modo Escuro';
+            
+            if (headerLogo) {
+                headerLogo.src = isDark ? LOGO_DARK : LOGO_LIGHT;
+                headerLogo.alt = isDark ? 'Logo Soteris APH (Modo Escuro)' : 'Logo Soteris APH';
+            }
+            localStorage.setItem('theme', theme);
+        };
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // Inicializa o tema
+            const storedTheme = localStorage.getItem('theme') || 'light';
+            applyTheme(storedTheme);
+
+            // Listener para alternar o tema
+            toggleButton.addEventListener('click', () => {
+                const currentTheme = body.classList.contains('dark-mode') ? 'dark' : 'light';
+                const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+                applyTheme(newTheme);
+            });
+        });
+    </script>
+</body>
+</html>
