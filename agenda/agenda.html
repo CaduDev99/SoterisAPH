@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" href="../assets/favicon.png" type="image/x-icon">
-    <title>Soteris APH - Módulo Clínico</title>
+    <title>Soteris APH - Agenda de Cursos e Palestras</title>
     <style>
         /* Estilos base reutilizados */
         * {
@@ -169,59 +169,135 @@
             background-color: gold;
         }
 
-        /* --- ESTILOS ESPECÍFICOS DA PÁGINA EM CONSTRUÇÃO --- */
+        /* --- ESTILOS ESPECÍFICOS DA PÁGINA DE AGENDA --- */
 
         main {
             flex-grow: 1;
             width: 100%;
+            padding: 2rem;
             display: flex;
             flex-direction: column;
-            justify-content: center; /* Centraliza verticalmente o conteúdo */
-            align-items: center;     /* Centraliza horizontalmente o conteúdo */
-            padding: 2rem;
+            align-items: center;
+        }
+
+        .agenda-container {
+            width: 100%;
+            max-width: 1200px;
+            margin-top: 1rem;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            color: #000000;
             text-align: center;
         }
+        
+        body.dark-mode h2 {
+            color: gold;
+        }
 
-        .construction-state {
-            max-width: 600px;
-            padding: 3rem 2rem;
-            border-radius: 10px;
-            background-color: #f9f9f9;
+        .agenda-table {
+            width: 100%;
+            border-collapse: collapse;
+            overflow: hidden;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            transition: background-color 0.3s, box-shadow 0.3s;
+            border-radius: 8px;
+        }
+
+        /* Cabeçalho da Tabela */
+        .agenda-table thead th {
+            background-color: #000000;
+            color: gold;
+            padding: 1rem;
+            text-align: left;
+            font-weight: bold;
+            border-bottom: 2px solid gold;
         }
         
-        body.dark-mode .construction-state {
-            background-color: #333;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
-        }
-
-        .construction-emoji {
-            font-size: 8rem; /* Emoji de construção/aviso bem grande */
-            line-height: 1;
-            color: gold; /* Destaque em ouro */
-            margin-bottom: 0.5rem;
-            display: block;
-        }
-
-        .construction-state h2 {
-            font-size: 2.2rem;
+        body.dark-mode .agenda-table thead th {
+            background-color: gold;
             color: #000000;
-            margin-bottom: 0.8rem;
+            border-bottom: 2px solid #000000;
+        }
+
+        /* Corpo da Tabela */
+        .agenda-table tbody td {
+            padding: 1rem;
+            border-bottom: 1px solid #ddd;
+            background-color: #fff;
+            color: #222;
+            transition: background-color 0.3s;
         }
         
-        body.dark-mode .construction-state h2 {
+        body.dark-mode .agenda-table tbody td {
+            border-bottom: 1px solid #444;
+            background-color: #222;
             color: #f5f5f5;
         }
 
-        .construction-state p {
-            font-size: 1.1rem;
-            color: #555;
-            margin-bottom: 2rem;
+        /* Efeito Hover nas linhas */
+        .agenda-table tbody tr:hover {
+            background-color: #f0f0f0;
         }
         
-        body.dark-mode .construction-state p {
-            color: #ccc;
+        body.dark-mode .agenda-table tbody tr:hover {
+            background-color: #333;
+        }
+        
+        /* Destaque para Cursos e Palestras */
+        .event-type-course { font-weight: bold; color: #000000; }
+        .event-type-lecture { color: #555; font-style: italic; }
+        
+        body.dark-mode .event-type-course { color: #ffffff; }
+        body.dark-mode .event-type-lecture { color: #ccc; }
+        
+        /* Coluna de Data/Horário com alinhamento central */
+        .agenda-table td:nth-child(2),
+        .agenda-table td:nth-child(3) {
+            text-align: center;
+        }
+
+        /* Responsividade básica */
+        @media (max-width: 900px) {
+            .agenda-table, .agenda-table thead, .agenda-table tbody, .agenda-table th, .agenda-table td, .agenda-table tr { 
+                display: block; 
+            }
+            
+            .agenda-table thead tr { 
+                position: absolute;
+                top: -9999px;
+                left: -9999px;
+            }
+            
+            .agenda-table tr { border: 1px solid #ccc; margin-bottom: 10px; border-radius: 6px; }
+
+            .agenda-table td { 
+                border: none;
+                border-bottom: 1px solid #eee; 
+                position: relative;
+                padding-left: 50%;
+                text-align: left !important;
+            }
+            
+            body.dark-mode .agenda-table tr { border: 1px solid #444; }
+            body.dark-mode .agenda-table td { border-bottom: 1px solid #444; }
+
+            .agenda-table td:before { 
+                position: absolute;
+                top: 0;
+                left: 6px;
+                width: 45%; 
+                padding-right: 10px; 
+                white-space: nowrap;
+                font-weight: bold;
+                color: gold;
+            }
+
+            .agenda-table td:nth-of-type(1):before { content: "Tema"; }
+            .agenda-table td:nth-of-type(2):before { content: "Data"; }
+            .agenda-table td:nth-of-type(3):before { content: "Horário"; }
+            .agenda-table td:nth-of-type(4):before { content: "Local"; }
         }
 
         @media (max-width: 768px) {
@@ -229,11 +305,7 @@
             .header-logo-group span { font-size: 1.2rem; }
             header h1 { font-size: 1.4rem; margin-left: 10px; }
             .action-button, .theme-toggle { padding: 0.4rem 0.8rem; font-size: 0.8rem; }
-            
-            .construction-state { padding: 2rem 1rem; }
-            .construction-emoji { font-size: 6rem; }
-            .construction-state h2 { font-size: 1.8rem; }
-            .construction-state p { font-size: 1rem; }
+            main { padding: 1rem; }
         }
 
     </style>
@@ -246,10 +318,12 @@
             <span>Soteris</span>
         </div>
         
-        <h1>Módulo Clínico</h1>
+        <h1>Agenda de Eventos</h1>
 
         <div class="header-controls">
             <button class="theme-toggle" id="theme-toggle">🌞 Modo Escuro</button>
+            
+            <a href="../contato/index.html" class="action-button">Contato</a>
             
             <a href="../index.html" class="action-button">Voltar</a>
         </div>
@@ -258,13 +332,34 @@
     <hr class="gold-separator">
 
     <main>
-        <div class="construction-state">
-            <span class="construction-emoji">🩺</span>
-            <h2>Em Breve: Conteúdo Clínico</h2>
-            <p>O Módulo de Emergências Clínicas (cardiologia, neurologia, respiratório e mais) está sendo revisado e finalizado.</p>
-            <p>Em breve, você terá acesso aos protocolos e simulações das emergências clínicas mais comuns no APH. Continue praticando!</p>
+        <h2>Próximos Cursos e Palestras</h2>
+        
+        <div class="agenda-container">
+            <table class="agenda-table">
+                <thead>
+                    <tr>
+                        <th>Tema (Curso/Palestra)</th>
+                        <th>Data</th>
+                        <th>Horário</th>
+                        <th>Local</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <span class="event-type-course">CURSO: Atendimento Pré-Hospitalar de 20 horas</span>
+                        </td>
+                        <td>08/11/2025 a 09/12/2025</td>
+                        <td>8:00 - 17:00</td>
+                        <td>Conceição dos Ouros MG</td>
+                    </tr>
+                    
+                    </tbody>
+            </table>
             
-            <a href="exercicios.html" class="action-button">Enquanto isso, faça exercícios</a>
+            <p style="text-align: center; margin-top: 20px; font-size: 0.9rem; color: #555;">
+                *Para inscrições e mais detalhes, entre em contato através do nosso WhatsApp.
+            </p>
         </div>
     </main>
 
