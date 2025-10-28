@@ -4,239 +4,387 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" href="../assets/favicon.png" type="image/x-icon">
-    <title>Soteris APH - Módulo Clínico</title>
+    <title>Soteris APH - Atendimentos Clínicos</title>
     <style>
-        /* Estilos base reutilizados */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+    /* Estilos base (copiados e adaptados do código original) */
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        width: 100%;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        font-family: Arial, sans-serif;
+        transition: background-color 0.3s, color 0.3s;
+        background-color: #ffffff;
+        color: #222;
+    }
+
+    /* Tema escuro */
+    body.dark-mode {
+        background: linear-gradient(to top, #000000, #202020);
+        color: #f5f5f5;
+        background-attachment: fixed;
+        background-repeat: no-repeat;
+        background-size: cover;
+    }
+
+    /* Header - CONFIGURAÇÃO PARA MODO CLARO (PADRÃO) */
+    header {
+        width: 100%;
+        background-image: linear-gradient(to top, gold, rgb(251, 228, 134));
+        color: #000000;
+        padding: 0.8rem 1.5rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        transition: background-color 0.3s, color 0.3s, box-shadow 0.3s;
+    }
+
+    /* Tema escuro: Header */
+    body.dark-mode header {
+        background-image: none;
+        background-color: #000000;  
+        color: #ffffff;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
+    }
+    
+    /* Grupo logo + nome Soteris */
+    .header-logo-group {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .header-logo-group img {
+        height: 50px; 
+        width: 50px;
+    }
+
+    /* Nome Soteris */
+    .header-logo-group span {
+        font-size: 1.5rem; 
+        font-weight: bold;
+        color: #000000;
+        transition: color 0.3s;
+    }
+
+    /* Nome Soteris no modo escuro */
+    body.dark-mode .header-logo-group span {
+        color: gold;  
+    }
+
+    /* Título h1 */
+    header h1 {
+        font-size: 1.6rem;
+        font-weight: bold;
+        color: #000000; 
+        margin-right: auto;
+        margin-left: 20px;
+        transition: color 0.3s;
+    }
+
+    /* Título h1 no modo escuro */
+    body.dark-mode header h1 {
+        color: #ffffff;
+    }
+    
+    /* Contêiner para os botões do lado direito */
+    .header-controls {
+        display: flex;
+        align-items: center;
+        gap: 10px;  
+    }
+
+    /* Botão de voltar */
+    .back-button {
+        padding: 0.5rem 1rem;
+        background-color: #000000;
+        color: gold;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        text-decoration: none;
+        font-weight: bold;
+        transition: background-color 0.3s, color 0.3s;
+    }
+
+    body.dark-mode .back-button {
+        background-color: gold;
+        color: #000000;
+    }
+
+    .back-button:hover {
+        background-color: #333;
+        color: white;
+    }
+
+    body.dark-mode .back-button:hover {
+        background-color: #e6c939;
+        color: #000000;
+    }
+
+    /* Botão de alternância de tema */
+    .theme-toggle {
+        padding: 0.5rem 1rem;
+        background-color: #000000;
+        color: #fff;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+    
+    body.dark-mode .theme-toggle {
+        background-color: #4a4a4a;
+    }
+
+    .theme-toggle:hover {
+        background-color: #545454;
+    }
+
+    /* Separador */
+    .gold-separator {
+        width: 100%;
+        height: 2px;
+        background-color: black;
+        border: none;
+        margin: 0;
+        padding: 0;
+        transition: background-color 0.3s;
+    }
+
+    /* Separador no modo escuro */
+    body.dark-mode .gold-separator {
+        background-color: gold;
+    }
+
+    /* --- ESTILOS ESPECÍFICOS DA PÁGINA CLÍNICA --- */
+
+    /* Contêiner Principal: Conteúdo + Navegação Lateral */
+    .main-container {
+        flex-grow: 1;
+        width: 100%;
+        max-width: 1200px; /* Aumentado para acomodar a navegação lateral */
+        margin: 2rem auto;
+        padding: 0 1rem;
+        display: flex;
+        gap: 20px;
+    }
+    
+    /* Navegação Lateral */
+    .side-nav {
+        width: 250px;
+        flex-shrink: 0; /* Não permite que diminua */
+        position: sticky;
+        top: 70px; /* Abaixo do header */
+        align-self: flex-start; /* Alinha ao topo */
+        background-color: #f9f9f9;
+        padding: 15px;
+        border-radius: 8px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        transition: background-color 0.3s, box-shadow 0.3s;
+    }
+
+    body.dark-mode .side-nav {
+        background-color: #333;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+    }
+
+    .side-nav h2 {
+        font-size: 1.3rem;
+        color: #000;
+        margin-bottom: 10px;
+        padding-bottom: 5px;
+        border-bottom: 1px solid #ccc;
+    }
+
+    body.dark-mode .side-nav h2 {
+        color: gold;
+        border-bottom-color: #4a4a4a;
+    }
+
+    .side-nav ul {
+        list-style: none;
+        padding: 0;
+    }
+
+    .side-nav li {
+        margin-bottom: 5px;
+    }
+
+    .side-nav a {
+        text-decoration: none;
+        color: #222;
+        display: block;
+        padding: 8px 10px;
+        border-radius: 4px;
+        transition: background-color 0.2s, color 0.2s;
+        font-weight: 500;
+        border-left: 3px solid transparent;
+    }
+
+    body.dark-mode .side-nav a {
+        color: #f5f5f5;
+    }
+
+    /* Alterado para valor alto para evitar corte de conteúdo */
+    .detalhe-pcr {
+        max-height: 0; /* Começa fechado */
+        overflow: hidden;
+        transition: max-height 0.5s ease-in-out, padding 0.5s ease-in-out; 
+        background-color: #f7f7f7;
+        padding: 0 15px;
+        border-radius: 5px;
+        border-left: 5px solid #007bff;
+    }
+
+    /* Corrigido o max-height para um valor alto para evitar cortes */
+    .detalhe-pcr.expanded {
+        max-height: 2000px; 
+        padding: 15px;
+    }
+
+    .side-nav a:hover, .side-nav a.active-link {
+        background-color: gold;
+        color: #000;
+        border-left: 3px solid #000;
+    }
+    
+    /* Conteúdo Principal */
+    .content-body {
+        flex-grow: 1;
+        min-width: 0; /* Permite que o conteúdo se ajuste corretamente */
+    }
+
+    .content-section {
+        background-color: #f9f9f9;
+        padding: 2rem;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        margin-bottom: 2rem;
+        transition: background-color 0.3s, box-shadow 0.3s;
+    }
+
+    body.dark-mode .content-section {
+        background-color: #333;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+    }
+
+    .content-section h2 {
+        color: gold;
+        font-size: 1.8rem;
+        margin-bottom: 1rem;
+        padding-bottom: 0.5rem;
+        border-bottom: 2px solid gold;
+    }
+
+    .content-section h3 {
+        font-size: 1.3rem;
+        margin-top: 1.5rem;
+        margin-bottom: 0.5rem;
+        color: #000000;
+    }
+
+    body.dark-mode .content-section h3 {
+        color: #f5f5f5;
+    }
+
+    .content-section p, .content-section ul {
+        line-height: 1.6;
+        margin-bottom: 1rem;
+    }
+    
+    .content-section strong {
+        color: gold;
+    }
+
+    .content-section ul {
+        list-style-type: disc;
+        margin-left: 20px;
+    }
+
+    /* Footer */
+    footer {
+        margin-top: auto;
+        width: 100%;
+        text-align: center;
+        font-size: clamp(0.8rem, 2vw, 0.9rem);
+        padding: 0.8rem;
+        color: #000000;
+        transition: color 0.3s;
+        background-image: linear-gradient(to bottom, gold, white);
+    }
+
+    body.dark-mode footer {
+        color: #ffffff;
+        background-image: linear-gradient(to bottom, gold, rgb(0, 0, 0));
+    }
+
+    /* Media Queries */
+    @media (max-width: 900px) {
+        .main-container {
+            flex-direction: column; /* Pilha a navegação e o conteúdo */
+            gap: 15px;
         }
 
-        body {
-            width: 100%;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            font-family: Arial, sans-serif;
-            transition: background-color 0.3s, color 0.3s;
-            background-color: #ffffff;
-            color: #222;
+        .side-nav {
+            position: static; /* Remove o sticky */
+            width: 100%; /* Ocupa a largura total */
+            top: auto;
         }
-
-        /* Tema escuro */
-        body.dark-mode {
-            background: linear-gradient(to top, #000000, #202020);
-            color: #f5f5f5;
-            background-attachment: fixed;
-            background-repeat: no-repeat;
-            background-size: cover;
-        }
-
-        /* Header - CONFIGURAÇÃO PARA MODO CLARO (PADRÃO) */
-        header {
-            width: 100%;
-            background-image: linear-gradient(to top, gold, rgb(251, 228, 134));
-            color: #000000;
-            padding: 0.8rem 1.5rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-            position: sticky;
-            top: 0;
-            z-index: 10;
-            transition: background-color 0.3s, color 0.3s, box-shadow 0.3s;
-        }
-
-        /* Tema escuro: Header */
-        body.dark-mode header {
-            background-image: none;
-            background-color: #000000;  
-            color: #ffffff;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
-        }
+    }
+    
+    @media (max-width: 768px) {
+        header { padding: 0.6rem 1rem; }
+        .header-logo-group span { font-size: 1.2rem; }
+        header h1 { font-size: 1.4rem; margin-left: 10px; }
+        .header-controls { gap: 5px; }
+        .back-button, .theme-toggle { padding: 0.4rem 0.8rem; font-size: 0.8rem; }
         
-        /* Grupo logo + nome Soteris */
-        .header-logo-group {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
+        .content-section { padding: 1.5rem; }
+        .content-section h2 { font-size: 1.5rem; }
+        .content-section h3 { font-size: 1.2rem; }
+    }
 
-        .header-logo-group img {
-            height: 50px; 
-            width: 50px;
-        }
+    /* 🌙 CORREÇÃO: DETALHE DA PCR NO MODO ESCURO 🌙 */
+    
+    /* 1. Inverte o fundo e a cor da borda da aba de detalhes */
+    body.dark-mode .detalhe-pcr {
+        background-color: #2a2a2a; /* Fundo escuro sutil para contraste */
+        border-left: 5px solid gold; /* Mantém a cor de destaque do tema escuro */
+    }
 
-        /* Nome Soteris */
-        .header-logo-group span {
-            font-size: 1.5rem; 
-            font-weight: bold;
-            color: #000000;
-            transition: color 0.3s;
-        }
+    /* 2. Garante que o texto (p, ul, li) dentro da aba escura fique claro */
+    body.dark-mode .detalhe-pcr p, 
+    body.dark-mode .detalhe-pcr ul,
+    body.dark-mode .detalhe-pcr li {
+        color: #f5f5f5;
+    }
 
-        /* Nome Soteris no modo escuro */
-        body.dark-mode .header-logo-group span {
-            color: gold;  
-        }
+    /* 3. Ajusta as cores de destaque dos títulos Hs e Ts */
+    body.dark-mode .detalhe-pcr h5[style*="d9534f"] { /* Hs - Vermelho */
+        color: #ff6f69 !important; /* Vermelho mais brilhante para contraste */
+    }
 
-        /* Título h1 */
-        header h1 {
-            font-size: 1.6rem;
-            font-weight: bold;
-            color: #000000; 
-            margin-right: auto;
-            margin-left: 20px;
-            transition: color 0.3s;
-        }
+    body.dark-mode .detalhe-pcr h5[style*="f0ad4e"] { /* Ts - Laranja/Amarelo */
+        color: #ffd700 !important; /* Cor Gold para manter consistência */
+    }
 
-        /* Título h1 no modo escuro */
-        body.dark-mode header h1 {
-            color: #ffffff;
-        }
-        
-        /* Contêiner para os botões do lado direito */
-        .header-controls {
-            display: flex;
-            align-items: center;
-            gap: 10px;  
-        }
-
-        /* Botão de voltar e iniciar */
-        .action-button {
-            padding: 0.5rem 1rem;
-            background-color: #000000;
-            color: gold;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            text-decoration: none;
-            font-weight: bold;
-            transition: background-color 0.3s, color 0.3s;
-            display: inline-block;
-            text-align: center;
-        }
-
-        body.dark-mode .action-button {
-            background-color: gold;
-            color: #000000;
-        }
-
-        .action-button:hover {
-            background-color: #333;
-            color: white;
-        }
-
-        body.dark-mode .action-button:hover {
-            background-color: #e6c939;
-            color: #000000;
-        }
-
-        /* Botão de alternância de tema */
-        .theme-toggle {
-            padding: 0.5rem 1rem;
-            background-color: #000000;
-            color: #fff;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-        
-        body.dark-mode .theme-toggle {
-            background-color: #4a4a4a;
-        }
-
-        .theme-toggle:hover {
-            background-color: #545454;
-        }
-
-        /* Separador */
-        .gold-separator {
-            width: 100%;
-            height: 2px;
-            background-color: black;
-            border: none;
-            margin: 0;
-            padding: 0;
-            transition: background-color 0.3s;
-        }
-
-        /* Separador no modo escuro */
-        body.dark-mode .gold-separator {
-            background-color: gold;
-        }
-
-        /* --- ESTILOS ESPECÍFICOS DA PÁGINA EM CONSTRUÇÃO --- */
-
-        main {
-            flex-grow: 1;
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            justify-content: center; /* Centraliza verticalmente o conteúdo */
-            align-items: center;     /* Centraliza horizontalmente o conteúdo */
-            padding: 2rem;
-            text-align: center;
-        }
-
-        .construction-state {
-            max-width: 600px;
-            padding: 3rem 2rem;
-            border-radius: 10px;
-            background-color: #f9f9f9;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            transition: background-color 0.3s, box-shadow 0.3s;
-        }
-        
-        body.dark-mode .construction-state {
-            background-color: #333;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
-        }
-
-        .construction-emoji {
-            font-size: 8rem; /* Emoji de construção/aviso bem grande */
-            line-height: 1;
-            color: gold; /* Destaque em ouro */
-            margin-bottom: 0.5rem;
-            display: block;
-        }
-
-        .construction-state h2 {
-            font-size: 2.2rem;
-            color: #000000;
-            margin-bottom: 0.8rem;
-        }
-        
-        body.dark-mode .construction-state h2 {
-            color: #f5f5f5;
-        }
-
-        .construction-state p {
-            font-size: 1.1rem;
-            color: #555;
-            margin-bottom: 2rem;
-        }
-        
-        body.dark-mode .construction-state p {
-            color: #ccc;
-        }
-
-        @media (max-width: 768px) {
-            header { padding: 0.6rem 1rem; }
-            .header-logo-group span { font-size: 1.2rem; }
-            header h1 { font-size: 1.4rem; margin-left: 10px; }
-            .action-button, .theme-toggle { padding: 0.4rem 0.8rem; font-size: 0.8rem; }
-            
-            .construction-state { padding: 2rem 1rem; }
-            .construction-emoji { font-size: 6rem; }
-            .construction-state h2 { font-size: 1.8rem; }
-            .construction-state p { font-size: 1rem; }
-        }
-
-    </style>
+    /* 4. Garante que as sub-letras (como "Identificação:") fiquem claras */
+    body.dark-mode .detalhe-pcr em {
+        color: #ccc;
+    }
+    /* FIM DA CORREÇÃO */
+</style>
 </head>
 <body>
     
@@ -246,64 +394,447 @@
             <span>Soteris</span>
         </div>
         
-        <h1>Módulo Clínico</h1>
+        <h1>Atendimentos Clínicos no APH</h1>
 
         <div class="header-controls">
             <button class="theme-toggle" id="theme-toggle">🌞 Modo Escuro</button>
             
-            <a href="../index.html" class="action-button">Voltar</a>
+            <a href="../index.html" class="back-button">Voltar</a>
         </div>
     </header>
 
     <hr class="gold-separator">
 
-    <main>
-        <div class="construction-state">
-            <span class="construction-emoji">🩺</span>
-            <h2>Em Breve: Conteúdo Clínico</h2>
-            <p>O Módulo de Emergências Clínicas (cardiologia, neurologia, respiratório e mais) está sendo revisado e finalizado.</p>
-            <p>Em breve, você terá acesso aos protocolos e simulações das emergências clínicas mais comuns no APH. Continue praticando!</p>
+    <main class="main-container">
+        <nav class="side-nav" id="side-nav">
+            <h2>Conteúdo Clínico</h2>
+            <ul>
+                <li><a href="#ovace" class="nav-link">OVACE</a></li>
+                <li><a href="#pcr" class="nav-link">PCR</a></li>
+                <li><a href="#sincope" class="nav-link">Síncope</a></li>
+                <li><a href="#ave" class="nav-link">AVE</a></li>
+                <li><a href="#convulsao" class="nav-link">Convulsão</a></li>
+                <li><a href="#asma" class="nav-link">Asma</a></li>
+                <li><a href="#alergias" class="nav-link">Alergias / Anafilaxia</a></li>
+                <li><a href="#peconhentos" class="nav-link">Animais Peçonhentos</a></li>
+            </ul>
+        </nav>
+
+        <div class="content-body">
             
-            <a href="exercicios.html" class="action-button">Enquanto isso, faça exercícios</a>
-        </div>
+            <div id="ovace" class="content-section">
+                <h2>Obstrução de Vias Aéreas por Corpo Estranho (OVACE)</h2>
+                <p>A OVACE é uma emergência médica grave que ocorre quando um corpo estranho bloqueia parcial ou totalmente as vias aéreas, impedindo ou dificultando a passagem do ar para os pulmicos. O reconhecimento rápido do tipo de obstrução é vital para o sucesso do atendimento.</p>
+                
+                <hr class="gold-separator" style="margin: 1.5rem 0; height: 1px; background-color: #ddd;">
+
+                <h3>O que é e Como Acontece?</h3>
+                <p>A obstrução ocorre quando um objeto sólido (alimento, brinquedo, prótese dentária, etc.) é inalado e se aloja na faringe ou laringe. O processo é geralmente súbito e está associado à alimentação ou brincadeiras. Dependendo do grau, a OVACE é classificada em:</p>
+                <ul>
+                    <li style="margin-bottom: 10px;"><strong>Obstrução Parcial:</strong> A vítima consegue tossir, falar, emitir sons ou chorar (no caso de bebês), indicando que algum ar ainda passa. A prioridade é **incentivar a tosse**.</li>
+                    <li><strong>Obstrução Total:</strong> A vítima não consegue tossir, falar, chorar ou respirar. Pode levar as mãos ao pescoço (sinal universal de asfixia) e rapidamente evoluir para cianose e inconsciência.</li>
+                </ul>
+                <div style="text-align: center; margin: 15px 0;">
+                    <img src="../assets/ovace_conceito.png" alt="Ilustração de uma garganta com um corpo estranho bloqueando a via aérea" style="max-width: 100%; height: auto; border-radius: 5px; border: 1px solid #ccc;">
+                </div>
+
+                <h3>Possíveis Causas</h3>
+                <p>As causas mais comuns variam conforme a faixa etária:</p>
+                <ul>
+                    <li style="margin-bottom: 10px;"><strong>Adultos:</strong> Geralmente associada à ingestão rápida de alimentos, má mastigação, risadas durante a refeição ou uso de álcool. Próteses dentárias mal fixadas também são causas frequentes.</li>
+                    <li><strong>Crianças e Bebês:</strong> Exploração oral de objetos pequenos (moedas, peças de brinquedo), doces duros (balas), amendoim e outros alimentos inadequados para a idade.</li>
+                </ul>
+
+                <h3>Consequências da Obstrução Total</h3>
+                <p>A falta de oxigenação (Hipóxia) é a principal e mais grave consequência. O tempo é crítico:</p>
+                <ul>
+                    <li style="margin-bottom: 10px;">**Em minutos:** Queda da saturação de oxigênio ($\text{SpO}_2$), levando à cianose.</li> 
+                    <li style="margin-bottom: 10px;">**Em minutos:** Queda da saturação de oxigênio (SpO<sub>2</sub>), levando à cianose.</li>
+                    <li style="margin-bottom: 10px;">**4 a 6 minutos:** Dano cerebral irreversível pode começar.</li>
+                    <li>**Mais de 10 minutos:** Risco elevado de Parada Cardiorrespiratória (PCR) e morte.</li>
+                </ul>
+
+                <hr class="gold-separator" style="margin: 1.5rem 0; height: 1px; background-color: #ddd;">
+
+                <h3>Procedimento de Atendimento (Manobra de Heimlich)</h3>
+                
+                <h4>1. Vítima Consciente (Obstrução Total, Adultos e Crianças)</h4>
+                <ol>
+                    <li style="margin-bottom: 10px;">Confirme a obstrução (a vítima não consegue falar ou tossir).</li>
+                    <li style="margin-bottom: 10px;">Posicione-se por trás, abrace o abdômen e coloque o punho fechado na linha média, **logo acima do umbigo**.</li>
+                    <li style="margin-bottom: 10px;">Segure o punho com a outra mão.</li>
+                    <li style="margin-bottom: 10px;">Realize compressões rápidas e firmes para **dentro e para cima** (movimento em "J"), até que o objeto seja expelido ou a vítima perca a consciência.</li>
+                </ol>
+                <div style="text-align: center; margin: 15px 0;">
+                    <img src="../assets/ovace_heimlich_adulto.png" alt="Ilustração da Manobra de Heimlich em adulto" style="max-width: 100%; height: auto; border-radius: 5px; border: 1px solid #ccc;">
+                </div>
+
+                <h4>2. Bebês (&lt; 1 ano)</h4>
+                <ol>
+                    <li style="margin-bottom: 10px;">Sente-se e apoie o bebê de bruços em seu antebraço, com a cabeça mais baixa que o corpo.</li>
+                    <li style="margin-bottom: 10px;">Aplique <strong>5 golpes vigorosos</strong> com a palma da mão nas costas, entre as escápulas.</li>
+                    <li style="margin-bottom: 10px;">Vire o bebê, mantendo-o apoiado e com a cabeça baixa.</li>
+                    <li style="margin-bottom: 10px;">Aplique <strong>5 compressões torácicas</strong> rápidas no centro do osso esterno.</li>
+                    <li style="margin-bottom: 10px;">Repita a sequência (5 golpes nas costas e 5 compressões no tórax) até a desobstrução ou perda de consciência.</li>
+                </ol>
+                <div style="text-align: center; margin: 15px 0;">
+                    <img src="../assets/ovace_heimlich_bebe.png" alt="Sequência de 5 golpes nas costas e 5 compressões em bebê" style="max-width: 100%; height: auto; border-radius: 5px; border: 1px solid #ccc;">
+                </div>
+
+                <h4>3. Vítima Inconsciente (Adultos, Crianças e Bebês)</h4>
+                <p style="margin-bottom: 10px;">Se a vítima perder a consciência ou for encontrada inconsciente:</p>
+                <ul>
+                    <li style="margin-bottom: 10px;">Acione o socorro (SAMU/SIATE) imediatamente.</li>
+                    <li style="margin-bottom: 10px;">Inicie a **Reanimação Cardiopulmonar (RCP)**, começando pelas compressões torácicas. A cada abertura de via aérea para ventilar, procure pelo objeto na boca e remova-o **apenas se estiver visível**.</li>
+                </ul>
+            </div>
+            
+            <div id="pcr" class="content-section">
+                <h2>Parada Cardiorrespiratória (PCR)</h2>
+                <p>A PCR é a cessação súbita e reversível da atividade mecânica cardíaca e da respiração espontânea. É o evento de maior urgência no Atendimento Pré-Hospitalar (APH), exigindo manobras imediatas de Suporte Básico de Vida (SBV) e uso do Desfibrilador Externo Automático (DEA).</p>
+                
+                <hr class="gold-separator" style="margin: 1.5rem 0; height: 1px; background-color: #ddd;">
+
+                <h3>O que é e Como Acontece?</h3>
+                <p>A PCR é caracterizada pela falha do coração em bombear sangue (ausência de pulso) e pela ausência de respiração ou presença de respiração agônica (Gasping). O coração pode parar devido a problemas elétricos (como a Fibrilação Ventricular) ou por causas externas (como trauma, hipóxia grave ou choque).</p>
+                
+                <h3>Possíveis Causas (Os 4 Hs e os 4 Ts)</h3>
+                <p>No APH, é útil tentar identificar as causas reversíveis. Clique no botão abaixo para entender como elas se manifestam e como identificá-las:</p>
+                
+                <button
+                    onclick="document.getElementById('detalhe-causas-pcr').classList.toggle('expanded')" 
+                    style="background-color: #007bff; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; margin-bottom: 15px; font-weight: bold;">
+                    Saiba Mais: Os 4/5 Hs e 4/5 Ts
+                </button>
+
+                <div id="detalhe-causas-pcr" class="detalhe-pcr">
+                    
+                    <h4 style="padding-top: 15px;">🔍 Identificando as Causas Reversíveis da PCR</h4>
+                    <p>Buscar e tratar essas causas é essencial para reverter a Parada Cardiorrespiratória e prevenir novas ocorrências.</p>
+
+                    <h5 style="color: #d9534f; margin-top: 10px;">Os Hs (Problemas de Volume e Metabolismo)</h5>
+                    <ul>
+                        <li style="margin-bottom: 10px;">
+                            <strong>1. Hipovolemia:</strong> Perda severa de fluidos (sangue, desidratação).<br>
+                            <em>Identificação:</em> Choque (pulso fraco/ausente), história de trauma/sangramento, pele pálida e fria, PVC baixa.
+                        </li>
+                        <li style="margin-bottom: 10px;">
+                            <strong>2. Hipóxia:</strong> Baixa concentração de oxigênio nos tecidos.<br>
+                            <em>Identificação:</em> Cianose (lábios/leito ungueal azuis), SpO<sub>2</sub> baixa, respiração agônica ou ausente.
+                        </li>
+                        <li style="margin-bottom: 10px;">
+                            <strong>3. H+ (Acidose - Excesso de Íon Hidrogênio):</strong> pH sanguíneo baixo devido a distúrbios metabólicos ou respiratórios.<br>
+                            <em>Identificação:</em> História de Diabetes (Cetoacidose), Insuficiência Renal ou Parada Respiratória prolongada.
+                        </li>
+                        <li style="margin-bottom: 10px;">
+                            <strong>4. Hipo/Hipercalemia:</strong> Distúrbios de Potássio (baixo ou alto).<br>
+                            <em>Identificação:</em> Geralmente suspeitado em pacientes renais ou em uso de diuréticos. Pode causar alterações graves no ECG (ondas T elevadas ou achatadas).
+                        </li>
+                        <li>
+                            <strong>5. Hipotermia:</strong> Temperatura corporal central abaixo de 35°C.<br>
+                            <em>Identificação:</em> Exposição prolongada ao frio, tremores ausentes em fases avançadas, pele fria.
+                        </li>
+                    </ul>
+
+                    <h5 style="color: #f0ad4e; margin-top: 10px;">Os Ts (Problemas Mecânicos e Obstrutivos)</h5>
+                    <ul>
+                        <li style="margin-bottom: 10px;">
+                            <strong>1. Tensão Pneumotórax:</strong> Acúmulo de ar no espaço pleural que comprime o coração e o pulmão.<br>
+                            <em>Identificação:</em> História de trauma, desvio da traqueia (sinal tardio), sons respiratórios ausentes em um lado, turgência jugular, dificuldade respiratória extrema.
+                        </li>
+                        <li style="margin-bottom: 10px;">
+                            <strong>2. Tamponamento Cardíaco:</strong> Acúmulo de líquido ao redor do coração, impedindo seu enchimento.<br>
+                            <em>Identificação:</em> Tríade de Beck (Hipotensão, turgência jugular e abafamento dos sons cardíacos), história de trauma penetrante no tórax.
+                        </li>
+                        <li style="margin-bottom: 10px;">
+                            <strong>3. Toxinas:</strong> Intoxicação por drogas ou medicamentos.<br>
+                            <em>Identificação:</em> História de overdose ou exposição a substâncias (ex: Opioides, tricíclicos). Pupilas dilatadas ou puntiformes, convulsões.
+                        </li>
+                        <li>
+                            <strong>4. Trombose Coronária (IAM) / Trombose Pulmonar (TEP):</strong> Coágulo que bloqueia artérias do coração ou do pulmão.<br>
+                            <em>Identificação:</em> História de dor torácica aguda (IAM) ou dispneia súbita e intensa (TEP).
+                        </li>
+                    </ul>
+                    <p style="padding-bottom: 15px; font-style: italic; font-size: 0.9em; color: #6c757d;">*Nota: Embora alguns protocolos utilizem 4 Hs e 4 Ts, o ACLS (Suporte Avançado de Vida) moderno frequentemente inclui 5 Hs (adicionando Acidose/H+) e 5 Ts (adicionando Trauma, em contextos específicos), mas as 8 causas listadas acima são as mais fundamentais e clinicamente relevantes no APH.</p>
+
+                </div>
+                
+                <hr class="gold-separator" style="margin: 1.5rem 0; height: 1px; background-color: #ddd;">
+
+                <h3>Procedimento de Atendimento (SBV)</h3>
+                <ol>
+                    <li style="margin-bottom: 10px;"><strong>Segurança da Cena:</strong> Garanta que a cena esteja segura para você e a vítima.</li>
+                    <li style="margin-bottom: 10px;"><strong>Reconhecimento:</strong> Verifique responsividade, respiração e pulso (máximo 10 segundos). Se inconsciente, sem respiração normal e sem pulso, **inicie a RCP**.</li>
+                    <li style="margin-bottom: 10px;"><strong>Compressões:</strong> Inicie 30 compressões torácicas no centro do tórax, fortes e rápidas (100 a 120 por minuto), com profundidade de 5 a 6 cm para adultos.</li>
+                    <li style="margin-bottom: 10px;"><strong>Vias Aéreas e Ventilação:</strong> Se treinado e com barreira, realize 2 ventilações a cada 30 compressões.</li>
+                    <li><strong>DEA:</strong> Utilize o DEA assim que ele chegar. Siga rigorosamente as instruções de áudio e choque se indicado.</li>
+                </ol>
+                <div style="text-align: center; margin: 15px 0;">
+                    <img src="../assets/pcr_compressao.png" alt="Ilustração da posição correta das mãos para compressões torácicas em adulto" style="max-width: 100%; height: auto; border-radius: 5px; border: 1px solid #ccc;">
+                </div>
+            </div>
+            
+            <div id="sincope" class="content-section">
+                <h2>Síncope (Desmaio)</h2>
+                <p>Síncope é a perda súbita, breve e transitória da consciência e do tônus postural, seguida de recuperação espontânea. É causada por uma hipoperfusão cerebral global temporária (redução do fluxo sanguíneo para o cérebro).</p>
+                
+                <hr class="gold-separator" style="margin: 1.5rem 0; height: 1px; background-color: #ddd;">
+
+                <h3>O que é e Como Acontece?</h3>
+                <p>A síncope geralmente é precedida por sintomas como tontura (vertigem), visão embaçada, náusea e sudorese fria (pré-síncope). O episódio é breve (segundos a poucos minutos) e o paciente acorda sem confusão mental prolongada (diferente de uma convulsão).</p>
+                
+                <h3>Possíveis Causas</h3>
+                <ul>
+                    <li style="margin-bottom: 10px;"><strong>Vasovagal (Mais Comum):</strong> Gatilhos como estresse emocional, dor intensa, longos períodos em pé, ou ambientes quentes.</li>
+                    <li style="margin-bottom: 10px;"><strong>Ortostática:</strong> Queda de pressão ao se levantar rapidamente (hipotensão postural).</li>
+                    <li style="margin-bottom: 10px;"><strong>Cardíaca (Mais Grave):</strong> Arritmias, Infarto Agudo do Miocárdio (IAM), ou problemas estruturais do coração.</li>
+                    <li><strong>Metabólica:</strong> Hipoglicemia severa.</li>
+                </ul>
+
+                <h3>Consequências</h3>
+                <p>A principal consequência é o trauma associado à queda (TCE, fraturas). Embora a síncope vasovagal seja benigna, a síncope de origem cardíaca exige investigação imediata, pois pode ser um sinal de risco de PCR.</p>
+                
+                <hr class="gold-separator" style="margin: 1.5rem 0; height: 1px; background-color: #ddd;">
+
+                <h3>Procedimento de Atendimento</h3>
+                <ol>
+                    <li style="margin-bottom: 10px;"><strong>Segurança:</strong> Se a vítima estiver caindo (pré-síncope), ajude-a a deitar ou sentar para evitar lesões.</li>
+                    <li style="margin-bottom: 10px;"><strong>Posicionamento:</strong> Coloque a vítima em decúbito dorsal (deitada de costas) e eleve as pernas em 30 cm (posição de Trendelenburg modificada) para favorecer o retorno venoso.</li>
+                    <li style="margin-bottom: 10px;"><strong>Monitoramento:</strong> Monitore sinais vitais e o nível de consciência. Verifique a glicemia se houver suspeita de Hipoglicemia.</li>
+                    <li><strong>Encaminhamento:</strong> Mesmo após a recuperação, se for o primeiro episódio ou se houver suspeita de causa cardíaca, a vítima deve ser transportada para avaliação hospitalar.</li>
+                </ol>
+                <div style="text-align: center; margin: 15px 0;">
+                    <img src="../assets/sincope_trendelenburg.png" alt="Ilustração da posição de Trendelenburg modificada para síncope" style="max-width: 100%; height: auto; border-radius: 5px; border: 1px solid #ccc;">
+                </div>
+            </div>
+
+            <div id="ave" class="content-section">
+                <h2>Acidente Vascular Encefálico (AVE ou AVC)</h2>
+                <p>O AVE, popularmente conhecido como Derrame, ocorre quando o suprimento sanguíneo para uma parte do cérebro é interrompido. É uma emergência "Tempo-Cérebro", onde o reconhecimento rápido e o transporte imediato são vitais.</p>
+                
+                <hr class="gold-separator" style="margin: 1.5rem 0; height: 1px; background-color: #ddd;">
+
+                <h3>Tipos de AVE</h3>
+                <ul>
+                    <li style="margin-bottom: 10px;">
+                        <strong>AVE Isquêmico (Aproximadamente 85% dos casos):</strong> Causado pela obstrução de uma artéria cerebral por um coágulo ou trombo, impedindo a chegada de oxigênio e nutrientes. O tratamento hospitalar com trombólise (dentro da janela de tempo) é crucial.
+                    </li>
+                    <li>
+                        <strong>AVE Hemorrágico (Aproximadamente 15% dos casos):</strong> Causado pelo rompimento de um vaso sanguíneo dentro do cérebro (hemorragia intracerebral) ou ao seu redor (hemorragia subaracnóidea). Geralmente associado à hipertensão não controlada e é mais grave.
+                    </li>
+                </ul>
+
+                <h3>Possíveis Causas e Fatores de Risco</h3>
+                <p>O resultado em ambos os casos é a morte das células cerebrais (necrose) por falta de suprimento sanguíneo. Os principais fatores de risco são:</p>
+                <ul>
+                    <li style="margin-bottom: 10px;"><strong>Principal Fator:</strong> Hipertensão Arterial Sistêmica (Pressão alta) descontrolada.</li>
+                    <li><strong>Outros Fatores:</strong> Diabetes, Dislipidemia (colesterol alto), Tabagismo, Obesidade, Doenças Cardíacas (principalmente Fibrilação Atrial).</li>
+                </ul>
+                
+                <hr class="gold-separator" style="margin: 1.5rem 0; height: 1px; background-color: #ddd;">
+
+                <h3>Procedimento de Atendimento (Mnemônico SAMU)</h3>
+                <p style="margin-bottom: 10px;">O mnemônico **SAMU** (Sorriso, Abraço, Música/Fala, Urgência) é crucial para o reconhecimento rápido dos sinais de um AVE:</p>
+                <ul>
+                    <li style="margin-bottom: 10px;"><strong>S (Sorriso):</strong> Peça para sorrir. Um lado da face está caído, a boca está torta ou o sorriso está desigual?</li>
+                    <li style="margin-bottom: 10px;"><strong>A (Abraço):</strong> Peça para levantar os dois braços, como se fosse abraçar. Um braço cai, não consegue levantar ou está sem força?</li>
+                    <li style="margin-bottom: 10px;"><strong>M (Música/Fala):</strong> Peça para cantar uma música ou repetir uma frase simples. A fala está arrastada, estranha, confusa ou o paciente não entende a ordem?</li>
+                    <li style="margin-bottom: 10px;"><strong>U (Urgência):</strong> Se qualquer um desses sinais estiver presente, **é Urgência!** Chame o serviço de emergência (192 ou 193) imediatamente e informe a hora de início dos sintomas.</li>
+                </ul>
+                <p><strong>Conduta APH:</strong> Manter a via aérea pérvia (permeável), administrar oxigênio se SpO<sub>2</sub> &lt; 94%, monitorar a glicemia (hipo ou hiperglicemia podem imitar um AVE) e transportar rapidamente para um centro de referência neurológica.</p>
+                <div style="text-align: center; margin: 15px 0;">
+                    <img src="../assets/ave_fast.png" alt="Gráfico ou diagrama ilustrando o mnemônico SAMU/FAST" style="max-width: 100%; height: auto; border-radius: 5px; border: 1px solid #ccc;">
+                </div>
+            </div>
+
+            <div id="convulsao" class="content-section">
+                <h2>Convulsão (Crises Epilépticas)</h2>
+                <p>A convulsão é um distúrbio neurológico caracterizado por descargas elétricas anormais e excessivas de neurônios no cérebro. Isso resulta em alterações súbitas do comportamento, sensações ou movimentos (abalos musculares).</p>
+                
+                <hr class="gold-separator" style="margin: 1.5rem 0; height: 1px; background-color: #ddd;">
+
+                <h3>O que é e Como Acontece?</h3>
+                <p>A crise mais comum é a **tônico-clônica**, onde há perda de consciência, rigidez do corpo (fase tônica) seguida por abalos rítmicos dos membros (fase clônica). Após a crise, a vítima entra no período pós-ictal, caracterizado por sonolência e confusão mental.</p>
+                
+                <h3>Possíveis Causas</h3>
+                <ul>
+                    <li style="margin-bottom: 10px;"><strong>Epilepsia:</strong> Principal causa crônica.</li>
+                    <li style="margin-bottom: 10px;"><strong>Febre Alta:</strong> Comum em crianças (convulsão febril).</li>
+                    <li style="margin-bottom: 10px;"><strong>Trauma:</strong> Lesões cerebrais ou Traumatismo Cranioencefálico (TCE) prévios.</li>
+                    <li style="margin-bottom: 10px;"><strong>Distúrbios Metabólicos:</strong> Hipoglicemia, Hipóxia grave, abstinência alcoólica ou drogas.</li>
+                    <li><strong>Infecções:</strong> Meningite.</li>
+                </ul>
+
+                <h3>Consequências e Riscos</h3>
+                <p>O maior risco durante a crise é a lesão física (queimaduras, quedas, mordedura da língua) e o comprometimento respiratório devido à obstrução da via aérea pela língua ou aspiração de conteúdo gástrico.</p>
+                <p><strong>Status Epiléptico:</strong> Crises que duram mais de 5 minutos ou crises recorrentes sem recuperação de consciência entre elas. É uma emergência médica grave.</p>
+
+                <hr class="gold-separator" style="margin: 1.5rem 0; height: 1px; background-color: #ddd;">
+
+                <h3>Procedimento de Atendimento</h3>
+                <ol>
+                    <li style="margin-bottom: 10px;"><strong>Segurança e Proteção:</strong> Afaste objetos perigosos ao redor da vítima. Não tente segurar ou imobilizar os membros.</li>
+                    <li style="margin-bottom: 10px;">**Nunca** coloque objetos na boca (colher, dedos, etc.). O risco de fraturas dentárias e lesão para o socorrista é alto.</li>
+                    <li style="margin-bottom: 10px;"><strong>Posicionamento Pós-Crise:</strong> Após a crise cessar, coloque a vítima em **Posição Lateral de Segurança (PLS)** para evitar a aspiração de secreções.</li>
+                    <li style="margin-bottom: 10px;"><strong>Monitoramento:</strong> Monitore o tempo da crise e o nível de consciência no período pós-ictal. Verifique a glicemia.</li>
+                    <li><strong>Acionamento:</strong> Chame o serviço de emergência se for o primeiro episódio, se a crise durar mais de 5 minutos (Status Epiléptico), ou se a vítima tiver se ferido gravemente.</li>
+                </ol>
+                <div style="text-align: center; margin: 15px 0;">
+                    <img src="../assets/convulsao_pls.png" alt="Ilustração da Posição Lateral de Segurança (PLS)" style="max-width: 100%; height: auto; border-radius: 5px; border: 1px solid #ccc;">
+                </div>
+            </div>
+
+            <div id="asma" class="content-section">
+                <h2>Asma (Crise Asmática)</h2>
+                <p>A asma é uma doença inflamatória crônica das vias aéreas que causa episódios recorrentes de sibilância (chiado no peito), dispneia (falta de ar), aperto no peito e tosse, especialmente à noite ou de manhã cedo.</p>
+                
+                <hr class="gold-separator" style="margin: 1.5rem 0; height: 1px; background-color: #ddd;">
+
+                <h3>O que é e Como Acontece?</h3>
+                <p>Durante uma crise, ocorre a inflamação e o estreitamento (broncoespasmo) dos brônquios e bronquíolos, dificultando a passagem do ar, principalmente na expiração. Isso leva ao acúmulo de ar nos pulmões (aprisionamento aéreo).</p>
+                
+                <h3>Sinais e Sintomas</h3>
+                <ul>
+                    <li style="margin-bottom: 10px;">Sibilância (chiado) audível, especialmente na expiração.</li>
+                    <li style="margin-bottom: 10px;">Uso de musculatura acessória (músculos do pescoço e tórax) para respirar.</li>
+                    <li style="margin-bottom: 10px;">Dificuldade para falar frases completas.</li>
+                    <li>Taquicardia (coração acelerado) e Taquipneia (respiração rápida).</li>
+                </ul>
+
+                <hr class="gold-separator" style="margin: 1.5rem 0; height: 1px; background-color: #ddd;">
+
+                <h3>Procedimento de Atendimento</h3>
+                <ol>
+                    <li style="margin-bottom: 10px;"><strong>Posicionamento:</strong> Coloque a vítima sentada (posição de Fowler), com o tronco inclinado para a frente, se confortável.</li>
+                    <li style="margin-bottom: 10px;">**Calma:** Transmita calma e tranquilidade, pois a ansiedade piora o quadro.</li>
+                    <li style="margin-bottom: 10px;"><strong>Medicação (Inalador):</strong> Ajude a vítima a usar o broncodilatador de alívio (geralmente Salbutamol ou Fenoterol), se ela tiver um. Repita a dose a cada 20 minutos por até 1 hora, se necessário, ou conforme o protocolo local.</li>
+                    <li style="margin-bottom: 10px;"><strong>Oxigênio:</strong> Ofereça oxigênio suplementar para manter a SpO<sub>2</sub> acima de 94%.</li>
+                    <li><strong>Acionamento e Transporte:</strong> Se não houver melhora após a medicação, ou se a vítima estiver exausta ou com cianose, transporte imediatamente para o hospital.</li>
+                </ol>
+            </div>
+
+            <div id="alergias" class="content-section">
+                <h2>Alergias / Anafilaxia</h2>
+                <p>Alergias são reações do sistema imunológico a substâncias inofensivas (alérgenos). A **Anafilaxia** é a forma mais grave e potencialmente fatal de reação alérgica, envolvendo múltiplos sistemas do corpo.</p>
+                
+                <hr class="gold-separator" style="margin: 1.5rem 0; height: 1px; background-color: #ddd;">
+
+                <h3>Reconhecimento da Anafilaxia</h3>
+                <p>A anafilaxia é uma emergência que compromete a respiração e/ou a circulação:</p>
+                <ul>
+                    <li style="margin-bottom: 10px;"><strong>Respiratório:</strong> Dificuldade respiratória, sibilância, inchaço da garganta, voz rouca.</li>
+                    <li style="margin-bottom: 10px;"><strong>Circulatório:</strong> Sinais de choque (pulso rápido e fraco, tontura, desmaio, hipotensão).</li>
+                    <li style="margin-bottom: 10px;"><strong>Pele:</strong> Urticária generalizada, coceira, angioedema (inchaço dos lábios, pálpebras, face).</li>
+                    <li><strong>Gastrointestinal:</strong> Náuseas, vômitos, dor abdominal.</li>
+                </ul>
+                
+                <h3>Possíveis Alérgenos</h3>
+                <p>Os mais comuns incluem picadas de insetos (abelha, vespa), alimentos (amendoim, frutos do mar), medicamentos (penicilina, anti-inflamatórios) e látex.</p>
+
+                <hr class="gold-separator" style="margin: 1.5rem 0; height: 1px; background-color: #ddd;">
+
+                <h3>Procedimento de Atendimento</h3>
+                <ol>
+                    <li style="margin-bottom: 10px;"><strong>Acione Imediatamente:</strong> Chame o suporte avançado de vida.</li>
+                    <li style="margin-bottom: 10px;"><strong>Adrenalina (Epinefrina):</strong> Se a vítima tiver um autoinjetor (EpiPen), auxilie na aplicação. Este é o tratamento de primeira linha.</li>
+                    <li style="margin-bottom: 10px;"><strong>Posicionamento:</strong> Deite a vítima e eleve as pernas (a menos que tenha dificuldade respiratória, caso em que deve sentar).</li>
+                    <li style="margin-bottom: 10px;"><strong>Oxigênio:</strong> Administre oxigênio suplementar em alto fluxo.</li>
+                    <li><strong>Monitoramento:</strong> Monitore de perto a via aérea e os sinais de choque. Esteja pronto para iniciar a RCP se houver Parada Cardiorrespiratória.</li>
+                </ol>
+            </div>
+
+            <div id="peconhentos" class="content-section">
+                <h2>Acidentes com Animais Peçonhentos</h2>
+                <p>Acidentes envolvendo serpentes, aranhas e escorpiões são emergências que exigem intervenção rápida e, muitas vezes, a administração de soro específico.</p>
+                
+                <hr class="gold-separator" style="margin: 1.5rem 0; height: 1px; background-color: #ddd;">
+
+                <h3>Princípios Gerais de APH</h3>
+                <p>O atendimento imediato visa reduzir a absorção do veneno e aliviar a dor, enquanto o transporte para o centro de tratamento (hospital com soro) é organizado.</p>
+                
+                <h3>Conduta Imediata</h3>
+                <ul>
+                    <li style="margin-bottom: 10px;">**Calma:** Mantenha a vítima calma e em repouso. A movimentação aumenta a circulação e absorção do veneno.</li>
+                    <li style="margin-bottom: 10px;">**Limpeza:** Lave o local da picada apenas com água e sabão.</li>
+                    <li style="margin-bottom: 10px;">**Remoção:** Remova anéis, pulseiras e sapatos apertados da região afetada (o inchaço pode aumentar e causar garroteamento).</li>
+                    <li>**Transporte:** Leve a vítima o mais rápido possível ao hospital de referência. Se possível, **fotografe o animal** (com segurança) para facilitar a identificação e a escolha do soro correto.</li>
+                </ul>
+
+                <h3>O que **NÃO** fazer</h3>
+                <ul>
+                    <li style="margin-bottom: 10px;">**Não** fazer torniquete ou garrote (pode piorar a necrose).</li>
+                    <li style="margin-bottom: 10px;">**Não** cortar ou furar o local da picada.</li>
+                    <li>**Não** chupar o veneno.</li>
+                </ul>
+            </div>
+            </div>
+
     </main>
 
-    <footer>
-        Soteris APH &reg;
+    <footer id="footer">
+        &copy; 2025 Soteris APH - Conteúdo Clínico. Todos os direitos reservados.
     </footer>
 
     <script>
-        // --- LÓGICA DE TEMA (REUTILIZADA) ---
-        const toggleButton = document.getElementById('theme-toggle');
+        // Lógica de alternância de tema
+        const themeToggle = document.getElementById('theme-toggle');
         const body = document.body;
-        const headerLogo = document.getElementById('header-logo');
-        const LOGO_LIGHT = '../assets/sem fundo.png'; 
-        const LOGO_DARK = '../assets/favicon.png'; 
 
-        const applyTheme = (theme) => {
-            const isDark = theme === 'dark';
-            body.classList.toggle('dark-mode', isDark);
-            toggleButton.textContent = isDark ? '🌙 Modo Claro' : '🌞 Modo Escuro';
-            
-            if (headerLogo) {
-                headerLogo.src = isDark ? LOGO_DARK : LOGO_LIGHT;
-                headerLogo.alt = isDark ? 'Logo Soteris APH (Modo Escuro)' : 'Logo Soteris APH';
+        // Verifica a preferência do usuário ao carregar
+        if (localStorage.getItem('theme') === 'dark') {
+            body.classList.add('dark-mode');
+            themeToggle.textContent = '☀️ Modo Claro';
+        } else {
+            themeToggle.textContent = '🌙 Modo Escuro';
+        }
+
+        themeToggle.addEventListener('click', () => {
+            if (body.classList.contains('dark-mode')) {
+                body.classList.remove('dark-mode');
+                localStorage.setItem('theme', 'light');
+                themeToggle.textContent = '🌙 Modo Escuro';
+            } else {
+                body.classList.add('dark-mode');
+                localStorage.setItem('theme', 'dark');
+                themeToggle.textContent = '☀️ Modo Claro';
             }
-            localStorage.setItem('theme', theme);
-        };
+        });
 
-        document.addEventListener('DOMContentLoaded', () => {
-            // Inicializa o tema
-            const storedTheme = localStorage.getItem('theme') || 'light';
-            applyTheme(storedTheme);
+        // Lógica de navegação e destaque
+        const navLinks = document.querySelectorAll('.nav-link');
+        const sections = document.querySelectorAll('.content-section');
 
-            // Listener para alternar o tema
-            toggleButton.addEventListener('click', () => {
-                const currentTheme = body.classList.contains('dark-mode') ? 'dark' : 'light';
-                const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-                applyTheme(newTheme);
+        navLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                // Remove 'active-link' de todos os links
+                navLinks.forEach(l => l.classList.remove('active-link'));
+                // Adiciona 'active-link' ao link clicado
+                this.classList.add('active-link');
             });
         });
+
+        // Observador para destacar o link na navegação lateral ao rolar
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                const id = entry.target.getAttribute('id');
+                const navLink = document.querySelector(`.side-nav a[href="#${id}"]`);
+
+                if (entry.isIntersecting) {
+                    navLinks.forEach(l => l.classList.remove('active-link'));
+                    if (navLink) {
+                        navLink.classList.add('active-link');
+                    }
+                }
+            });
+        }, {
+            rootMargin: '0px 0px -50% 0px', // Ativa o link quando a seção estiver na metade da tela
+            threshold: 0 // Início ou fim do elemento
+        });
+
+        sections.forEach(section => {
+            observer.observe(section);
+        });
+
     </script>
 </body>
 </html>
