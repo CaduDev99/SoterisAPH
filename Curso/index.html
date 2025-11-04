@@ -174,18 +174,17 @@
             flex-grow: 1;
             width: 100%;
             padding: 0; 
-            margin: 2rem 0; 
+            margin: 2rem 0;
             display: flex; 
             justify-content: center; 
             align-items: center;
-            overflow-x: hidden; 
+            overflow: hidden; 
         }
 
         /* Container do Carrossel (Visível) */
         .carousel-container {
             width: 100%;
-            max-width: 100vw;
-            overflow: hidden; 
+            overflow: visible; 
             position: relative;
             padding: 2rem 0;
             /* Permite o uso do scroll, mas desativa eventos de mouse nos botões do carrossel no JS */
@@ -199,11 +198,12 @@
             gap: 20px; 
             padding: 0 50px;
             width: fit-content;
-            transition: transform 0.25s cubic-bezier(0.4, 0.0, 0.2, 1);
-            will-change: transform;
+            transition: transform 0.2s cubic-bezier(0.2, 0, 0.2, 1);
+            will-change: transform, opacity;
+            transform-style: preserve-3d;
             backface-visibility: hidden;
             -webkit-backface-visibility: hidden;
-            transform-style: preserve-3d;
+            perspective: 1000px;
         }
 
         /* Card de Conteúdo */
@@ -211,9 +211,9 @@
             background-color: #f9f9f9;
             border-radius: 12px;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            transition: all 0.25s cubic-bezier(0.4, 0.0, 0.2, 1);
-            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.2, 0, 0.2, 1);
             will-change: transform, opacity;
+            cursor: pointer;
             text-decoration: none;
             color: inherit;
             display: flex;
@@ -253,7 +253,7 @@
             z-index: 20;
             border-radius: 50%;
             opacity: 0.8;
-            transition: opacity 0.3s, background-color 0.3s;
+            transition: opacity 0.1s, background-color 0.1s;
             font-weight: bold;
             font-size: 1.2rem;
             line-height: 1;
@@ -431,13 +431,12 @@
         const cardWidth = 300; 
         const gap = 20; 
         const totalCardSize = cardWidth + gap;
-        const bufferSize = 3; // Aumentado para maior suavidade
-        const transitionDuration = 250; // Reduzido para 250ms para maior fluidez
+        const bufferSize = 3; // Aumentado para transições mais suaves
+        const transitionDuration = 200; // Mantido em 200ms para fluidez
+        const easing = 'cubic-bezier(0.2, 0, 0.2, 1)'; // Easing suave
 
-        // Controle de estado do carrossel
-        let isScrolling = false;
-        let lastScrollTime = 0;
-        const scrollThrottle = 100; // Tempo mínimo entre scrolls em ms
+        // Variável de controle de rolagem (evita rolagem excessiva)
+        let isScrolling = false; 
 
         // 1. Configuração do Carrossel (Duplicação para Loop)
         function setupCarousel() {
@@ -464,148 +463,146 @@
             updateCarousel(false); // Renderiza a posição inicial sem animação
         }
 
-        // 2. Sistema de Atualização Otimizado
+        // 2. Atualiza Posição e Escala dos Cards - Com pre-rendering
+        let animationFrame;
+        const cardStates = new Map(); // Cache para estados dos cards
+
         function updateCarousel(animate = true) {
-            const containerCenter = carouselTrack.parentElement.offsetWidth / 2;
-            const offset = (currentIndex * totalCardSize) - containerCenter + (cardWidth / 2);
-            
-            if (animate) {
-                carouselTrack.style.transition = `transform ${transitionDuration}ms cubic-bezier(0.4, 0.0, 0.2, 1)`;
-            } else {
-                carouselTrack.style.transition = 'none';
+            if (animationFrame) {
+                cancelAnimationFrame(animationFrame);
             }
 
-            // Aplicando transform com translateZ(0) para forçar aceleração de hardware
-            carouselTrack.style.transform = `translate3d(${-offset}px, 0, 0)`;
-
-            // Cache do currentIndex para performance
-            const currentIdx = currentIndex;
-            
-            // Otimização da atualização dos cards
-            const allCards = Array.from(carouselTrack.children);
-            const centerCard = allCards[currentIdx];
-            
-            allCards.forEach((card, index) => {
-                const distance = Math.abs(index - currentIdx);
-                const scale = Math.max(0.7, 1.0 - (distance * 0.15));
-                const opacity = Math.max(0.6, 1.0 - (distance * 0.25));
-                const zIndex = distance === 0 ? 10 : Math.max(1, 10 - distance);
+            animationFrame = requestAnimationFrame(() => {
+                const containerCenter = carouselTrack.parentElement.offsetWidth / 2;
+                const offset = (currentIndex * totalCardSize) - containerCenter + (cardWidth / 2) + 50;
                 
-                // Aplicando transformações em um único batch
-                requestAnimationFrame(() => {
-                    card.style.transform = `scale(${scale})`;
-                    card.style.opacity = opacity;
-                    card.style.zIndex = zIndex;
-                });
-            });
+                // Aplica a transformação principal do carrossel
+                carouselTrack.style.transition = animate ? 
+                    `transform ${transitionDuration}ms cubic-bezier(0.2, 0, 0.2, 1)` : 'none';
+                carouselTrack.style.transform = `translateX(${-offset}px)`;
 
-            // Sistema de preload otimizado
-            if (animate) {
-                // Preload dos próximos cards
-                const preloadIndices = [
-                    currentIdx - 2,
-                    currentIdx - 1,
-                    currentIdx + 1,
-                    currentIdx + 2
-                ].filter(idx => idx >= 0 && idx < allCards.length);
-                
-                preloadIndices.forEach(idx => {
-                    const card = allCards[idx];
-                    if (card) {
-                        const img = card.querySelector('img');
-                        if (img && !img.complete) {
-                            img.style.visibility = 'visible';
-                        }
+                // Pre-renderiza estados dos cards
+                const allCards = Array.from(carouselTrack.children);
+                const preRenderRange = 4; // Aumentado para pré-renderizar mais cards
+
+                allCards.forEach((card, index) => {
+                    const distance = Math.abs(index - currentIndex);
+                    const cardKey = `card-${index}-${currentIndex}`;
+                    
+                    // Verifica se já temos o estado deste card em cache
+                    if (!cardStates.has(cardKey)) {
+                        const scale = Math.max(0.7, 1 - (distance * 0.15));
+                        const opacity = Math.max(0.7, 1 - (distance * 0.2));
+                        
+                        cardStates.set(cardKey, {
+                            transform: `scale(${scale})`,
+                            opacity: opacity,
+                            zIndex: distance === 0 ? 10 : 1
+                        });
+                    }
+
+                    // Aplica os estados com base na distância
+                    if (distance <= preRenderRange) {
+                        const state = cardStates.get(cardKey);
+                        
+                        // Aplica as transformações de forma otimizada
+                        requestAnimationFrame(() => {
+                            card.style.cssText = `
+                                transform: ${state.transform};
+                                opacity: ${state.opacity};
+                                z-index: ${state.zIndex};
+                                transition: ${animate ? `all ${transitionDuration}ms` : 'none'};
+                                will-change: transform, opacity;
+                                backface-visibility: hidden;
+                                perspective: 1000px;
+                            `;
+                        });
+                    } else if (card.style.transform) {
+                        // Mantém cards fora de visão em um estado neutro
+                        card.style.cssText = `
+                            transform: scale(0.7);
+                            opacity: 0.7;
+                            transition: none;
+                        `;
                     }
                 });
 
-                // Libera o scroll após a animação
-                setTimeout(() => {
+                // Limpa o cache periodicamente
+                if (cardStates.size > 100) {
+                    cardStates.clear();
+                }
+
+                if (animate) {
+                    setTimeout(() => {
+                        isScrolling = false;
+                        animationFrame = null;
+                    }, transitionDuration);
+                } else {
                     isScrolling = false;
-                }, transitionDuration);
-            } else {
-                isScrolling = false;
-            }
+                    animationFrame = null;
+                }
+            });
         }
 
-        // 3. Funções de Navegação Otimizadas
+        // 3. Funções de Navegação
         function goToNext() {
-            if (isScrolling || !canScroll()) return;
+            if (isScrolling) return; 
             isScrolling = true;
-            lastScrollTime = Date.now();
             currentIndex++;
-            requestAnimationFrame(() => updateCarousel(true));
+            carouselTrack.style.transition = `transform ${transitionDuration}ms cubic-bezier(0.25, 0.46, 0.45, 0.94)`;
+            updateCarousel(true);
         }
 
         function goToPrev() {
-            if (isScrolling || !canScroll()) return;
+            if (isScrolling) return;
             isScrolling = true;
-            lastScrollTime = Date.now();
             currentIndex--;
-            requestAnimationFrame(() => updateCarousel(true));
+            carouselTrack.style.transition = `transform ${transitionDuration}ms cubic-bezier(0.25, 0.46, 0.45, 0.94)`;
+            updateCarousel(true);
         }
 
-        // Controle de throttle do scroll
-        function canScroll() {
-            const now = Date.now();
-            if (now - lastScrollTime < scrollThrottle) return false;
-            return true;
-        }
-
-        // 4. Lógica de Loop Infinito Otimizada
+        // 4. Lógica de Loop Infinito - Corrigida
         carouselTrack.addEventListener('transitionend', (e) => {
-            if (e.propertyName !== 'transform' || carouselTrack.style.transition === 'none') return;
-            
-            const needsReset = currentIndex >= totalItems + bufferSize || currentIndex < bufferSize;
-            
-            if (needsReset) {
-                // Calculamos o índice correto antes de fazer o reset
-                currentIndex = currentIndex >= totalItems + bufferSize ? 
-                    bufferSize : 
-                    totalItems + bufferSize - 1;
-                
-                // Usando requestAnimationFrame para garantir que o reset seja suave
-                requestAnimationFrame(() => {
-                    updateCarousel(false);
-                    // Preparamos o próximo frame para reativar as transições
-                    requestAnimationFrame(() => {
-                        carouselTrack.style.transition = `transform ${transitionDuration}ms cubic-bezier(0.4, 0.0, 0.2, 1)`;
-                    });
-                });
-            } else {
-                isScrolling = false;
+            if (e.propertyName !== 'transform') return;
+            if (carouselTrack.style.transition === 'none') return;
+
+            // Reposiciona apenas quando chega aos extremos
+            if (currentIndex >= totalItems + bufferSize) {
+                currentIndex = bufferSize;
+                carouselTrack.style.transition = 'none';
+                updateCarousel(false);
+            } 
+            else if (currentIndex < bufferSize) {
+                currentIndex = totalItems + (currentIndex % bufferSize);
+                carouselTrack.style.transition = 'none';
+                updateCarousel(false);
             }
         });
         
-        // 5. Sistema de Scroll Otimizado
+        // 5. ROLAGEM COM SCROLL DO MOUSE - Otimizada
         let scrollTimeout;
-        let accumulatedDelta = 0;
-        const scrollThreshold = 50;
-
         carouselContainer.addEventListener('wheel', (e) => {
             e.preventDefault();
             
-            if (isScrolling || !canScroll()) return;
+            if (isScrolling) return;
             
-            // Acumula o delta do scroll
-            accumulatedDelta += e.deltaY;
-            
-            // Limpa o timeout anterior se existir
-            clearTimeout(scrollTimeout);
-            
-            // Define um novo timeout
+            // Limpa o timeout anterior
+            if (scrollTimeout) {
+                clearTimeout(scrollTimeout);
+            }
+
+            // Acumula o valor do scroll para uma resposta mais suave
+            const scrollDelta = Math.abs(e.deltaY);
+            if (scrollDelta < 5) return; // Reduz a sensibilidade
+
+            // Executa a ação com um pequeno debounce
             scrollTimeout = setTimeout(() => {
-                // Se acumulou scroll suficiente, move o carrossel
-                if (Math.abs(accumulatedDelta) >= scrollThreshold) {
-                    if (accumulatedDelta < 0) {
-                        goToPrev();
-                    } else {
-                        goToNext();
-                    }
+                if (e.deltaY < 0) {
+                    goToPrev();
+                } else {
+                    goToNext();
                 }
-                // Reseta o acumulador
-                accumulatedDelta = 0;
-            }, 50); // Pequeno delay para acumular scroll
+            }, 10); // Pequeno delay para suavizar múltiplos eventos de scroll
         });
 
 
