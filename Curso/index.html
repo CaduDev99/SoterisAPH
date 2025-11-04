@@ -36,9 +36,8 @@
         /* Header - CONFIGURAÇÃO PARA MODO CLARO (PADRÃO) */
         header {
             width: 100%;
-            /* Fundo GOLD no modo claro, conforme solicitado */
             background-image: linear-gradient(to top, gold, rgb(251, 228, 134));
-            color: #000000; /* Texto preto no modo claro */
+            color: #000000;
             padding: 0.8rem 1.5rem;
             display: flex;
             justify-content: space-between;
@@ -52,10 +51,9 @@
 
         /* Tema escuro: Header (Sobrescreve o anterior) */
         body.dark-mode header {
-            /* Fundo PRETO no modo escuro, conforme solicitado */
             background-image: none;
-            background-color: #000000;  
-            color: #ffffff; /* Texto branco no modo escuro */
+            background-color: #000000;
+            color: #ffffff;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
         }
         
@@ -67,7 +65,7 @@
         }
 
         .header-logo-group img {
-            height: 80px;  
+            height: 80px;
             width: 80px;
         }
 
@@ -75,23 +73,21 @@
         .header-logo-group span {
             font-size: 2rem;
             font-weight: bold;
-            /* Cor preta no modo claro (fundo header gold) */
-            color: #000000;  
+            color: #000000;
             transition: color 0.3s;
         }
 
         /* Nome Soteris no modo escuro */
         body.dark-mode .header-logo-group span {
-            color: gold;  
+            color: gold;
         }
 
         /* Título h1 */
         header h1 {
             font-size: 1.8rem;
             font-weight: bold;
-            /* Cor preta no modo claro, conforme solicitado */
-            color: #000000;  
-            margin-right: auto; /* Empurra para o centro/esquerda */
+            color: #000000;
+            margin-right: auto;
             margin-left: 20px;
             transition: color 0.3s;
         }
@@ -105,13 +101,13 @@
         .header-controls {
             display: flex;
             align-items: center;
-            gap: 10px;  
+            gap: 10px;
         }
 
         /* Botão de voltar */
         .back-button {
             padding: 0.5rem 1rem;
-            background-color: #000000; /* Botão preto no fundo gold */
+            background-color: #000000;
             color: gold;
             border: none;
             border-radius: 6px;
@@ -139,7 +135,7 @@
         /* Botão de alternância */
         .theme-toggle {
             padding: 0.5rem 1rem;
-            background-color: #000000; /* Botão preto no fundo gold */
+            background-color: #000000;
             color: #fff;
             border: none;
             border-radius: 8px;
@@ -156,12 +152,11 @@
             background-color: #545454;
         }
 
-        /* NOVO ESTILO: Separador */
+        /* Separador */
         .gold-separator {
             width: 100%;
             height: 2px;
-            /* Cor preta no modo claro */
-            background-color: black;  
+            background-color: black;
             border: none;
             margin: 0;
             padding: 0;
@@ -173,38 +168,48 @@
             background-color: gold;
         }
 
-        /* --- INÍCIO DOS ESTILOS DE GRID/RESPONSIVOS PARA OS CARDS --- */
+        /* --- ESTILOS DO CARROSSEL --- */
         
-        /* Main - Ajustado para rolagem vertical fluida */
         main {
             flex-grow: 1;
             width: 100%;
-            margin: 2rem 0;  
-            padding: 1rem; /* Padding horizontal para margem lateral em mobile */
-            display: flex;  
-            justify-content: center; /* Centraliza o cards-container */
-            align-items: flex-start;  
-            overflow-x: hidden; /* Garante que não haja rolagem horizontal indesejada */
-            /* Rolagem vertical é controlada pelo body, não pelo main */
+            padding: 0; 
+            margin: 2rem 0; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center;
+            overflow-x: hidden; 
         }
 
-        /* Contêiner para os Cards (Permite quebra de linha) */
+        /* Container do Carrossel (Visível) */
+        .carousel-container {
+            width: 100%;
+            max-width: 100vw;
+            overflow: hidden; 
+            position: relative;
+            padding: 2rem 0;
+            /* Permite o uso do scroll, mas desativa eventos de mouse nos botões do carrossel no JS */
+            pointer-events: none; 
+        }
+
+        /* Track (Trilha) que se move */
         .cards-container {
             display: flex;
-            flex-wrap: wrap; /* PERMITE QUEBRA DE LINHA para múltiplos cards por linha */
-            gap: 2rem; /* Espaçamento entre os cards */
-            padding: 0;  
-            max-width: 1200px; /* Limite de largura para desktop */
-            width: 100%;
-            justify-content: center; /* Centraliza os cards */
+            flex-wrap: nowrap;
+            gap: 20px; 
+            padding: 0 50px;
+            width: fit-content;
+            /* REDUZIDO DE 0.5s PARA 0.3s para fluidez */
+            transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94); 
+            will-change: transform; 
         }
-        
+
         /* Card de Conteúdo */
         .content-card {
             background-color: #f9f9f9;
             border-radius: 12px;
-            overflow: hidden;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            /* REDUZIDO DE 0.5s PARA 0.3s para fluidez */
             transition: transform 0.3s, box-shadow 0.3s, background-color 0.3s;
             cursor: pointer;
             text-decoration: none;
@@ -213,10 +218,15 @@
             flex-direction: column;
             align-items: center;
             padding-bottom: 15px;
-            flex-shrink: 0;  
-            width: 100%;  
-            max-width: 300px; /* Limite o tamanho do card em mobile */
+            flex-shrink: 0;
+            width: 300px; 
+            height: 450px;
             border: #e6c939 2px solid;
+            
+            /* Estilos 3D */
+            transform: scale(0.8);
+            opacity: 0.7;
+            pointer-events: auto; /* Permite o clique nos links */
         }
 
         body.dark-mode .content-card {
@@ -225,126 +235,51 @@
         }
 
         .content-card:hover {
-            transform: translateY(-5px);
             box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
         }
 
-        body.dark-mode .content-card:hover {
-            box-shadow: 0 8px 15px rgba(255, 255, 255, 0.1);
-        }
-
-        /* Layout de 2 COLUNAS (Telas de tablet) */
-        @media (min-width: 600px) and (max-width: 991px) {
-            .content-card {
-                /* (50% - metade do gap) para 2 cards por linha */
-                width: calc(50% - 1rem);  
-                max-width: none;
-            }
-        }
-
-        /* Layout de 3 COLUNAS (Telas maiores) */
-        @media (min-width: 992px) {
-            .content-card {
-                /* (33.333% - o espaço para os 2 gaps) para 3 cards por linha */
-                width: calc(33.333% - 1.34rem);
-                max-width: none;
-            }
-        }
-        
-        /* --- FIM DOS ESTILOS DE GRID/RESPONSIVOS PARA OS CARDS --- */
-
-
-        .card-image-container {
-            width: 100%;
-            aspect-ratio: 1 / 1;  
-            overflow: hidden;
-        }
-
-        .card-image-container img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.3s;
-        }
-
-        .content-card:hover .card-image-container img {
-            transform: scale(1.05);
-        }
-
-        .card-body {
-            padding: 1rem;
-            text-align: center;
-            flex-grow: 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            width: 100%;
-        }
-
-        .card-description {
-            font-size: 0.9rem;
-            margin-bottom: 1rem;
-            color: #666;
-            transition: color 0.3s;
-        }
-
-        body.dark-mode .card-description {
-            color: #ccc;
-        }
-
-        .card-title {
-            font-size: 1.3rem;
+        /* Botões de Navegação do Carrossel */
+        .carousel-button {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: rgba(0, 0, 0, 0.6);
+            color: gold;
+            border: none;
+            padding: 15px 15px;
+            cursor: pointer;
+            z-index: 20;
+            border-radius: 50%;
+            opacity: 0.8;
+            transition: opacity 0.3s, background-color 0.3s;
             font-weight: bold;
-            color: gold;  
-            margin-top: auto;  
-            padding-top: 10px;  
-            border-top: 1px solid #eee;
+            font-size: 1.2rem;
+            line-height: 1;
+            pointer-events: auto; /* Essencial para o clique */
         }
 
-        body.dark-mode .card-title {
-            border-top: 1px solid #444;
-        }
+        .carousel-button.prev { left: 10px; }
+        .carousel-button.next { right: 10px; }
 
-        /* Footer */
-        footer {
-            margin-top: auto;
-            width: 100%;
-            text-align: center;
-            font-size: clamp(0.8rem, 2vw, 0.9rem);
-            padding: 0.8rem;
-            color: #000000;
-            transition: color 0.3s;
-            background-image: linear-gradient(to bottom, gold, white);
-        }
+        /* Estilos de Card Body (mantidos) */
+        .card-image-container { width: 100%; aspect-ratio: 1 / 1; overflow: hidden; }
+        .card-image-container img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s; }
+        .card-body { padding: 1rem; text-align: center; flex-grow: 1; display: flex; flex-direction: column; justify-content: space-between; width: 100%; }
+        .card-description { font-size: 0.9rem; margin-bottom: 1rem; color: #666; transition: color 0.3s; }
+        body.dark-mode .card-description { color: #ccc; }
+        .card-title { font-size: 1.3rem; font-weight: bold; color: gold; margin-top: auto; padding-top: 10px; border-top: 1px solid #eee; }
+        body.dark-mode .card-title { border-top: 1px solid #444; }
 
-        body.dark-mode footer {
-            color: #ffffff;
-            background-image: linear-gradient(to bottom, gold, rgb(0, 0, 0));
-        }
-
-        /* Media Queries para ajuste do layout */
+        /* Media Queries (mantidas) */
         @media (max-width: 768px) {
-            header {
-                padding: 0.6rem 1rem;
-            }
-
-            .header-logo-group span {
-                font-size: 1.2rem;
-            }
-
-            header h1 {
-                font-size: 1.4rem;
-                margin-left: 10px;
-            }
-
-            .header-controls {
-                gap: 5px;  
-            }
-
-            .back-button, .theme-toggle {
-                padding: 0.4rem 0.8rem;
-                font-size: 0.8rem;
-            }
+            header { padding: 0.6rem 1rem; }
+            .header-logo-group img { height: 60px; width: 60px; }
+            .header-logo-group span { font-size: 1.2rem; }
+            header h1 { font-size: 1.4rem; margin-left: 10px; }
+            .header-controls { gap: 5px; }
+            .back-button, .theme-toggle { padding: 0.4rem 0.8rem; font-size: 0.8rem; }
+            .content-card { width: 250px; height: 400px; }
+            .carousel-button { padding: 10px 10px; font-size: 1rem; }
         }
     </style>
 </head>
@@ -366,66 +301,70 @@
     <hr class="gold-separator">
 
     <main>
-        <div class="cards-container">
-            <a href="Conceitos/index.html" class="content-card">
-                <div class="card-image-container">
-                    <img src="assets/conceitos.png" alt="Imagem relacionada a Conceitos Essenciais" id="img-conceitos">
-                </div>
-                <div class="card-body">
-                    <p class="card-description">Definições, diferenças entre APH e Primeiros Socorros, segurança de cena e números de emergência.</p>
-                    <h2 class="card-title">Conceitos Essenciais</h2>
-                </div>
-            </a>
+        <div class="carousel-container" id="carousel-container">
+            <div class="cards-container">
+                <a href="Conceitos/index.html" class="content-card">
+                    <div class="card-image-container">
+                        <img src="assets/conceitos.png" alt="Imagem relacionada a Conceitos Essenciais" id="img-conceitos">
+                    </div>
+                    <div class="card-body">
+                        <p class="card-description">Definições, diferenças entre APH e Primeiros Socorros, segurança de cena e números de emergência.</p>
+                        <h2 class="card-title">Conceitos Essenciais</h2>
+                    </div>
+                </a>
 
-            <a href="Clinicos/index.html" class="content-card">
-                <div class="card-image-container">
-                    <img src="assets/clinico.png" alt="Imagem relacionada a Casos Clínicos" id="img-clinicos">
-                </div>
-                <div class="card-body">
-                    <p class="card-description">Aborda doenças, emergências médicas e o manejo clínico no APH.</p>
-                    <h2 class="card-title">Clínicos</h2>
-                </div>
-            </a>
+                <a href="Clinicos/index.html" class="content-card">
+                    <div class="card-image-container">
+                        <img src="assets/clinico.png" alt="Imagem relacionada a Casos Clínicos" id="img-clinicos">
+                    </div>
+                    <div class="card-body">
+                        <p class="card-description">Aborda doenças, emergências médicas e o manejo clínico no APH.</p>
+                        <h2 class="card-title">Clínicos</h2>
+                    </div>
+                </a>
 
-            <a href="Trauma/trauma.html" class="content-card">
-                <div class="card-image-container">
-                    <img src="assets/trauma.png" alt="Imagem relacionada a Trauma" id="img-trauma">
-                </div>
-                <div class="card-body">
-                    <p class="card-description">Focado em lesões, cinemática do trauma e protocolos de atendimento.</p>
-                    <h2 class="card-title">Trauma</h2>
-                </div>
-            </a>
+                <a href="Trauma/trauma.html" class="content-card">
+                    <div class="card-image-container">
+                        <img src="assets/trauma.png" alt="Imagem relacionada a Trauma" id="img-trauma">
+                    </div>
+                    <div class="card-body">
+                        <p class="card-description">Focado em lesões, cinemática do trauma e protocolos de atendimento.</p>
+                        <h2 class="card-title">Trauma</h2>
+                    </div>
+                </a>
 
-            <a href="Termos/termos.html" class="content-card">
-                <div class="card-image-container">
-                    <img src="assets/termos.png" alt="Imagem relacionada a Termos Técnicos" id="img-termos">
-                </div>
-                <div class="card-body">
-                    <p class="card-description">Um glossário de terminologias e siglas essenciais para o APH.</p>
-                    <h2 class="card-title">Termos Técnicos</h2>
-                </div>
-            </a>
+                <a href="Termos/termos.html" class="content-card">
+                    <div class="card-image-container">
+                        <img src="assets/termos.png" alt="Imagem relacionada a Termos Técnicos" id="img-termos">
+                    </div>
+                    <div class="card-body">
+                        <p class="card-description">Um glossário de terminologias e siglas essenciais para o APH.</p>
+                        <h2 class="card-title">Termos Técnicos</h2>
+                    </div>
+                </a>
 
-            <a href="Exercicios/exercicios.html" class="content-card">
-                <div class="card-image-container">
-                    <img src="assets/exercicios.png" alt="Imagem relacionada a Exercícios" id="img-exercicios">
-                </div>
-                <div class="card-body">
-                    <p class="card-description">Questões práticas e simulados para fixação do conhecimento.</p>
-                    <h2 class="card-title">Exercícios</h2>
-                </div>
-            </a>
+                <a href="Exercicios/exercicios.html" class="content-card">
+                    <div class="card-image-container">
+                        <img src="assets/exercicios.png" alt="Imagem relacionada a Exercícios" id="img-exercicios">
+                    </div>
+                    <div class="card-body">
+                        <p class="card-description">Questões práticas e simulados para fixação do conhecimento.</p>
+                        <h2 class="card-title">Exercícios</h2>
+                    </div>
+                </a>
 
-            <a href="Provas/provas.html" class="content-card">
-                <div class="card-image-container">
-                    <img src="assets/provas.png" alt="Imagem relacionada a Prova" id="img-prova">
-                </div>
-                <div class="card-body">
-                    <p class="card-description">Aqui veremos se aprendeu mesmo sobre o conteudo do curso, Boa Sorte!.</p>
-                    <h2 class="card-title">Prova</h2>
-                </div>
-            </a>
+                <a href="Provas/provas.html" class="content-card">
+                    <div class="card-image-container">
+                        <img src="assets/provas.png" alt="Imagem relacionada a Prova" id="img-prova">
+                    </div>
+                    <div class="card-body">
+                        <p class="card-description">Aqui veremos se aprendeu mesmo sobre o conteudo do curso, Boa Sorte!.</p>
+                        <h2 class="card-title">Prova</h2>
+                    </div>
+                </a>
+            </div>
+            <button class="carousel-button prev">❮</button>
+            <button class="carousel-button next">❯</button>
         </div>
     </main>
 
@@ -434,11 +373,13 @@
     </footer>
 
     <script>
+        // ------------------------------------
+        // CÓDIGO DO TEMA CLARO/ESCURO
+        // ------------------------------------
         const toggleButton = document.getElementById('theme-toggle');
         const body = document.body;
         const headerLogo = document.getElementById('header-logo');
         
-        // Mapeamento dos Cards e suas Imagens
         const cardImages = [
             { id: 'img-conceitos', light: 'assets/img light/conceitos light.png', dark: 'assets/conceitos.png' },
             { id: 'img-clinicos', light: 'assets/img light/clinico light.png', dark: 'assets/clinico.png' },
@@ -448,11 +389,7 @@
             { id: 'img-prova', light: 'assets/img light/provas light.png', dark: 'assets/provas.png' }
         ];
 
-        // Defina os caminhos das logos
         const LOGO_LIGHT = 'assets/sem fundo.png';
-        
-        // CORREÇÃO DE CAMINHO: Se o HTML está em uma pasta (ex: /curso/) e assets em outra,
-        // é preciso voltar um nível (../) para acessar o assets/favicon.png
         const LOGO_DARK = '../assets/favicon.png'; 
 
         const applyTheme = (theme) => {
@@ -460,18 +397,14 @@
             body.classList.toggle('dark-mode', isDark);
             toggleButton.textContent = isDark ? '🌙 Modo Claro' : '🌞 Modo Escuro';
             
-            // Lógica para alternar a logo do Header
             if (headerLogo) {
                 headerLogo.src = isDark ? LOGO_DARK : LOGO_LIGHT;
                 headerLogo.alt = isDark ? 'Logo Soteris APH (Modo Escuro)' : 'Logo Soteris APH';
             }
 
-            // Lógica para alternar as imagens dos Cards
             cardImages.forEach(item => {
                 const cardImg = document.getElementById(item.id);
                 if (cardImg) {
-                    // O caminho das imagens dos cards permanece como 'assets/...'
-                    // porque elas estão no mesmo nível do HTML
                     cardImg.src = isDark ? item.dark : item.light;
                 }
             });
@@ -479,13 +412,178 @@
             localStorage.setItem('theme', theme);
         };
 
-        const storedTheme = localStorage.getItem('theme') || 'light';
-        applyTheme(storedTheme);
+        // ------------------------------------
+        // CÓDIGO DO CARROSSEL
+        // ------------------------------------
 
-        toggleButton.addEventListener('click', () => {
-            const currentTheme = body.classList.contains('dark-mode') ? 'dark' : 'light';
-            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-            applyTheme(newTheme);
+        const carouselContainer = document.getElementById('carousel-container');
+        const carouselTrack = document.querySelector('.cards-container');
+        const originalCards = Array.from(carouselTrack.children); 
+        const prevButton = document.querySelector('.carousel-button.prev');
+        const nextButton = document.querySelector('.carousel-button.next');
+        
+        let currentIndex = 0;
+        const totalItems = originalCards.length;
+        
+        // Parâmetros do carrossel
+        const cardWidth = 300; 
+        const gap = 20; 
+        const totalCardSize = cardWidth + gap;
+        const bufferSize = 2; // Número de cards para duplicação
+        const transitionDuration = 300; // Tempo da transição em milissegundos (0.3s no CSS)
+
+        // Variável de controle de rolagem (evita rolagem excessiva)
+        let isScrolling = false; 
+
+        // 1. Configuração do Carrossel (Duplicação para Loop)
+        function setupCarousel() {
+            // Remove duplicações anteriores, se houver
+            Array.from(carouselTrack.children).forEach(child => {
+                if (child.classList.contains('cloned')) {
+                    child.remove();
+                }
+            });
+
+            // Duplica cards para frente e para trás
+            for (let i = 0; i < bufferSize; i++) {
+                const cloneEnd = originalCards[totalItems - bufferSize + i].cloneNode(true);
+                cloneEnd.classList.add('cloned');
+                carouselTrack.prepend(cloneEnd);
+
+                const cloneStart = originalCards[i].cloneNode(true);
+                cloneStart.classList.add('cloned');
+                carouselTrack.appendChild(cloneStart);
+            }
+
+            // Define o índice inicial para o primeiro card real
+            currentIndex = bufferSize; 
+            updateCarousel(false); // Renderiza a posição inicial sem animação
+        }
+
+        // 2. Atualiza Posição e Escala dos Cards
+        function updateCarousel(animate = true) {
+            const containerCenter = carouselTrack.parentElement.offsetWidth / 2;
+            const offset = (currentIndex * totalCardSize) - containerCenter + (cardWidth / 2);
+            
+            if (animate) {
+                // Habilita a transição definida no CSS (0.3s)
+                carouselTrack.style.transition = `transform ${transitionDuration}ms cubic-bezier(0.25, 0.46, 0.45, 0.94)`;
+            } else {
+                // Desabilita a transição (movimento instantâneo)
+                carouselTrack.style.transition = 'none';
+            }
+
+            // Move o track
+            carouselTrack.style.transform = `translateX(${-offset}px)`;
+
+            // Aplica escala e opacidade (3D)
+            const allCards = Array.from(carouselTrack.children);
+            allCards.forEach((card, index) => {
+                const distance = Math.abs(index - currentIndex);
+                
+                let scale = 1.0 - (distance * 0.2); 
+                scale = Math.max(0.7, scale); 
+                
+                // Aplica transição de escala (0.3s)
+                card.style.transition = `transform ${transitionDuration}ms, opacity ${transitionDuration}ms`;
+                card.style.transform = `scale(${scale})`;
+                card.style.opacity = scale;
+                card.style.zIndex = distance === 0 ? 10 : 1;
+            });
+            
+            // Reseta a flag de rolagem APÓS a animação se completar
+            if (animate) {
+                 setTimeout(() => {
+                    isScrolling = false;
+                }, transitionDuration); 
+            } else {
+                // Se não houve animação (ex: reposicionamento do loop), libera imediatamente
+                isScrolling = false; 
+            }
+        }
+
+        // 3. Funções de Navegação
+        function goToNext() {
+            if (isScrolling) return; 
+            isScrolling = true;
+            currentIndex++;
+            updateCarousel(true);
+        }
+
+        function goToPrev() {
+            if (isScrolling) return;
+            isScrolling = true;
+            currentIndex--;
+            updateCarousel(true);
+        }
+
+        // 4. Lógica de Loop Infinito (Transição) - CORREÇÃO DA TRAVADINHA
+        // A lógica do loop deve ser executada após o fim da transição ANIMADA (quando animate=true)
+        carouselTrack.addEventListener('transitionend', (e) => {
+            // Ignora eventos de transição que não sejam do "transform" do track (pode ser de scale ou opacity)
+            if (e.propertyName !== 'transform') return; 
+
+            // Se o reposicionamento já foi feito (animate=false), apenas ignora.
+            if (carouselTrack.style.transition === 'none') return;
+            
+            // Lógica de loop (o índice já foi atualizado em goToNext/goToPrev)
+            // Se chegou ao card clone, reposiciona para o card real correspondente (SEM ANIMAÇÃO)
+            if (currentIndex >= totalItems + bufferSize) {
+                currentIndex = bufferSize; 
+                updateCarousel(false); // Reposiciona instantaneamente
+            } 
+            else if (currentIndex < bufferSize) {
+                currentIndex = totalItems + bufferSize - 1; 
+                updateCarousel(false); // Reposiciona instantaneamente
+            }
+        });
+        
+        // 5. ROLAGEM COM SCROLL DO MOUSE
+        carouselContainer.addEventListener('wheel', (e) => {
+            // Previne a rolagem da página quando o mouse está sobre o carrossel
+            e.preventDefault(); 
+            
+            // Garante que o usuário só possa rolar para o próximo card após a animação terminar
+            if (isScrolling) return;
+
+            // Para evitar que um pequeno movimento do scroll dispare o carrossel (sensibilidade)
+            if (Math.abs(e.deltaY) < 10) return; 
+
+            // DeltaY negativo = rolagem para cima (quer ir para o card anterior)
+            if (e.deltaY < 0) {
+                goToPrev();
+            } 
+            // DeltaY positivo = rolagem para baixo (quer ir para o próximo card)
+            else if (e.deltaY > 0) {
+                goToNext();
+            }
+        });
+
+
+        // 6. Inicialização
+        document.addEventListener('DOMContentLoaded', () => {
+            // Inicialização do Tema
+            const storedTheme = localStorage.getItem('theme') || 'light';
+            applyTheme(storedTheme);
+
+            toggleButton.addEventListener('click', () => {
+                const currentTheme = body.classList.contains('dark-mode') ? 'dark' : 'light';
+                const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+                applyTheme(newTheme);
+            });
+            
+            // Inicialização do Carrossel
+            setupCarousel();
+
+            // Listeners dos botões do Carrossel
+            prevButton.addEventListener('click', goToPrev);
+            nextButton.addEventListener('click', goToNext);
+
+            // Ajusta o carrossel em caso de redimensionamento da tela (para manter o card centralizado)
+            window.addEventListener('resize', () => {
+                isScrolling = false; 
+                updateCarousel(false);
+            });
         });
     </script>
 </body>

@@ -4,9 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" href="../assets/favicon.png" type="image/x-icon">
-    <title>Soteris APH - Módulo de Trauma</title>
+    <title>Soteris APH - Atendimento ao Trauma</title>
     <style>
-        /* Estilos base reutilizados */
+        /* Estilos base */
         * {
             margin: 0;
             padding: 0;
@@ -24,7 +24,7 @@
             color: #222;
         }
 
-        /* Tema escuro */
+        /* Tema escuro (Mantido) */
         body.dark-mode {
             background: linear-gradient(to top, #000000, #202020);
             color: #f5f5f5;
@@ -33,7 +33,7 @@
             background-size: cover;
         }
 
-        /* Header - CONFIGURAÇÃO PARA MODO CLARO (PADRÃO) */
+        /* Header e Controles (Mantidos) */
         header {
             width: 100%;
             background-image: linear-gradient(to top, gold, rgb(251, 228, 134));
@@ -49,260 +49,522 @@
             transition: background-color 0.3s, color 0.3s, box-shadow 0.3s;
         }
 
-        /* Tema escuro: Header */
-        body.dark-mode header {
-            background-image: none;
-            background-color: #000000;  
-            color: #ffffff;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
-        }
-        
-        /* Grupo logo + nome Soteris */
-        .header-logo-group {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
+        body.dark-mode header { background-image: none; background-color: #000000; color: #ffffff; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4); }
+        .header-logo-group { display: flex; align-items: center; gap: 10px; }
+        .header-logo-group img { height: 50px; width: 50px; }
+        .header-logo-group span { font-size: 1.5rem; font-weight: bold; color: #000000; transition: color 0.3s; }
+        body.dark-mode .header-logo-group span { color: gold; }
+        header h1 { font-size: 1.6rem; font-weight: bold; color: #000000; margin-right: auto; margin-left: 20px; transition: color 0.3s; }
+        body.dark-mode header h1 { color: #ffffff; }
+        .header-controls { display: flex; align-items: center; gap: 10px; }
 
-        .header-logo-group img {
-            height: 50px; 
-            width: 50px;
-        }
-
-        /* Nome Soteris */
-        .header-logo-group span {
-            font-size: 1.5rem; 
-            font-weight: bold;
-            color: #000000;
-            transition: color 0.3s;
-        }
-
-        /* Nome Soteris no modo escuro */
-        body.dark-mode .header-logo-group span {
-            color: gold;  
-        }
-
-        /* Título h1 */
-        header h1 {
-            font-size: 1.6rem;
-            font-weight: bold;
-            color: #000000; 
-            margin-right: auto;
-            margin-left: 20px;
-            transition: color 0.3s;
-        }
-
-        /* Título h1 no modo escuro */
-        body.dark-mode header h1 {
-            color: #ffffff;
-        }
-        
-        /* Contêiner para os botões do lado direito */
-        .header-controls {
-            display: flex;
-            align-items: center;
-            gap: 10px;  
-        }
-
-        /* Botão de voltar e iniciar */
-        .action-button {
-            padding: 0.5rem 1rem;
-            background-color: #000000;
-            color: gold;
+        /* Estilo dos botões no header */
+        .theme-toggle {
+            padding: 8px 16px;
             border: none;
             border-radius: 6px;
-            cursor: pointer;
-            text-decoration: none;
             font-weight: bold;
-            transition: background-color 0.3s, color 0.3s;
-            display: inline-block;
-            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background-color: #000000;
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 0.9rem;
         }
 
-        body.dark-mode .action-button {
+        .back-button {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
             background-color: gold;
             color: #000000;
-        }
-
-        .action-button:hover {
-            background-color: #333;
-            color: white;
-        }
-
-        body.dark-mode .action-button:hover {
-            background-color: #e6c939;
-            color: #000000;
-        }
-
-        /* Botão de alternância de tema */
-        .theme-toggle {
-            padding: 0.5rem 1rem;
-            background-color: #000000;
-            color: #fff;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-        
-        body.dark-mode .theme-toggle {
-            background-color: #4a4a4a;
+            text-decoration: none;
+            font-size: 0.9rem;
         }
 
         .theme-toggle:hover {
-            background-color: #545454;
+            background-color: #333333;
+            transform: translateY(-2px);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
         }
 
-        /* Separador */
-        .gold-separator {
+        .back-button:hover {
+            background-color: #ffd700;
+            transform: translateY(-2px);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        body.dark-mode .theme-toggle {
+            background-color: rgb(96, 96, 96);
+            color: #ffffff;
+        }
+
+        body.dark-mode .theme-toggle:hover {
+            background-color: #ffd700;
+        }
+
+        body.dark-mode .back-button {
+            background-color: gold;
+            color: #000000;
+        }
+
+        body.dark-mode .back-button:hover {
+            background-color: #ffd700;
+        }
+
+        .fixed-separator {
+            position: sticky;
+            top: 70px; /* Altura do header */
+            z-index: 9;
             width: 100%;
-            height: 2px;
-            background-color: black;
-            border: none;
-            margin: 0;
-            padding: 0;
+            background-color: white;
             transition: background-color 0.3s;
         }
 
-        /* Separador no modo escuro */
-        body.dark-mode .gold-separator {
-            background-color: gold;
+        body.dark-mode .fixed-separator {
+            background-color: #202020;
         }
 
-        /* --- ESTILOS ESPECÍFICOS DA PÁGINA EM CONSTRUÇÃO --- */
-
-        main {
-            flex-grow: 1;
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            justify-content: center; /* Centraliza verticalmente o conteúdo */
-            align-items: center;     /* Centraliza horizontalmente o conteúdo */
-            padding: 2rem;
-            text-align: center;
-        }
-
-        .construction-state {
-            max-width: 600px;
-            padding: 3rem 2rem;
-            border-radius: 10px;
-            background-color: #f9f9f9;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            transition: background-color 0.3s, box-shadow 0.3s;
+        .gold-separator { 
+            width: 100%; 
+            height: 2px; 
+            background-color: black; 
+            border: none; 
+            margin: 0; 
+            padding: 0; 
+            transition: background-color 0.3s; 
         }
         
-        body.dark-mode .construction-state {
+        body.dark-mode .gold-separator { 
+            background-color: gold; 
+        }
+
+        /* --- ESTILOS ESPECÍFICOS DA PÁGINA TRAUMA --- */
+
+        .main-container {
+            flex-grow: 1;
+            width: 100%;
+            max-width: 1200px; 
+            margin: 2rem auto;
+            padding: 0 1rem;
+            display: flex; 
+            flex-direction: column; 
+            gap: 10px;
+        }
+        
+        nav.side-nav {
+            width: 100%; 
+            padding: 0;
+            position: relative; /* Pai para centralização do UL */
+            height: 60px; /* Aumentado para garantir visibilidade completa */
+        }
+        
+            /* O contêiner da lista (UL) */
+        nav.side-nav ul {
+            list-style: none;
+            padding: 5px 0 8px 0; 
+            
+            /* **CORREÇÃO DA CENTRALIZAÇÃO E POSICIONAMENTO** */
+            position: absolute; /* Permite centralizar o Flex container com transform */
+            left: 50%;
+            transform: translateX(-50%);
+            
+            /* Restante do estilo */
+            background-color: #f0f0f0; 
+            border-radius: 8px; 
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); 
+            transition: background-color 0.3s, box-shadow 0.3s;
+            z-index: 1;
+            
+            display: flex; 
+            flex-wrap: nowrap; 
+            justify-content: flex-start; /* Retirado justify-content: center */
+            gap: 5px;
+            overflow-x: auto; 
+            -webkit-overflow-scrolling: touch; 
+            width: max-content;
+            max-width: 95vw; /* Garante que não ultrapasse a largura da viewport */
+            
+            /* Esconder a barra de rolagem mantendo a funcionalidade */
+            scrollbar-width: none; /* Firefox */
+            -ms-overflow-style: none; /* Internet Explorer e Edge */
+        }
+
+        /* Esconder a barra de rolagem para WebKit (Chrome, Safari, etc) */
+        nav.side-nav ul::-webkit-scrollbar {
+            display: none;
+        }        body.dark-mode nav.side-nav ul {
+            background-color: #383838; 
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+        }
+        
+        /* **O elemento Slider que desliza** */
+        #nav-slider {
+            position: absolute;
+            height: 3px;
+            background-color: gold;
+            bottom: 0; 
+            border-radius: 2px;
+            transition: all 0.3s ease-in-out; 
+            z-index: 3; /* Mais alto que os links e o UL */
+        }
+
+        nav.side-nav li {
+            z-index: 4; 
+            flex-shrink: 0; 
+        }
+
+        /* Estilo do link (botão) */
+        nav.side-nav .nav-link {
+            display: block;
+            padding: 10px 15px; 
+            color: #000;
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.2s; 
+            cursor: pointer;
+            border-radius: 6px;
+            background-color: transparent; 
+            font-size: 0.95rem;
+            box-sizing: border-box; 
+        }
+
+        body.dark-mode nav.side-nav .nav-link {
+            color: #fff;
+        }
+
+        nav.side-nav .nav-link:hover:not(.active) {
+            background-color: rgba(255, 255, 255, 0.1); 
+        }
+
+        body.dark-mode nav.side-nav .nav-link:hover:not(.active) {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        /* **Estilo do item ativo (selecionado)** */
+        nav.side-nav .nav-link.active {
+            color: gold; 
+        }
+        
+        body.dark-mode nav.side-nav .nav-link.active {
+            color: gold; 
+        }
+
+
+        /* Conteúdo e Animação (Mantidos) */
+        .tab-content-container {
+            flex-grow: 1; 
+            background-color: #f9f9f9;
+            padding: 0; 
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            overflow: hidden; 
+            transition: background-color 0.3s, box-shadow 0.3s, height 0.5s ease-in-out; 
+            position: relative; 
+            min-height: 400px; 
+        }
+
+        body.dark-mode .tab-content-container {
             background-color: #333;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
         }
 
-        .construction-emoji {
-            font-size: 8rem; /* Emoji de construção/aviso bem grande */
-            line-height: 1;
-            color: gold; /* Destaque em ouro */
-            margin-bottom: 0.5rem;
+        .content-section {
+            position: absolute; 
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 2rem; 
+            opacity: 0;
+            transition: transform 0.5s ease-in-out, opacity 0.4s ease-in-out; 
+            pointer-events: none;
+            display: none; 
+        }
+
+        .content-section.active {
+            opacity: 1;
+            transform: translateX(0);
+            pointer-events: auto;
             display: block;
+            z-index: 2;
         }
+        .content-section.slide-in-right { transform: translateX(100%); opacity: 0; }
+        .content-section.slide-in-left { transform: translateX(-100%); opacity: 0; }
+        .content-section.slide-out-left { transform: translateX(-100%); opacity: 0; z-index: 1; }
+        .content-section.slide-out-right { transform: translateX(100%); opacity: 0; z-index: 1; }
 
-        .construction-state h2 {
-            font-size: 2.2rem;
-            color: #000000;
-            margin-bottom: 0.8rem;
-        }
-        
-        body.dark-mode .construction-state h2 {
-            color: #f5f5f5;
-        }
+        .content-section h2 { color: gold; font-size: 1.8rem; margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 2px solid gold; }
+        .content-section h3 { font-size: 1.3rem; margin-top: 1.5rem; margin-bottom: 0.5rem; color: #000000; }
+        body.dark-mode .content-section h3 { color: #f5f5f5; }
+        .content-section p { line-height: 1.6; margin-bottom: 1rem; }
+        footer { margin-top: auto; width: 100%; text-align: center; font-size: clamp(0.8rem, 2vw, 0.9rem); padding: 0.8rem; color: #000000; transition: color 0.3s; background-image: linear-gradient(to bottom, gold, white); }
+        body.dark-mode footer { color: #ffffff; background-image: linear-gradient(to bottom, gold, rgb(0, 0, 0)); }
 
-        .construction-state p {
-            font-size: 1.1rem;
-            color: #555;
-            margin-bottom: 2rem;
-        }
-        
-        body.dark-mode .construction-state p {
-            color: #ccc;
-        }
-
+        /* Media Queries (Mantidos) */
         @media (max-width: 768px) {
-            header { padding: 0.6rem 1rem; }
-            .header-logo-group span { font-size: 1.2rem; }
-            header h1 { font-size: 1.4rem; margin-left: 10px; }
-            .action-button, .theme-toggle { padding: 0.4rem 0.8rem; font-size: 0.8rem; }
-            
-            .construction-state { padding: 2rem 1rem; }
-            .construction-emoji { font-size: 6rem; }
-            .construction-state h2 { font-size: 1.8rem; }
-            .construction-state p { font-size: 1rem; }
+            nav.side-nav ul {
+                /* Remove a centralização absoluta em telas pequenas para permitir a rolagem */
+                position: static; 
+                transform: none;
+                justify-content: flex-start;
+            }
         }
 
     </style>
 </head>
 <body>
-    
+
     <header>
         <div class="header-logo-group">
             <img src="../assets/sem fundo.png" alt="Logo Soteris APH" id="header-logo">
             <span>Soteris</span>
         </div>
-        
-        <h1>Módulo de Trauma</h1>
+
+        <h1>Atendimento ao Trauma</h1>
 
         <div class="header-controls">
             <button class="theme-toggle" id="theme-toggle">🌞 Modo Escuro</button>
-            
-            <a href="../index.html" class="action-button">Voltar</a>
+
+            <a href="../index.html" class="back-button">Voltar</a>
         </div>
     </header>
+    <div class="fixed-separator">
+        <hr class="gold-separator">
+    </div>
 
-    <hr class="gold-separator">
+    <div class="main-container">
+        
+        <nav class="side-nav">
+            <ul>
+                <span id="nav-slider"></span>
+                
+                <li><a class="nav-link active" data-tab="trauma-inicio" data-index="0">Início</a></li>
+                <li><a class="nav-link" data-tab="trauma-cinematica" data-index="1">Cinemática</a></li>
+                <li><a class="nav-link" data-tab="trauma-xabcde" data-index="2">XABCDE</a></li>
+                <li><a class="nav-link" data-tab="trauma-sample" data-index="3">SAMPLE</a></li>
+                <li><a class="nav-link" data-tab="trauma-tipos" data-index="4">Tipos de Trauma</a></li>
+                <li><a class="nav-link" data-tab="trauma-imobilizacoes" data-index="5">Imobilizações</a></li>
+                <li><a class="nav-link" data-tab="trauma-rolamento" data-index="6">Rolamento e Pranchamento</a></li>
+            </ul>
+        </nav>
 
-    <main>
-        <div class="construction-state">
-            <span class="construction-emoji">🚧</span>
-            <h2>Em Breve: Conteúdo de Trauma</h2>
-            <p>O Módulo de Atendimento ao Trauma (XABCDE) está em fase final de preparação.</p>
-            <p>Estamos trabalhando para trazer os melhores conteúdos e simulações para você. Agradecemos a sua paciência!</p>
+        <main class="tab-content-container" id="tab-container">
             
-            <a href="exercicios.html" class="action-button">Enquanto isso, faça exercícios</a>
-        </div>
-    </main>
+            <div id="trauma-inicio" class="content-section active">
+                <h2>Abordagem Inicial ao Trauma</h2>
+                
+                <p>O atendimento a vítimas de trauma representa um dos maiores desafios no **Atendimento Pré-Hospitalar (APH)**, exigindo **agilidade**, **precisão** e uma abordagem padronizada. A diferença entre a vida e a morte, muitas vezes, está na rapidez e na qualidade das intervenções realizadas nos primeiros minutos.</p>
+                
+                <h3>A Prioridade Máxima: Sua Segurança</h3>
+                <p>Antes de qualquer contato com a vítima, a **segurança da cena** é a sua principal preocupação. Uma cena insegura pode transformar o socorrista em uma segunda vítima. Garanta que o local esteja controlado, que os riscos (tráfego, eletricidade, produtos químicos) sejam minimizados antes de iniciar a avaliação.</p>
+                
+                <h3>O Padrão Ouro no Trauma</h3>
+                <p>O protocolo mais aceito e eficaz globalmente é baseado no **ATLS (Advanced Trauma Life Support)**, adaptado para o ambiente pré-hospitalar. Nossa abordagem no Soteris APH foca em dois pilares:</p>
+                
+                <ul>
+                    <li><strong>Avaliação Primária (XABCDE):</strong> Identificar e corrigir **imediatamente** as lesões que ameaçam a vida (hemorragia, obstrução de vias aéreas, etc.).</li>
+                    <li><strong>Avaliação Secundária (SAMPLE):</strong> Uma avaliação detalhada, da cabeça aos pés, buscando lesões não óbvias e coletando a história médica completa da vítima.</li>
+                </ul>
+                
+                <p>Navegue pelas seções acima para aprofundar seu conhecimento em cada etapa essencial do atendimento ao trauma.</p>
+                
+            </div>
+            
+            <div id="trauma-cinematica" class="content-section">
+                <h2>Cinemática do Trauma</h2>
+                <p>A Cinemática estuda o **mecanismo de lesão**— como a energia foi transferida ao corpo e quais estruturas podem ter sido atingidas, mesmo que a lesão não seja visível. É a base para antecipar as lesões mais graves.</p>
+            </div>
+            
+            <div id="trauma-xabcde" class="content-section">
+                <h2>O Protocolo XABCDE</h2>
+                <p>O **XABCDE** é o check-list de prioridade que deve ser seguido rigorosamente, focando em: **X** (Exsanguinação), **A** (Vias Aéreas), **B** (Respiração), **C** (Circulação), **D** (Déficit Neurológico) e **E** (Exposição/Ambiente).</p>
+            </div>
+            
+            <div id="trauma-sample" class="content-section">
+                <h2>Anamnese SAMPLE</h2>
+                <p>A anamnese **SAMPLE** é essencial na avaliação secundária para coletar informações vitais sobre a saúde da vítima: **S**intomas, **A**lergias, **M**edicações, **P**assado médico, **L**íquidos/Alimentos, **E**vento.</p>
+            </div>
+            
+            <div id="trauma-tipos" class="content-section">
+                <h2>Tipos de Trauma</h2>
+                <p>O trauma é classificado principalmente em **Contuso** (impacto, sem quebra da pele) e **Penetrante** (objeto perfurante ou projétil que rompe a pele), cada um exigindo abordagens específicas.</p>
+            </div>
+            
+            <div id="trauma-imobilizacoes" class="content-section">
+                <h2>Técnicas de Imobilização</h2>
+                <p>A imobilização é vital para prevenir o agravamento de lesões na coluna, fraturas e luxações. Inclui colar cervical, talas, e restrição de movimento em geral.</p>
+            </div>
+            
+            <div id="trauma-rolamento" class="content-section">
+                <h2>Rolamento 90º e Pranchamento</h2>
+                <p>Estas são técnicas de extricação e movimentação, usadas para colocar a vítima em uma prancha rígida, mantendo a estabilidade da coluna vertebral e minimizando o risco de lesões secundárias.</p>
+            </div>
+            
+        </main>
+    </div>
 
     <footer>
         Soteris APH &reg;
     </footer>
 
     <script>
-        // --- LÓGICA DE TEMA (REUTILIZADA) ---
         const toggleButton = document.getElementById('theme-toggle');
         const body = document.body;
         const headerLogo = document.getElementById('header-logo');
-        const LOGO_LIGHT = '../assets/sem fundo.png'; 
-        const LOGO_DARK = '../assets/favicon.png'; 
+        const tabButtons = document.querySelectorAll('.nav-link'); 
+        const contentSections = document.querySelectorAll('.content-section');
+        const tabContainer = document.getElementById('tab-container');
+        const navSlider = document.getElementById('nav-slider');
+        const navUl = document.querySelector('.side-nav ul');
 
+        const LOGO_LIGHT = '../assets/sem fundo.png';
+        const LOGO_DARK = '../assets/favicon.png';
+
+        let activeTabIndex = 0;
+        let isTransitioning = false;
+
+        // --- Funções de Tema (MANTIDAS) ---
         const applyTheme = (theme) => {
             const isDark = theme === 'dark';
             body.classList.toggle('dark-mode', isDark);
             toggleButton.textContent = isDark ? '🌙 Modo Claro' : '🌞 Modo Escuro';
-            
+
             if (headerLogo) {
-                headerLogo.src = isDark ? LOGO_DARK : LOGO_LIGHT;
+                headerLogo.src = isDark ? LOGO_DARK : LOGO_LIGHT; 
                 headerLogo.alt = isDark ? 'Logo Soteris APH (Modo Escuro)' : 'Logo Soteris APH';
             }
             localStorage.setItem('theme', theme);
         };
 
-        document.addEventListener('DOMContentLoaded', () => {
-            // Inicializa o tema
-            const storedTheme = localStorage.getItem('theme') || 'light';
-            applyTheme(storedTheme);
+        const storedTheme = localStorage.getItem('theme') || 'light';
+        applyTheme(storedTheme);
 
-            // Listener para alternar o tema
-            toggleButton.addEventListener('click', () => {
-                const currentTheme = body.classList.contains('dark-mode') ? 'dark' : 'light';
-                const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-                applyTheme(newTheme);
+        toggleButton.addEventListener('click', () => {
+            const currentTheme = body.classList.contains('dark-mode') ? 'dark' : 'light';
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            applyTheme(newTheme);
+        });
+
+        // --- Funções do Slider (Barra Deslizante) - CORREÇÃO DE POSICIONAMENTO ---
+        const updateNavSliderPosition = (targetButton) => {
+            if (!targetButton || !navSlider) return;
+
+            const ulRect = navUl.getBoundingClientRect();
+            const targetRect = targetButton.getBoundingClientRect();
+            
+            // 1. Largura do slider deve ser a largura do botão 'A'
+            const width = targetRect.width;
+
+            // 2. Posição do slider (transform X)
+            // A posição é a distância do link ativo até a borda esquerda do UL
+            const leftPosition = targetRect.left - ulRect.left; 
+
+            // Aplica as transformações para mover o slider suavemente
+            navSlider.style.width = `${width}px`;
+            navSlider.style.transform = `translateX(${leftPosition}px)`;
+        };
+
+        const initializeNavSlider = () => {
+            const currentActiveButton = document.querySelector('.nav-link.active');
+            
+            navSlider.style.transition = 'none'; 
+            
+            // Usamos requestAnimationFrame para garantir que a renderização inicial termine antes de calcular
+            requestAnimationFrame(() => {
+                updateNavSliderPosition(currentActiveButton);
+                
+                // Restaura a transição após um pequeno delay
+                setTimeout(() => {
+                    navSlider.style.transition = 'all 0.3s ease-in-out';
+                }, 50);
             });
+        };
+
+
+        // --- Funções de Abas (Tabs) com Animação de Rolagem Lateral (MANTIDAS) ---
+
+        const setContainerHeight = (targetSection) => {
+             tabContainer.style.height = `${targetSection.offsetHeight}px`;
+        };
+        
+        const showTab = (newTabId, newTabIndex, targetButton) => {
+            const currentActiveSection = document.querySelector('.content-section.active');
+            const newActiveSection = document.getElementById(newTabId);
+
+            if (isTransitioning || newActiveSection.classList.contains('active')) {
+                return;
+            }
+
+            isTransitioning = true;
+            const direction = newTabIndex > activeTabIndex ? 'left' : 'right'; 
+
+            if (currentActiveSection) {
+                const exitClass = direction === 'left' ? 'slide-out-left' : 'slide-out-right';
+                currentActiveSection.classList.remove('active');
+                currentActiveSection.classList.add(exitClass);
+            }
+
+            const entryClass = direction === 'left' ? 'slide-in-right' : 'slide-in-left';
+            newActiveSection.classList.add(entryClass);
+            newActiveSection.style.display = 'block';
+
+            setTimeout(() => {
+                newActiveSection.classList.remove(entryClass);
+                newActiveSection.classList.add('active');
+
+                setContainerHeight(newActiveSection);
+            }, 50);
+
+            setTimeout(() => {
+                if (currentActiveSection) {
+                    currentActiveSection.classList.remove('slide-out-left', 'slide-out-right');
+                    currentActiveSection.style.display = 'none';
+                }
+
+                activeTabIndex = newTabIndex;
+                isTransitioning = false;
+            }, 550); 
+
+            // Atualiza o slider e os botões
+            tabButtons.forEach(button => button.classList.remove('active'));
+            targetButton.classList.add('active');
+            
+            // Move o slider para o novo botão ativo
+            updateNavSliderPosition(targetButton);
+        };
+
+        // Adiciona o listener de clique para os botões do menu
+        tabButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const tabId = button.getAttribute('data-tab');
+                const tabIndex = parseInt(button.getAttribute('data-index'));
+                showTab(tabId, tabIndex, button);
+            });
+        });
+
+        // Inicializa a primeira aba e o slider ao carregar a página
+        document.addEventListener('DOMContentLoaded', () => {
+            const initialTab = document.getElementById('trauma-inicio');
+            if (initialTab) {
+                initialTab.style.display = 'block';
+                initialTab.classList.add('active');
+
+                setContainerHeight(initialTab);
+                initializeNavSlider(); 
+            }
+        });
+
+        // Recalcula a altura do container e a posição do slider quando a janela é redimensionada
+        window.addEventListener('resize', () => {
+            const activeSection = document.querySelector('.content-section.active');
+            if (activeSection) {
+                setContainerHeight(activeSection);
+            }
+            // Recalcula a posição do slider em caso de redimensionamento
+            initializeNavSlider(); 
         });
     </script>
 </body>
