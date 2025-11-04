@@ -199,9 +199,11 @@
             gap: 20px; 
             padding: 0 50px;
             width: fit-content;
-            /* REDUZIDO DE 0.5s PARA 0.3s para fluidez */
-            transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94); 
-            will-change: transform; 
+            transition: transform 0.25s cubic-bezier(0.4, 0.0, 0.2, 1);
+            will-change: transform;
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+            transform-style: preserve-3d;
         }
 
         /* Card de Conteúdo */
@@ -209,9 +211,9 @@
             background-color: #f9f9f9;
             border-radius: 12px;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            /* REDUZIDO DE 0.5s PARA 0.3s para fluidez */
-            transition: transform 0.3s, box-shadow 0.3s, background-color 0.3s;
+            transition: all 0.25s cubic-bezier(0.4, 0.0, 0.2, 1);
             cursor: pointer;
+            will-change: transform, opacity;
             text-decoration: none;
             color: inherit;
             display: flex;
@@ -425,15 +427,17 @@
         let currentIndex = 0;
         const totalItems = originalCards.length;
         
-        // Parâmetros do carrossel
+        // Parâmetros do carrossel otimizados
         const cardWidth = 300; 
         const gap = 20; 
         const totalCardSize = cardWidth + gap;
-        const bufferSize = 2; // Número de cards para duplicação
-        const transitionDuration = 300; // Tempo da transição em milissegundos (0.3s no CSS)
+        const bufferSize = 3; // Aumentado para maior suavidade
+        const transitionDuration = 250; // Reduzido para 250ms para maior fluidez
 
-        // Variável de controle de rolagem (evita rolagem excessiva)
-        let isScrolling = false; 
+        // Controle de estado do carrossel
+        let isScrolling = false;
+        let lastScrollTime = 0;
+        const scrollThrottle = 100; // Tempo mínimo entre scrolls em ms
 
         // 1. Configuração do Carrossel (Duplicação para Loop)
         function setupCarousel() {
@@ -460,103 +464,148 @@
             updateCarousel(false); // Renderiza a posição inicial sem animação
         }
 
-        // 2. Atualiza Posição e Escala dos Cards
+        // 2. Sistema de Atualização Otimizado
         function updateCarousel(animate = true) {
             const containerCenter = carouselTrack.parentElement.offsetWidth / 2;
             const offset = (currentIndex * totalCardSize) - containerCenter + (cardWidth / 2);
             
             if (animate) {
-                // Habilita a transição definida no CSS (0.3s)
-                carouselTrack.style.transition = `transform ${transitionDuration}ms cubic-bezier(0.25, 0.46, 0.45, 0.94)`;
+                carouselTrack.style.transition = `transform ${transitionDuration}ms cubic-bezier(0.4, 0.0, 0.2, 1)`;
             } else {
-                // Desabilita a transição (movimento instantâneo)
                 carouselTrack.style.transition = 'none';
             }
 
-            // Move o track
-            carouselTrack.style.transform = `translateX(${-offset}px)`;
+            // Aplicando transform com translateZ(0) para forçar aceleração de hardware
+            carouselTrack.style.transform = `translate3d(${-offset}px, 0, 0)`;
 
-            // Aplica escala e opacidade (3D)
-            const allCards = Array.from(carouselTrack.children);
-            allCards.forEach((card, index) => {
-                const distance = Math.abs(index - currentIndex);
-                
-                let scale = 1.0 - (distance * 0.2); 
-                scale = Math.max(0.7, scale); 
-                
-                // Aplica transição de escala (0.3s)
-                card.style.transition = `transform ${transitionDuration}ms, opacity ${transitionDuration}ms`;
-                card.style.transform = `scale(${scale})`;
-                card.style.opacity = scale;
-                card.style.zIndex = distance === 0 ? 10 : 1;
-            });
+            // Cache do currentIndex para performance
+            const currentIdx = currentIndex;
             
-            // Reseta a flag de rolagem APÓS a animação se completar
+            // Otimização da atualização dos cards
+            const allCards = Array.from(carouselTrack.children);
+            const centerCard = allCards[currentIdx];
+            
+            allCards.forEach((card, index) => {
+                const distance = Math.abs(index - currentIdx);
+                const scale = Math.max(0.7, 1.0 - (distance * 0.15));
+                const opacity = Math.max(0.6, 1.0 - (distance * 0.25));
+                const zIndex = distance === 0 ? 10 : Math.max(1, 10 - distance);
+                
+                // Aplicando transformações em um único batch
+                requestAnimationFrame(() => {
+                    card.style.transform = `scale(${scale})`;
+                    card.style.opacity = opacity;
+                    card.style.zIndex = zIndex;
+                });
+            });
+
+            // Sistema de preload otimizado
             if (animate) {
-                 setTimeout(() => {
+                // Preload dos próximos cards
+                const preloadIndices = [
+                    currentIdx - 2,
+                    currentIdx - 1,
+                    currentIdx + 1,
+                    currentIdx + 2
+                ].filter(idx => idx >= 0 && idx < allCards.length);
+                
+                preloadIndices.forEach(idx => {
+                    const card = allCards[idx];
+                    if (card) {
+                        const img = card.querySelector('img');
+                        if (img && !img.complete) {
+                            img.style.visibility = 'visible';
+                        }
+                    }
+                });
+
+                // Libera o scroll após a animação
+                setTimeout(() => {
                     isScrolling = false;
-                }, transitionDuration); 
+                }, transitionDuration);
             } else {
-                // Se não houve animação (ex: reposicionamento do loop), libera imediatamente
-                isScrolling = false; 
+                isScrolling = false;
             }
         }
 
-        // 3. Funções de Navegação
+        // 3. Funções de Navegação Otimizadas
         function goToNext() {
-            if (isScrolling) return; 
+            if (isScrolling || !canScroll()) return;
             isScrolling = true;
+            lastScrollTime = Date.now();
             currentIndex++;
-            updateCarousel(true);
+            requestAnimationFrame(() => updateCarousel(true));
         }
 
         function goToPrev() {
-            if (isScrolling) return;
+            if (isScrolling || !canScroll()) return;
             isScrolling = true;
+            lastScrollTime = Date.now();
             currentIndex--;
-            updateCarousel(true);
+            requestAnimationFrame(() => updateCarousel(true));
         }
 
-        // 4. Lógica de Loop Infinito (Transição) - CORREÇÃO DA TRAVADINHA
-        // A lógica do loop deve ser executada após o fim da transição ANIMADA (quando animate=true)
-        carouselTrack.addEventListener('transitionend', (e) => {
-            // Ignora eventos de transição que não sejam do "transform" do track (pode ser de scale ou opacity)
-            if (e.propertyName !== 'transform') return; 
+        // Controle de throttle do scroll
+        function canScroll() {
+            const now = Date.now();
+            if (now - lastScrollTime < scrollThrottle) return false;
+            return true;
+        }
 
-            // Se o reposicionamento já foi feito (animate=false), apenas ignora.
-            if (carouselTrack.style.transition === 'none') return;
+        // 4. Lógica de Loop Infinito Otimizada
+        carouselTrack.addEventListener('transitionend', (e) => {
+            if (e.propertyName !== 'transform' || carouselTrack.style.transition === 'none') return;
             
-            // Lógica de loop (o índice já foi atualizado em goToNext/goToPrev)
-            // Se chegou ao card clone, reposiciona para o card real correspondente (SEM ANIMAÇÃO)
-            if (currentIndex >= totalItems + bufferSize) {
-                currentIndex = bufferSize; 
-                updateCarousel(false); // Reposiciona instantaneamente
-            } 
-            else if (currentIndex < bufferSize) {
-                currentIndex = totalItems + bufferSize - 1; 
-                updateCarousel(false); // Reposiciona instantaneamente
+            const needsReset = currentIndex >= totalItems + bufferSize || currentIndex < bufferSize;
+            
+            if (needsReset) {
+                // Calculamos o índice correto antes de fazer o reset
+                currentIndex = currentIndex >= totalItems + bufferSize ? 
+                    bufferSize : 
+                    totalItems + bufferSize - 1;
+                
+                // Usando requestAnimationFrame para garantir que o reset seja suave
+                requestAnimationFrame(() => {
+                    updateCarousel(false);
+                    // Preparamos o próximo frame para reativar as transições
+                    requestAnimationFrame(() => {
+                        carouselTrack.style.transition = `transform ${transitionDuration}ms cubic-bezier(0.4, 0.0, 0.2, 1)`;
+                    });
+                });
+            } else {
+                isScrolling = false;
             }
         });
         
-        // 5. ROLAGEM COM SCROLL DO MOUSE
+        // 5. Sistema de Scroll Otimizado
+        let scrollTimeout;
+        let accumulatedDelta = 0;
+        const scrollThreshold = 50;
+
         carouselContainer.addEventListener('wheel', (e) => {
-            // Previne a rolagem da página quando o mouse está sobre o carrossel
-            e.preventDefault(); 
+            e.preventDefault();
             
-            // Garante que o usuário só possa rolar para o próximo card após a animação terminar
-            if (isScrolling) return;
-
-            // Para evitar que um pequeno movimento do scroll dispare o carrossel (sensibilidade)
-            if (Math.abs(e.deltaY) < 10) return; 
-
-            // DeltaY negativo = rolagem para cima (quer ir para o card anterior)
-            if (e.deltaY < 0) {
-                goToPrev();
-            } 
-            // DeltaY positivo = rolagem para baixo (quer ir para o próximo card)
-            else if (e.deltaY > 0) {
-                goToNext();
-            }
+            if (isScrolling || !canScroll()) return;
+            
+            // Acumula o delta do scroll
+            accumulatedDelta += e.deltaY;
+            
+            // Limpa o timeout anterior se existir
+            clearTimeout(scrollTimeout);
+            
+            // Define um novo timeout
+            scrollTimeout = setTimeout(() => {
+                // Se acumulou scroll suficiente, move o carrossel
+                if (Math.abs(accumulatedDelta) >= scrollThreshold) {
+                    if (accumulatedDelta < 0) {
+                        goToPrev();
+                    } else {
+                        goToNext();
+                    }
+                }
+                // Reseta o acumulador
+                accumulatedDelta = 0;
+            }, 50); // Pequeno delay para acumular scroll
         });
 
 
