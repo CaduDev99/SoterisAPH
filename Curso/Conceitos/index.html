@@ -335,7 +335,7 @@
     function applyTheme(theme) {
       const isDark = theme === 'dark';
       body.classList.toggle('dark-mode', isDark);
-      toggleButton.textContent = isDark ? '🌙 Modo Claro' : '🌞 Modo Escuro';
+      toggleButton.textContent = isDark ? '🌙' : '🌞';
       // Ajuste para garantir que a imagem exista no caminho relativo. Se não existir, manterá a original.
       // O caminho 'assets/sem fundo.png' foi corrigido no script para consistência
       headerLogo.src = isDark ? LOGO_DARK : LOGO_LIGHT; 

@@ -781,9 +781,9 @@
         // Verifica a preferência do usuário ao carregar
         if (localStorage.getItem('theme') === 'dark') {
             body.classList.add('dark-mode');
-            themeToggle.textContent = '☀️ Modo Claro';
+            themeToggle.textContent = '☀️';
         } else {
-            themeToggle.textContent = '🌙 Modo Escuro';
+            themeToggle.textContent = '🌙';
         }
 
         themeToggle.addEventListener('click', () => {

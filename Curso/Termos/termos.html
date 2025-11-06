@@ -549,7 +549,7 @@
         const applyTheme = (theme) => {
             const isDark = theme === 'dark';
             body.classList.toggle('dark-mode', isDark);
-            toggleButton.textContent = isDark ? '🌙 Modo Claro' : '🌞 Modo Escuro';
+            toggleButton.textContent = isDark ? '🌙' : '🌞';
             
             if (headerLogo) {
                 headerLogo.src = isDark ? LOGO_DARK : LOGO_LIGHT;
