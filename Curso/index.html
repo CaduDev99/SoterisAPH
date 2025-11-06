@@ -314,7 +314,7 @@
         </div>
         
         <div class="header-controls">
-            <button class="theme-toggle" id="theme-toggle">🌞 Modo Escuro</button>
+            <button class="theme-toggle" id="theme-toggle">🌞</button>
             
             <a href="../index.html" class="back-button">Página Inicial</a>
         </div>
@@ -449,7 +449,7 @@
         const applyTheme = (theme) => {
             const isDark = theme === 'dark';
             body.classList.toggle('dark-mode', isDark);
-            toggleButton.textContent = isDark ? '🌙 Modo Claro' : '🌞 Modo Escuro';
+            toggleButton.textContent = isDark ? '🌙' : '🌞';
             
             if (headerLogo) {
                 headerLogo.src = isDark ? LOGO_DARK : LOGO_LIGHT;
