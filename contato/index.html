@@ -270,7 +270,7 @@
         const applyTheme = (theme) => {
             const isDark = theme === 'dark';
             body.classList.toggle('dark-mode', isDark);
-            toggleButton.textContent = isDark ? '🌙 Modo Claro' : '🌞 Modo Escuro';
+            toggleButton.textContent = isDark ? '🌙' : '🌞';
             logo.src = isDark ? logoEscura : logoClara;
             logo.alt = isDark ? 'Logo Soteris APH (Modo Escuro)' : 'Logo Soteris APH';
         };
